@@ -2,12 +2,11 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import styles from '../styles/page.module.css';
+import { insertTextAtCursor } from '../utils';
 
 interface ContentAreaProps {
   contentEditableRef: React.RefObject<HTMLDivElement>;
   handleContentChange: () => void;
-  handlePaste: (e: React.ClipboardEvent<HTMLDivElement>) => void;
-  handleKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   viewMode: boolean;
   content: string;
 }
@@ -15,11 +14,43 @@ interface ContentAreaProps {
 const ContentArea: React.FC<ContentAreaProps> = ({
   contentEditableRef,
   handleContentChange,
-  handlePaste,
-  handleKeyDown,
   viewMode,
   content,
 }) => {
+  // Handle paste events
+  const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const text = e.clipboardData.getData('text/plain');
+    insertTextAtCursor(text);
+    handleContentChange(); // Update the content state
+  };
+
+  // Handle drop events
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const text = e.dataTransfer.getData('text/plain');
+    insertTextAtCursor(text);
+    handleContentChange(); // Update the content state
+  };
+
+  // Handle key down events
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    // Handle tab in content area
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      insertTextAtCursor('    ');
+      handleContentChange(); // Update the content state
+    }
+
+    // Prevent default formatting shortcuts
+    if (
+      (e.ctrlKey || e.metaKey) &&
+      ['b', 'i', 'u'].includes(e.key.toLowerCase())
+    ) {
+      e.preventDefault();
+    }
+  };
+
   return viewMode ? (
     <div className={styles.markdownView}>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -34,6 +65,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
       onInput={handleContentChange}
       onPaste={handlePaste}
       onKeyDown={handleKeyDown}
+      onDrop={handleDrop} // Add this line
       suppressContentEditableWarning={true}
     />
   );

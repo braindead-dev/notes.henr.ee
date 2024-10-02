@@ -5,7 +5,8 @@ import styles from '../styles/page.module.css';
 import Header from '../components/Header';
 import TitleInput from '../components/TitleInput';
 import ContentArea from '../components/ContentArea';
-import { stripMarkdown, insertTextAtCursor } from '../utils';
+import { stripMarkdown } from '../utils';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [title, setTitle] = useState("Untitled");
@@ -14,6 +15,7 @@ export default function Home() {
   const contentEditableRef = useRef<HTMLDivElement>(null);
   const titleEditableRef = useRef<HTMLDivElement>(null);
   const [scrollShadowVisible, setScrollShadowVisible] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,21 +30,25 @@ export default function Home() {
       },
     });
     const data = await response.json();
-    window.location.href = `/pastes/${data.id}`;
+    router.push(`/pastes/${data.id}`);
   };
 
-  // Handle content changes in the contentEditable div
+  // Generalized function to handle changes in contentEditable elements
+  const handleEditableChange = (
+    ref: React.RefObject<HTMLDivElement>,
+    setState: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    if (ref.current) {
+      setState(ref.current.innerText);
+    }
+  };
+
   const handleContentChange = () => {
-    if (contentEditableRef.current) {
-      setContent(contentEditableRef.current.innerText);
-    }
+    handleEditableChange(contentEditableRef, setContent);
   };
 
-  // Handle title changes
   const handleTitleChange = () => {
-    if (titleEditableRef.current) {
-      setTitle(titleEditableRef.current.innerText);
-    }
+    handleEditableChange(titleEditableRef, setTitle);
   };
 
   // Handle scroll shadow
@@ -51,36 +57,8 @@ export default function Home() {
     setScrollShadowVisible(target.scrollTop > 0);
   };
 
-  // Handle paste events
-  const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const text = e.clipboardData.getData('text/plain');
-    insertTextAtCursor(text);
-  };
-
-  // Handle key down events
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    // Handle tab in content area
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      insertTextAtCursor('    ');
-    }
-
-    // Prevent default formatting shortcuts
-    if (
-      (e.ctrlKey || e.metaKey) &&
-      ['b', 'i', 'u'].includes(e.key.toLowerCase())
-    ) {
-      e.preventDefault();
-    }
-  };
-
-  // Prevent drag and drop
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
+  // General preventDefault function
+  const preventDefault = (e: React.SyntheticEvent) => {
     e.preventDefault();
   };
 
@@ -98,8 +76,8 @@ export default function Home() {
       <div
         className={styles.editorContainer}
         onScroll={handleScroll}
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
+        onDragOver={preventDefault}
+        onDrop={preventDefault}
       >
         <div className={styles.contentWrapper}>
           {/* Title */}
@@ -107,15 +85,12 @@ export default function Home() {
             title={title}
             titleEditableRef={titleEditableRef}
             handleTitleChange={handleTitleChange}
-            handlePaste={handlePaste}
           />
 
           {/* Content Area */}
           <ContentArea
             contentEditableRef={contentEditableRef}
             handleContentChange={handleContentChange}
-            handlePaste={handlePaste}
-            handleKeyDown={handleKeyDown}
             viewMode={viewMode}
             content={content}
           />
