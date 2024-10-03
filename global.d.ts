@@ -3,3 +3,6 @@ declare namespace NodeJS {
       pastes?: Map<string, { title: string; content: string }>;
     }
   }
+  
+  declare let global: NodeJS.Global;
+  
