@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { markdown } from '@codemirror/lang-markdown';
 import ReactMarkdown from 'react-markdown';
@@ -8,61 +8,49 @@ import { EditorView } from '@codemirror/view';
 import '../styles/markdownStyles.css';
 
 interface ContentAreaProps {
-  handleContentChange: (value: string) => void;
-  viewMode: boolean;
   content: string;
+  handleContentChange?: (value: string) => void; // Optional in case it's used in the paste page
+  viewMode?: boolean; // Optional, as paste pages will always be in view mode
+  isEditable?: boolean; // To determine if the content area is editable or just displays content
 }
 
 const ContentArea: React.FC<ContentAreaProps> = ({
-  handleContentChange,
-  viewMode,
   content,
+  handleContentChange,
+  viewMode = true,
+  isEditable = false, // By default, it’s not editable
 }) => {
   const [editorValue, setEditorValue] = useState(content || '');
 
+  useEffect(() => {
+    setEditorValue(content); // Sync editor value with incoming content changes
+  }, [content]);
+
   const onChange = (value: string) => {
     setEditorValue(value);
-    handleContentChange(value);
+    if (handleContentChange) {
+      handleContentChange(value);
+    }
   };
 
   const getCSSVariables = () => {
-    // Check if we are running in a browser environment
-    if (typeof window === "undefined") {
-      // Return some default values for SSR
-      return {
-        fontSize: '16px',
-        lineHeight: '1.5',
-        header1Size: '32px',
-        header2Size: '28px',
-        header3Size: '24px',
-        blockquoteBorder: '4px solid #ccc',
-        blockquotePadding: '10px',
-        codeBackground: '#f5f5f5',
-        linkColor: '#0070f3',
-        selectionBackground: '#b3d4fc',
-      };
-    }
-  
-    // Now it's safe to call getComputedStyle since we're on the client
     const root = getComputedStyle(document.documentElement);
     return {
-        fontSize: root.getPropertyValue('--font-size').trim(),
-        lineHeight: root.getPropertyValue('--line-height').trim(),
-        header1Size: root.getPropertyValue('--header1-size').trim(),
-        header2Size: root.getPropertyValue('--header2-size').trim(),
-        header3Size: root.getPropertyValue('--header3-size').trim(),
-        blockquoteBorder: root.getPropertyValue('--blockquote-border').trim(),
-        blockquotePadding: root.getPropertyValue('--blockquote-padding').trim(),
-        codeBackground: root.getPropertyValue('--code-background').trim(),
-        linkColor: root.getPropertyValue('--link-color').trim(),
-        selectionBackground: root.getPropertyValue('--selection-background').trim(),
+      fontSize: root.getPropertyValue('--font-size').trim(),
+      lineHeight: root.getPropertyValue('--line-height').trim(),
+      header1Size: root.getPropertyValue('--header1-size').trim(),
+      header2Size: root.getPropertyValue('--header2-size').trim(),
+      header3Size: root.getPropertyValue('--header3-size').trim(),
+      blockquoteBorder: root.getPropertyValue('--blockquote-border').trim(),
+      blockquotePadding: root.getPropertyValue('--blockquote-padding').trim(),
+      codeBackground: root.getPropertyValue('--code-background').trim(),
+      linkColor: root.getPropertyValue('--link-color').trim(),
+      selectionBackground: root.getPropertyValue('--selection-background').trim(),
     };
   };
-  
 
   const cssVars = getCSSVariables();
 
-  // Custom theme for CodeMirror
   const myTheme = EditorView.theme({
     '&': {
       color: 'inherit',
@@ -127,13 +115,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     },
   });
 
-  return viewMode ? (
-    <div className={`${styles.markdownView} markdown-content`}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>
-        {content || ''}
-      </ReactMarkdown>
-    </div>
-  ) : (
+  return isEditable && !viewMode ? (
     <div className={`${styles.contentEditable} markdown-content`}>
       <CodeMirror
         value={editorValue}
@@ -147,6 +129,12 @@ const ContentArea: React.FC<ContentAreaProps> = ({
         }}
         className={`${styles.codeMirror} markdown-content`}
       />
+    </div>
+  ) : (
+    <div className={`${styles.markdownView} markdown-content`}>
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        {editorValue || ''}
+      </ReactMarkdown>
     </div>
   );
 };

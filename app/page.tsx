@@ -6,6 +6,7 @@ import styles from '../styles/page.module.css';
 import Header from '../components/Header';
 import TitleInput from '../components/TitleInput';
 import ContentArea from '../components/ContentArea';
+import ScrollContainer from '../components/ScrollContainer';
 import { stripMarkdown } from '../utils';
 import { useRouter } from 'next/navigation';
 
@@ -50,42 +51,31 @@ export default function Home() {
     setContent(value);
   };
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLDivElement;
-    setScrollShadowVisible(target.scrollTop > 0);
-  };
-
-  const preventDefault = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-  };
-
   return (
     <div className={styles.pageContainer}>
       <Header
-        scrollShadowVisible={scrollShadowVisible}
         handleSubmit={handleSubmit}
         viewMode={viewMode}
         setViewMode={setViewMode}
+        isPastePage={false} 
+        scrollShadowVisible={scrollShadowVisible} // Pass shadow visibility
       />
-      <div
-        className={styles.editorContainer}
-        onScroll={handleScroll}
-        onDragOver={preventDefault}
-        onDrop={preventDefault}
-      >
+      <ScrollContainer handleScrollShadow={setScrollShadowVisible}>
         <div className={styles.contentWrapper}>
           <TitleInput
             title={title}
             titleEditableRef={titleEditableRef}
             handleTitleChange={handleTitleChange}
+            isEditable={true}
           />
           <ContentArea
             handleContentChange={handleContentChange}
             viewMode={viewMode}
             content={content}
+            isEditable={true}
           />
         </div>
-      </div>
+      </ScrollContainer>
     </div>
   );
 }
