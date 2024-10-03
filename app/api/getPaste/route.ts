@@ -9,6 +9,11 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
   
+  // Check if id is null, and handle the case appropriately
+  if (!id) {
+    return NextResponse.json({ error: "ID not provided" }, { status: 400 });
+  }
+
   const paste = globalThis.pastes?.get(id); // Fetch both title and content from global storage
 
   if (paste) {
