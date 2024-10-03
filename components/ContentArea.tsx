@@ -34,6 +34,23 @@ const ContentArea: React.FC<ContentAreaProps> = ({
   };
 
   const getCSSVariables = () => {
+
+    if (typeof window === "undefined") {
+      // Return some default values for SSR
+      return {
+        fontSize: '16px',
+        lineHeight: '1.5',
+        header1Size: '32px',
+        header2Size: '28px',
+        header3Size: '24px',
+        blockquoteBorder: '4px solid #ccc',
+        blockquotePadding: '10px',
+        codeBackground: '#f5f5f5',
+        linkColor: '#0070f3',
+        selectionBackground: '#b3d4fc',
+      };
+    }
+    
     const root = getComputedStyle(document.documentElement);
     return {
       fontSize: root.getPropertyValue('--font-size').trim(),
