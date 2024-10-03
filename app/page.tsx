@@ -1,4 +1,3 @@
-// page.tsx
 "use client";
 
 import { useState, useRef } from 'react';
@@ -57,7 +56,7 @@ export default function Home() {
         handleSubmit={handleSubmit}
         viewMode={viewMode}
         setViewMode={setViewMode}
-        isPastePage={false} 
+        isPastePage={false}
         scrollShadowVisible={scrollShadowVisible} // Pass shadow visibility
       />
       <ScrollContainer handleScrollShadow={setScrollShadowVisible}>
