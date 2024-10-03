@@ -38,6 +38,7 @@ const Header: React.FC<HeaderProps> = ({
             onClick={handleCopy}
           >
             {isCopied ? 'Copied!' : 'Copy'}
+          </button>
         </div>
       </div>
     );
