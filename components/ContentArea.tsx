@@ -65,10 +65,10 @@ const ContentArea: React.FC<ContentAreaProps> = ({
       onInput={handleContentChange}
       onPaste={handlePaste}
       onKeyDown={handleKeyDown}
-      onDrop={handleDrop} // Add this line
+      onDrop={handleDrop}
       suppressContentEditableWarning={true}
     />
-  );
+  );  
 };
 
 export default ContentArea;
