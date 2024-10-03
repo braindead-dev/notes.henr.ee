@@ -1,15 +1,16 @@
 import { NextResponse } from 'next/server';
 
-if (!global.pastes) {
-  global.pastes = new Map(); 
+// Declare that globalThis.pastes is a Map if it isn't already initialized
+if (!(globalThis as any).pastes) {
+  (globalThis as any).pastes = new Map<string, { title: string; content: string }>();
 }
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
-    
-  const paste = global.pastes.get(id); // Fetch both title and content from global storage
-
+  
+  const paste = (globalThis as any).pastes.get(id); // Use type assertion here
+  
   if (paste) {
     return NextResponse.json({ title: paste.title, content: paste.content });
   } else {
