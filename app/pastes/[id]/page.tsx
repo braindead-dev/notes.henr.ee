@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation'; // useParams to get the dynamic ID
+import { CSSProperties } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -94,12 +95,12 @@ const preWrapStyle = "pre-wrap";
 const styles = {
   pageContainer: {
     display: "flex",
-    flexDirection: columnDirection,
-    alignItems: "center", // Ensures the content is centered horizontally
+    flexDirection: "column" as CSSProperties["flexDirection"], // Casting flexDirection
+    alignItems: "center",
     width: "100%",
     minHeight: "100vh",
     backgroundColor: "#fff",
-    padding: "0 20px", // Minimum padding on each side
+    padding: "0 20px",
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   },
   header: {
