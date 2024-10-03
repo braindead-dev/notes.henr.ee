@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
   
-  const paste = globalThis.pastes?.get(id); // Safe optional chaining
+  const paste = globalThis.pastes?.get(id); // Fetch both title and content from global storage
 
   if (paste) {
     return NextResponse.json({ title: paste.title, content: paste.content });
