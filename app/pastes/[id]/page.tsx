@@ -25,7 +25,7 @@ export default function Paste() {
           } else {
             setContent("Error: Paste not found.");
           }
-        } catch (error) {
+        } catch {
           setContent("Error: Unable to fetch paste.");
         } finally {
           setLoading(false);
@@ -87,11 +87,14 @@ export default function Paste() {
 
 // Styles
 const maxTextWidth = 800;
+const columnDirection = "column";
+const boldFontWeight = "bold";
+const preWrapStyle = "pre-wrap";
 
 const styles = {
   pageContainer: {
     display: "flex",
-    flexDirection: "column" as "column",
+    flexDirection: columnDirection,
     alignItems: "center", // Ensures the content is centered horizontally
     width: "100%",
     minHeight: "100vh",
@@ -122,7 +125,7 @@ const styles = {
   },
   titleInput: {
     fontSize: "32px",
-    fontWeight: "bold" as "bold",
+    fontWeight: boldFontWeight,
     margin: "10px 0", // Reduced space between title and body text
     padding: "0", 
     border: "none",
@@ -135,7 +138,7 @@ const styles = {
     fontSize: "18px",
     padding: "5px 0", 
     transform: "translateY(-18px)",
-    whiteSpace: "pre-wrap" as "pre-wrap", 
+    whiteSpace: preWrapStyle, 
     width: "100%",
     maxWidth: `${maxTextWidth}px`,
   },
