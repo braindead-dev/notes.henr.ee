@@ -1,24 +1,23 @@
 import { NextResponse } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
 
-// Initialize globalThis.pastes if it doesn't exist
-if (!globalThis.pastes) {
-  globalThis.pastes = new Map<string, { title: string; content: string }>();
+// Initialize global.pastes if it doesn't exist
+if (!global.pastes) {
+  global.pastes = new Map<string, { title: string; content: string }>();
 }
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get('id');
-  
-  // Check if id is null, and handle the case appropriately
-  if (!id) {
-    return NextResponse.json({ error: "ID not provided" }, { status: 400 });
-  }
+export async function POST(request: Request) {
+  const { title, content } = await request.json(); // Assuming request body contains title and content
+  const id = uuidv4(); // Generate a unique ID
 
-  const paste = globalThis.pastes?.get(id); // Fetch both title and content from global storage
-
-  if (paste) {
-    return NextResponse.json({ title: paste.title, content: paste.content });
+  // Ensure global.pastes is initialized
+  if (global.pastes) {
+    global.pastes.set(id, { title, content });
+    console.log("Stored paste:", id, title, content); // Debugging: Check that both title and content are stored
   } else {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
+    // Fallback: In case global.pastes is undefined (shouldn't happen due to the earlier check)
+    return NextResponse.json({ error: "Unable to store paste" }, { status: 500 });
   }
+
+  return NextResponse.json({ id });
 }
