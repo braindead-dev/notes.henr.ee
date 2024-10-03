@@ -1,109 +1,107 @@
 /* page.module.css */
 .pageContainer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #fff;
-    font-family: inherit;
-  }
-  
-  .fixedHeader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: #fff;
-    z-index: 100;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: center;
-    transition: box-shadow 0.2s ease;
-  }
-  
-  .fixedHeaderShadow {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  }
-  
-  .headerButtons {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-    max-width: var(--max-text-width);
-    justify-content: flex-end;
-  }
-  
-  .editorContainer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow-y: auto;
-    padding-top: 60px;
-    -webkit-user-select: text;
-    user-select: text;
-  }
-  
-  .contentWrapper {
-    width: 100%;
-    max-width: var(--max-text-width);
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-  
-  .publishButton {
-    background-color: #222222;
-    color: #fff;
-    border-radius: 6px;
-    border: 2px solid #545454;
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  
-  .toggleButton {
-    background-color: #eaeaea;
-    color: #222222;
-    border-radius: 6px;
-    border: 2px solid #bababa;
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
-    width: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .titleInput {
-    font-size: 32px;
-    font-weight: bold;
-    margin: 10px 0;
-    padding: 0;
-    outline: none;
-    width: 100%;
-    min-height: 42px;
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-  }
-  
-  .contentEditable {
-    flex: 1;
-    font-size: 18px;
-    padding: 5px 0;
-    outline: none;
-    min-height: calc(100vh - 150px);
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-  }
-  
-  .markdownView {
-    flex: 1;
-    font-size: 18px;
-    padding: 5px 0;
-    white-space: pre-wrap;
-    width: 100%;
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  font-family: inherit;
+}
+
+.fixedHeader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 100;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  transition: box-shadow 0.2s ease;
+}
+
+.fixedHeaderShadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.headerButtons {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: var(--max-text-width);
+  justify-content: flex-end;
+}
+
+.editorContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  padding-top: 60px;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.contentWrapper {
+  width: 100%;
+  max-width: var(--max-text-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.publishButton {
+  background-color: #222222;
+  color: #fff;
+  border-radius: 6px;
+  border: 2px solid #545454;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.toggleButton {
+  background-color: #eaeaea;
+  color: #222222;
+  border-radius: 6px;
+  border: 2px solid #bababa;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.titleInput {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 10px 0;
+  padding: 0;
+  outline: none;
+  width: 100%;
+  min-height: 42px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.contentEditable{
+  flex: 1;
+  transform: translateY(-4px);
+  min-height: calc(100vh - 150px);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.markdownView {
+  flex: 1;
+  min-height: calc(100vh - 150px);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+/* Remove font-size and padding from contentEditable and markdownView as they are now in markdownStyles.css */

@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@codemirror/lang-markdown": "^6.3.0",
+    "@uiw/react-codemirror": "^4.23.4",
     "next": "14.2.14",
     "next-auth": "^4.24.8",
     "next-storage": "^1.2.3",

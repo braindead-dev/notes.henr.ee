@@ -1,0 +1,154 @@
+:root {
+    --font-size: 18px;
+    --line-height: 1.5;
+    --color: #222222;
+    --header1-size: 32px;
+    --header2-size: 1.5em;
+    --header3-size: 1.17em;
+    --header-margin: 0.5em;
+    --blockquote-border: 4px solid #ddd;
+    --blockquote-padding: 1em;
+    --code-background: #f5f5f5;
+    --link-color: #0645ad;
+    --selection-background: #BBDFFF;
+  }
+  
+  /* Base styles for both editing and viewing */
+  .markdown-content {
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+    color: var(--color);
+    font-family: inherit;
+  }
+  
+  /* Headings */
+  .markdown-content h1, .cm-header-1 {
+    font-size: var(--header1-size);
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .markdown-content h2, .cm-header-2 {
+    font-size: var(--header2-size);
+    font-weight: bold;
+    margin: var(--header-margin) 0;
+  }
+  
+  .markdown-content h3, .cm-header-3 {
+    font-size: var(--header3-size);
+    font-weight: bold;
+    margin: var(--header-margin) 0;
+  }
+  
+  /* Paragraphs */
+  .markdown-content p, .cm-line {
+    margin: var(--header-margin) 0;
+  }
+  
+  /* Bold Text */
+  .markdown-content strong, .cm-strong {
+    font-weight: bold;
+  }
+  
+  /* Italic Text */
+  .markdown-content em, .cm-em {
+    font-style: italic;
+  }
+  
+  /* Blockquotes */
+  .markdown-content blockquote, .cm-quote {
+    border-left: var(--blockquote-border);
+    padding-left: var(--blockquote-padding);
+    color: #666;
+    margin: var(--header-margin) 0;
+  }
+  
+  /* Code Blocks */
+  .markdown-content pre, .cm-codeblock {
+    background-color: var(--code-background);
+    padding: 10px;
+    border-radius: 4px;
+    overflow: auto;
+  }
+  
+  .markdown-content code, .cm-inline-code {
+    font-family: monospace;
+    background-color: var(--code-background);
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+  
+  /* Links */
+  .markdown-content a, .cm-link {
+    color: var(--link-color);
+    text-decoration: underline;
+  }
+  
+  /* Lists */
+  .markdown-content ul, .markdown-content ol, .cm-list {
+    margin-left: 1.5em;
+  }
+  
+  /* Horizontal Rule */
+  .markdown-content hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+  }
+  
+  /* Images */
+  .markdown-content img {
+    max-width: 100%;
+  }
+  
+  /* Tables */
+  .markdown-content table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .markdown-content th, .markdown-content td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .markdown-content th {
+    background-color: #f2f2f2;
+  }
+  
+  /* Ensure caret and selection are consistent */
+  .cm-content {
+    caret-color: #000;
+    background: none;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+  
+  .cm-scroller {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    line-height: inherit;
+  }
+  
+  .cm-selectionBackground, ::selection {
+    background-color: var(--selection-background);
+  }
+  
+  /* Remove default border and background in CodeMirror */
+  .cm-editor {
+    border: none;
+    background: none;
+    outline: none;
+  }
+  
+  /* Remove gutter (line numbers area) */
+  .cm-gutters {
+    display: none;
+  }
+  
+  /* Remove focus outline */
+  .cm-editor.cm-focused {
+    outline: none;
+  }
+  
