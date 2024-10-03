@@ -7,6 +7,12 @@ import styles from '../styles/page.module.css';
 import { EditorView } from '@codemirror/view';
 import '../styles/markdownStyles.css';
 
+interface ContentAreaProps {
+  handleContentChange: (value: string) => void;
+  viewMode: boolean;
+  content: string;
+}
+
 const ContentArea: React.FC<ContentAreaProps> = ({
   handleContentChange,
   viewMode,
