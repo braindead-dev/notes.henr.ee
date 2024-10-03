@@ -1,7 +1,5 @@
 export {};
 
 declare global {
-  interface GlobalThis {
-    pastes?: Map<string, { title: string; content: string }>;
-  }
+  var pastes: Map<string, { title: string; content: string }> | undefined;
 }
