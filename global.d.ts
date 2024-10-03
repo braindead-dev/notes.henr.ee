@@ -1,5 +1,6 @@
+// global.d.ts
 export {};
 
 declare global {
-  var pastes: Map<string, { title: string; content: string }> | undefined;
+  var pastes: Map<string, { title: string; content: string }>;
 }
