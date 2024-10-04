@@ -48,10 +48,6 @@ export default function Paste() {
     }, 1000);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className={styles.pageContainer}>
       <Header
@@ -64,12 +60,12 @@ export default function Paste() {
         <div className={styles.contentWrapper}>
 
           <TitleInput
-            title={title}
+            title={loading ? "" : title}
             titleEditableRef={titleEditableRef}
             isEditable={false} // Non-editable in the paste page
           />
           <ContentArea
-            content={content}
+            content={loading ? "" : content}
             isEditable={false} // Paste page should not be editable
           />
 
