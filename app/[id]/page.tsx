@@ -1,12 +1,12 @@
 "use client";
 import { useState, useEffect, useRef} from 'react';
 import { useParams } from 'next/navigation';
-import Header from '../../../components/Header';
-import TitleInput from '../../../components/TitleInput';
-import ContentArea from '../../../components/ContentArea';
-import ScrollContainer from '../../../components/ScrollContainer'; 
-import styles from '../../../styles/page.module.css';
-import '../../../styles/markdownStyles.css';
+import Header from '../../components/Header';
+import TitleInput from '../../components/TitleInput';
+import ContentArea from '../../components/ContentArea';
+import ScrollContainer from '../../components/ScrollContainer'; 
+import styles from '../../styles/page.module.css';
+import '../../styles/markdownStyles.css';
 
 export default function Paste() {
   const { id } = useParams();

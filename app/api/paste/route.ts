@@ -1,5 +1,11 @@
+// app/api/paste/route.ts
+
 import { NextResponse } from 'next/server';
-import { v4 as uuidv4 } from 'uuid';
+import { generateSlug, generateRandomString } from '../../../utils/slugUtils';
+
+declare global {
+  var pastes: Map<string, { title: string; content: string }>;
+}
 
 if (!global.pastes) {
   global.pastes = new Map();
@@ -7,7 +13,7 @@ if (!global.pastes) {
 
 export async function POST(request: Request) {
   try {
-    const { title, content } = await request.json(); // Accept both title and content
+    const { title, content } = await request.json();
 
     // Validate incoming data
     if (!title || typeof title !== 'string' || title.trim() === '') {
@@ -20,7 +26,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Title is too long. Maximum length is 100 characters.' }, { status: 400 });
     }
 
-    const id = uuidv4();
+    const slug = generateSlug(title);
+    const randomString = generateRandomString();
+    const id = `${slug}-${randomString}`;
+
     global.pastes.set(id, { title, content });
     console.log("Stored paste:", id, title, content);
 

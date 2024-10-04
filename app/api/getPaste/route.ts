@@ -1,13 +1,13 @@
 // app/api/getPaste/route.ts
+
 import { NextResponse } from 'next/server';
 
-// Ensure global.pastes is initialized
 declare global {
   var pastes: Map<string, { title: string; content: string }>;
 }
 
 if (!global.pastes) {
-  global.pastes = new Map<string, { title: string; content: string }>();
+  global.pastes = new Map();
 }
 
 export async function GET(request: Request) {

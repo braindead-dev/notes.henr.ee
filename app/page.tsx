@@ -40,7 +40,8 @@ export default function Home() {
         throw new Error(data.error || 'Something went wrong');
       }
 
-      router.push(`/pastes/${data.id}`);
+      // Redirect to the new paste page using the slug-based ID
+      router.push(`/${data.id}`);
     } catch (err: any) {
       setError(err.message); // Set the error message to be displayed
     }
@@ -88,6 +89,9 @@ export default function Home() {
             content={content}
             isEditable={true}
           />
+          <button onClick={handleSubmit} disabled={false}>
+            Create Paste
+          </button>
         </div>
       </ScrollContainer>
     </div>
