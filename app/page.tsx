@@ -89,9 +89,6 @@ export default function Home() {
             content={content}
             isEditable={true}
           />
-          <button onClick={handleSubmit} disabled={false}>
-            Create Paste
-          </button>
         </div>
       </ScrollContainer>
     </div>

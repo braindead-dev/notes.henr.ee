@@ -1,7 +1,7 @@
 // app/api/paste/route.ts
 
 import { NextResponse } from 'next/server';
-import { generateSlug, generateRandomString } from '../../../utils/slugUtils';
+import { generateUniqueId } from '../../../utils/slugUtils';
 
 declare global {
   var pastes: Map<string, { title: string; content: string }>;
@@ -26,9 +26,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Title is too long. Maximum length is 100 characters.' }, { status: 400 });
     }
 
-    const slug = generateSlug(title);
-    const randomString = generateRandomString();
-    const id = `${slug}-${randomString}`;
+    const id = generateUniqueId(title); // Use the updated unique ID generator
+
+    // Ensure the generated ID is unique
+    if (global.pastes.has(id)) {
+      // In the rare case of a collision, generate a new ID
+      // You can implement a loop or limit the number of retries
+      return NextResponse.json({ error: 'ID collision occurred. Please try again.' }, { status: 500 });
+    }
 
     global.pastes.set(id, { title, content });
     console.log("Stored paste:", id, title, content);

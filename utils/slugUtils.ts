@@ -16,3 +16,20 @@ export function generateSlug(title: string): string {
     return result;
   }
   
+  /**
+   * Generates a unique ID by combining the slug and a random string.
+   * If the slug is empty, returns only the random string without a dash.
+   * @param title The title of the paste
+   * @returns A unique ID string
+   */
+  export function generateUniqueId(title: string): string {
+    const slug = generateSlug(title);
+    const randomString = generateRandomString();
+  
+    if (slug) {
+      return `${slug}-${randomString}`;
+    } else {
+      return randomString;
+    }
+  }
+  
