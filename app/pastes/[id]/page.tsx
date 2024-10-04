@@ -14,7 +14,6 @@ export default function Paste() {
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [isCopied, setIsCopied] = useState(false);
-  const [scrollShadowVisible, setScrollShadowVisible] = useState(false);
   const titleEditableRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -59,19 +58,24 @@ export default function Paste() {
         isPastePage={true}
         handleCopy={handleCopy}
         isCopied={isCopied}
-        scrollShadowVisible={scrollShadowVisible}
       />
-      <ScrollContainer handleScrollShadow={setScrollShadowVisible}>
-        <TitleInput
-          title={title}
-          titleEditableRef={titleEditableRef}
-          isEditable={false} // Non-editable in the paste page
-        />
-        <ContentArea
-          content={content}
-          isEditable={false} // Paste page should not be editable
-        />
+      <ScrollContainer>
+
+        <div className={styles.contentWrapper}>
+
+          <TitleInput
+            title={title}
+            titleEditableRef={titleEditableRef}
+            isEditable={false} // Non-editable in the paste page
+          />
+          <ContentArea
+            content={content}
+            isEditable={false} // Paste page should not be editable
+          />
+
+        </div>
       </ScrollContainer>
+
     </div>
   );
 }

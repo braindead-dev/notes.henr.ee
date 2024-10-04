@@ -6,12 +6,27 @@ if (!global.pastes) {
 }
 
 export async function POST(request: Request) {
-  const { title, content } = await request.json(); // Accept both title and content
-  const id = uuidv4();
+  try {
+    const { title, content } = await request.json(); // Accept both title and content
 
-  // Store both title and content globally
-  global.pastes.set(id, { title, content });
-  console.log("Stored paste:", id, title, content); // Debugging: Check that both title and content are stored
+    // Validate incoming data
+    if (!title || typeof title !== 'string' || title.trim() === '') {
+      return NextResponse.json({ error: 'Invalid title. Title cannot be empty.' }, { status: 400 });
+    }
+    if (!content || typeof content !== 'string' || content.trim() === '') {
+      return NextResponse.json({ error: 'Invalid content. Content cannot be empty.' }, { status: 400 });
+    }
+    if (title.length > 100) {
+      return NextResponse.json({ error: 'Title is too long. Maximum length is 100 characters.' }, { status: 400 });
+    }
 
-  return NextResponse.json({ id });
+    const id = uuidv4();
+    global.pastes.set(id, { title, content });
+    console.log("Stored paste:", id, title, content);
+
+    return NextResponse.json({ id });
+  } catch (error) {
+    console.error('Error storing paste:', error);
+    return NextResponse.json({ error: 'Internal Server Error.' }, { status: 500 });
+  }
 }

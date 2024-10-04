@@ -8,7 +8,7 @@ interface HeaderProps {
   isPastePage: boolean;
   handleCopy?: () => void;
   isCopied?: boolean;
-  scrollShadowVisible: boolean; // Add scrollShadowVisible to the props
+  // Removed scrollShadowVisible from the props
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -18,16 +18,12 @@ const Header: React.FC<HeaderProps> = ({
   isPastePage,
   handleCopy,
   isCopied,
-  scrollShadowVisible,
+  // Removed scrollShadowVisible from the destructured props
 }) => {
   if (isPastePage) {
     // Paste page header (copy button)
     return (
-      <div
-        className={`${styles.fixedHeader} ${
-          scrollShadowVisible ? styles.fixedHeaderShadow : ''
-        }`}
-      >
+      <div className={styles.fixedHeader}>
         <div className={styles.headerButtons}>
           <button
             className={styles.publishButton}
@@ -46,11 +42,7 @@ const Header: React.FC<HeaderProps> = ({
 
   // Main/editing page header (publish and view/edit toggle buttons)
   return (
-    <div
-      className={`${styles.fixedHeader} ${
-        scrollShadowVisible ? styles.fixedHeaderShadow : ''
-      }`}
-    >
+    <div className={styles.fixedHeader}>
       <div className={styles.headerButtons}>
         <button className={styles.publishButton} onClick={handleSubmit}>
           Publish
