@@ -1,26 +1,38 @@
-import React from 'react';
+// components/TitleInput.tsx
+
+import React, { useEffect, useRef } from 'react';
 import styles from '../styles/page.module.css';
 
 interface TitleInputProps {
-  title: string;
+  initialTitle: string;
   titleEditableRef: React.RefObject<HTMLDivElement>;
-  handleTitleChange?: () => void; // Make it optional for paste pages
-  isEditable: boolean; // New prop to determine if the title is editable
+  handleTitleChange?: () => void; // Optional for paste pages
+  isEditable: boolean; // Determines if the title is editable
 }
 
 const TitleInput: React.FC<TitleInputProps> = ({
-  title,
+  initialTitle,
   titleEditableRef,
   handleTitleChange,
   isEditable,
 }) => {
-  // Handle paste events
+  // Handle paste events to ensure only plain text is inserted
   const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
     if (!isEditable) return;
     e.preventDefault();
     const text = e.clipboardData.getData('text/plain');
-    document.execCommand('insertText', false, text); // Insert the text at the cursor
+    document.execCommand('insertText', false, text); // Insert text at cursor
   };
+
+  // Ref to track if the initial content has been set
+  const hasSetInitial = useRef(false);
+
+  useEffect(() => {
+    if (!hasSetInitial.current && titleEditableRef.current && isEditable) {
+      titleEditableRef.current.innerText = initialTitle;
+      hasSetInitial.current = true;
+    }
+  }, [initialTitle, isEditable, titleEditableRef]);
 
   if (isEditable) {
     return (
@@ -31,16 +43,15 @@ const TitleInput: React.FC<TitleInputProps> = ({
         onInput={handleTitleChange}
         onPaste={handlePaste}
         suppressContentEditableWarning={true}
-      >
-        {title}
-      </div>
+        spellCheck={false} // Optional: Disable spellcheck for better UX
+      ></div>
     );
   }
 
-  // Render title as plain text for paste pages
+  // Render title as plain text for non-editable views
   return (
     <div className={styles.titleInput} ref={titleEditableRef}>
-      {title}
+      {initialTitle}
     </div>
   );
 };

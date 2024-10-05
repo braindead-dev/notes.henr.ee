@@ -9,6 +9,19 @@ import ScrollContainer from '../../components/ScrollContainer';
 import styles from '../../styles/page.module.css';
 import '../../styles/markdownStyles.css';
 
+// Helper function to sanitize the title for the browser tab
+const sanitizeTitleForTab = (title: string) => {
+  if (!title || typeof title !== 'string') {
+    return "Untitled Note"; // Fallback if title is invalid
+  }
+  
+  // Replace characters not allowed in the browser tab title, if any
+  const sanitizedTitle = title.replace(/[^a-zA-Z0-9\s\-_\(\)]+/g, '');
+  
+  // Fallback if the sanitized title is empty
+  return sanitizedTitle.trim() || 'Untitled Note';
+};
+
 export default function Paste() {
   const { id } = useParams();
   const [title, setTitle] = useState('');
@@ -40,6 +53,12 @@ export default function Paste() {
     fetchContent();
   }, [id]);
 
+  useEffect(() => {
+    // Update the document title whenever the title state changes
+    const sanitizedTitle = sanitizeTitleForTab(title);
+    document.title = sanitizedTitle;
+  }, [title]);
+
   const handleCopy = () => {
     navigator.clipboard.writeText(`# ${title}\n\n${content}`);
     setIsCopied(true);
@@ -59,7 +78,7 @@ export default function Paste() {
       <ScrollContainer>
         <div className={styles.contentWrapper}>
           <TitleInput
-            title={loading ? "" : title}
+            initialTitle={loading ? "" : title}
             titleEditableRef={titleEditableRef}
             isEditable={false} // Non-editable in the paste page
           />

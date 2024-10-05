@@ -1,3 +1,5 @@
+// app/page.tsx
+
 "use client";
 
 import { useState, useRef } from 'react';
@@ -11,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import ErrorMessage from '../components/ErrorMessage';
 
 export default function Home() {
-  const [title, setTitle] = useState("Untitled");
+  const [title, setTitle] = useState("Untitled"); // Initial title
   const [content, setContent] = useState("");
   const [viewMode, setViewMode] = useState(false);
   const [error, setError] = useState<string | null>(null); // State to track error
@@ -22,11 +24,16 @@ export default function Home() {
     e.preventDefault();
     setError(null); // Reset error before submitting
 
+    // Update title state from the contentEditable div
+    if (titleEditableRef.current) {
+      setTitle(titleEditableRef.current.innerText);
+    }
+
     try {
       const response = await fetch('/api/paste', {
         method: 'POST',
         body: JSON.stringify({
-          title: stripMarkdown(title),
+          title: stripMarkdown(titleEditableRef.current?.innerText || ""),
           content,
         }),
         headers: {
@@ -47,17 +54,10 @@ export default function Home() {
     }
   };
 
-  const handleEditableChange = (
-    ref: React.RefObject<HTMLDivElement>,
-    setState: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    if (ref.current) {
-      setState(ref.current.innerText);
-    }
-  };
-
   const handleTitleChange = () => {
-    handleEditableChange(titleEditableRef, setTitle);
+    if (titleEditableRef.current) {
+      setTitle(titleEditableRef.current.innerText);
+    }
   };
 
   const handleContentChange = (value: string) => {
@@ -78,9 +78,9 @@ export default function Home() {
       <ScrollContainer>
         <div className={styles.contentWrapper}>
           <TitleInput
-            title={title}
+            initialTitle="Untitled" // Pass the initial title
             titleEditableRef={titleEditableRef}
-            handleTitleChange={handleTitleChange}
+            handleTitleChange={handleTitleChange} // Update title state on input
             isEditable={true}
           />
           <ContentArea
