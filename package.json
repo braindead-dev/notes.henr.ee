@@ -15,6 +15,7 @@
     "@uiw/react-codemirror": "^4.23.4",
     "codemirror": "^5.65.18",
     "hypermd": "^0.3.11",
+    "mongodb": "^6.9.0",
     "next": "14.2.14",
     "next-auth": "^4.24.8",
     "next-storage": "^1.2.3",

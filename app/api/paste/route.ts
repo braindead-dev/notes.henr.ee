@@ -1,15 +1,6 @@
-// app/api/paste/route.ts
-
 import { NextResponse } from 'next/server';
+import clientPromise from '../../../utils/mongodb'; // Updated import
 import { generateUniqueId } from '../../../utils/slugUtils';
-
-declare global {
-  var pastes: Map<string, { title: string; content: string }>;
-}
-
-if (!global.pastes) {
-  global.pastes = new Map();
-}
 
 export async function POST(request: Request) {
   try {
@@ -26,17 +17,24 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Title is too long. Maximum length is 100 characters.' }, { status: 400 });
     }
 
-    const id = generateUniqueId(title); // Use the updated unique ID generator
+    const client = await clientPromise;
+    const db = client.db('notes'); // Your MongoDB cluster name
 
-    // Ensure the generated ID is unique
-    if (global.pastes.has(id)) {
-      // In the rare case of a collision, generate a new ID
-      // You can implement a loop or limit the number of retries
+    const id = generateUniqueId(title); // Generate a unique ID for the paste
+
+    // Check for ID collisions
+    const existingPaste = await db.collection('pastes').findOne({ id });
+    if (existingPaste) {
       return NextResponse.json({ error: 'ID collision occurred. Please try again.' }, { status: 500 });
     }
 
-    global.pastes.set(id, { title, content });
-    console.log("Stored paste:", id, title, content);
+    // Insert the paste into the MongoDB database
+    const result = await db.collection('pastes').insertOne({
+      id,
+      title,
+      content,
+      createdAt: new Date(),
+    });
 
     return NextResponse.json({ id });
   } catch (error) {

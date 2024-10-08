@@ -1,14 +1,5 @@
-// app/api/getPaste/route.ts
-
 import { NextResponse } from 'next/server';
-
-declare global {
-  var pastes: Map<string, { title: string; content: string }>;
-}
-
-if (!global.pastes) {
-  global.pastes = new Map();
-}
+import clientPromise from '../../../utils/mongodb'; // Updated import
 
 export async function GET(request: Request) {
   try {
@@ -19,7 +10,11 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Missing id parameter.' }, { status: 400 });
     }
 
-    const paste = global.pastes.get(id);
+    const client = await clientPromise;
+    const db = client.db('notes'); // Your MongoDB cluster name
+
+    // Fetch the paste from MongoDB
+    const paste = await db.collection('pastes').findOne({ id });
 
     if (!paste) {
       return NextResponse.json({ error: 'Paste not found.' }, { status: 404 });
