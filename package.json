@@ -8,8 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "@codemirror/basic-setup": "^0.20.0",
     "@codemirror/lang-markdown": "^6.3.0",
+    "@codemirror/state": "^6.4.1",
+    "@codemirror/view": "^6.34.1",
     "@uiw/react-codemirror": "^4.23.4",
+    "codemirror": "^5.65.18",
+    "hypermd": "^0.3.11",
     "next": "14.2.14",
     "next-auth": "^4.24.8",
     "next-storage": "^1.2.3",
