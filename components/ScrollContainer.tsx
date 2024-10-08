@@ -30,6 +30,7 @@ const ScrollContainer: React.FC<ScrollContainerProps> = ({
       onDrop={preventDefault}
     >
       {children} {/* Render children inside the scrollable container */}
+      <div className={styles.bottomPadding}></div> {/* Extra padding */}
     </div>
   );
 };

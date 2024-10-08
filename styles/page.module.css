@@ -44,6 +44,11 @@
   padding-top: 60px;
   -webkit-user-select: text;
   user-select: text;
+  padding-bottom: 1rem;
+}
+
+.bottomPadding {
+  height: 100px; /* Adjust this value as needed to create the extra scrollable area */
 }
 
 .contentWrapper {
