@@ -41,10 +41,12 @@ export default function Paste() {
             setTitle(data.title);
             setContent(data.content);
           } else {
+            // Handle error based on the response status and message
             setTitle("Error");
-            setContent("```\n404: This paste couldn't be found.\n```");
+            setContent(`\`\`\`\n${response.status}: ${data.error || "```\n500: We were unable to fetch this paste.\n```"}\n\`\`\``);
           }
-        } catch {
+        } catch (error) {
+          // Catch any network or unexpected errors
           setTitle("Error");
           setContent("```\n500: We were unable to fetch this paste.\n```");
         } finally {

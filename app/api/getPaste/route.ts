@@ -17,12 +17,12 @@ export async function GET(request: Request) {
     const paste = await db.collection('pastes').findOne({ id });
 
     if (!paste) {
-      return NextResponse.json({ error: 'Paste not found.' }, { status: 404 });
+      return NextResponse.json({ error: "This paste couldn't be found." }, { status: 404 });
     }
 
     return NextResponse.json(paste);
   } catch (error) {
     console.error('Error fetching paste:', error);
-    return NextResponse.json({ error: 'Internal Server Error.' }, { status: 500 });
+    return NextResponse.json({ error: 'We were unable to fetch this paste.' }, { status: 500 });
   }
 }

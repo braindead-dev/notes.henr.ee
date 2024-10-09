@@ -24,6 +24,13 @@ const TitleInput: React.FC<TitleInputProps> = ({
     document.execCommand('insertText', false, text); // Insert text at cursor
   };
 
+  // Prevent entering newlines in the title
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent newline insertion
+    }
+  };
+
   // Ref to track if the initial content has been set
   const hasSetInitial = useRef(false);
 
@@ -41,6 +48,7 @@ const TitleInput: React.FC<TitleInputProps> = ({
         contentEditable
         className={styles.titleInput}
         onInput={handleTitleChange}
+        onKeyDown={handleKeyDown}
         onPaste={handlePaste}
         suppressContentEditableWarning={true}
         spellCheck={false} // Optional: Disable spellcheck for better UX

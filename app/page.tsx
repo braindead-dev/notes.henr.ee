@@ -8,7 +8,6 @@ import Header from '../components/Header';
 import TitleInput from '../components/TitleInput';
 import ContentArea from '../components/ContentArea';
 import ScrollContainer from '../components/ScrollContainer';
-import { stripMarkdown } from '../utils';
 import { useRouter } from 'next/navigation';
 import ErrorMessage from '../components/ErrorMessage';
 
@@ -33,7 +32,7 @@ export default function Home() {
       const response = await fetch('/api/paste', {
         method: 'POST',
         body: JSON.stringify({
-          title: stripMarkdown(titleEditableRef.current?.innerText || ""),
+          title: titleEditableRef.current?.innerText,
           content,
         }),
         headers: {
