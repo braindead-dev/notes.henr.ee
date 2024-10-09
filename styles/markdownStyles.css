@@ -151,7 +151,7 @@
 
 /* Hover state for links */
 .markdown-content a:hover, .cm-link:hover {
-  color: #a35656; /* Replace with the color you want on hover */
+  color: #a35656; 
 }
 
 /* Lists */

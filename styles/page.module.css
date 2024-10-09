@@ -19,11 +19,6 @@
   padding: 10px 20px;
   display: flex;
   justify-content: center;
-  transition: box-shadow 0.2s ease;
-}
-
-.fixedHeaderShadow {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .headerButtons {
@@ -36,19 +31,13 @@
 
 .editorContainer {
   position: absolute;
-  top: 0;
+  top: 50px;
   left: 0;
   right: 0;
   bottom: 0;
   overflow-y: auto;
-  padding-top: 60px;
   -webkit-user-select: text;
   user-select: text;
-  padding-bottom: 1rem;
-}
-
-.bottomPadding {
-  height: 100px; /* Adjust this value as needed to create the extra scrollable area */
 }
 
 .contentWrapper {
@@ -100,6 +89,7 @@
   min-height: calc(100vh - 150px);
   white-space: pre-wrap;
   overflow-wrap: break-word;
+  padding-bottom: 20em;
 }
 
 .markdownView {
@@ -107,6 +97,5 @@
   min-height: calc(100vh - 150px);
   white-space: pre-wrap;
   overflow-wrap: break-word;
+  padding-bottom: 20em;
 }
-
-/* Remove font-size and padding from contentEditable and markdownView as they are now in markdownStyles.css */

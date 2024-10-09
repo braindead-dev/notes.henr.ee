@@ -8,7 +8,6 @@ interface HeaderProps {
   isPastePage: boolean;
   handleCopy?: () => void;
   isCopied?: boolean;
-  // Removed scrollShadowVisible from the props
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -18,7 +17,6 @@ const Header: React.FC<HeaderProps> = ({
   isPastePage,
   handleCopy,
   isCopied,
-  // Removed scrollShadowVisible from the destructured props
 }) => {
   if (isPastePage) {
     // Paste page header (copy button)
