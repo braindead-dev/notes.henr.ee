@@ -1,6 +1,6 @@
 import './globals.css';
 
-export const metadata = {
+export const metadata = {  
   title: "Henry's Notes",
   description: 'A simple markdown pastebin for notes.',
 };

@@ -11,14 +11,14 @@ import styles from '../../styles/page.module.css';
 // Helper function to sanitize the title for the browser tab
 const sanitizeTitleForTab = (title: string) => {
   if (!title || typeof title !== 'string') {
-    return "Untitled Note"; // Fallback if title is invalid
+    return "Henry's Notes"; // Fallback if title is invalid
   }
   
   // Replace characters not allowed in the browser tab title, if any
   const sanitizedTitle = title.replace(/[^a-zA-Z0-9\s\-_\(\)]+/g, '');
   
   // Fallback if the sanitized title is empty
-  return sanitizedTitle.trim() || 'Untitled Note';
+  return sanitizedTitle.trim() || "Henry's Notes";
 };
 
 export default function Paste() {
