@@ -1,7 +1,7 @@
 // pasteData.ts
 export const pageTitle = "notes.Henr.ee";
 export const pageContent = `
-**notes.henr.ee** is a free, secure pastebin designed to store and share markdown notes. We emphasizes user security, usability, and affordability.
+**notes.henr.ee** is a free, secure pastebin designed to store and share markdown notes. We emphasize user security, usability, and affordability.
 
 ## Key Features
 - **Secure Encryption:** Publish [encrypted pastes](/encryption), protecting contents with AES-256 and PBKDF2.
