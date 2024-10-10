@@ -1,5 +1,8 @@
 import React from 'react';
 import styles from '../styles/page.module.css';
+import PublishButton from './buttons/PublishButton';
+import ToggleButton from './buttons/ToggleButton';
+import CopyButton from './buttons/CopyButton';
 
 interface HeaderProps {
   handleSubmit?: (e: React.FormEvent) => void;
@@ -18,39 +21,17 @@ const Header: React.FC<HeaderProps> = ({
   handleCopy,
   isCopied,
 }) => {
-  if (isPastePage) {
-    // Paste page header (copy button)
-    return (
-      <div className={styles.fixedHeader}>
-        <div className={styles.headerButtons}>
-          <button
-            className={styles.publishButton}
-            style={{
-              backgroundColor: isCopied ? '#008001' : '#222222',
-              border: isCopied ? '2px solid #439443' : '2px solid #545454',
-            }}
-            onClick={handleCopy}
-          >
-            {isCopied ? 'Copied!' : 'Copy'}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Main/editing page header (publish and view/edit toggle buttons)
   return (
     <div className={styles.fixedHeader}>
       <div className={styles.headerButtons}>
-        <button className={styles.publishButton} onClick={handleSubmit}>
-          Publish
-        </button>
-        <button
-          className={styles.toggleButton}
-          onClick={() => setViewMode && setViewMode(!viewMode)}
-        >
-          {viewMode ? 'Edit' : 'View'}
-        </button>
+        {isPastePage ? (
+          <CopyButton handleCopy={handleCopy} isCopied={isCopied} />
+        ) : (
+          <>
+            <PublishButton handleSubmit={handleSubmit} />
+            <ToggleButton viewMode={viewMode} setViewMode={setViewMode} />
+          </>
+        )}
       </div>
     </div>
   );

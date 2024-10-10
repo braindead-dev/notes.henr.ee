@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import clientPromise from '../../../utils/mongodb'; // Updated import
+import clientPromise from '../../../utils/mongodb';
 import { generateUniqueId } from '../../../utils/slugUtils';
 
 export async function POST(request: Request) {
@@ -15,6 +15,15 @@ export async function POST(request: Request) {
     }
     if (title.length > 100) {
       return NextResponse.json({ error: 'Title is too long. Maximum length is 100 characters.' }, { status: 400 });
+    }
+
+    const fullPaste = `${title}\n${content}`;
+    const pasteSize = new Blob([fullPaste]).size;
+
+    const MAX_SIZE_BYTES = 400 * 1024; // 400 KB in bytes
+
+    if (pasteSize > MAX_SIZE_BYTES) {
+      return NextResponse.json({ error: `Paste exceeds ${(MAX_SIZE_BYTES / 1024)} KB size limit. Current size is ${(pasteSize / 1024).toFixed(2)} KB.` }, { status: 400 });
     }
 
     const client = await clientPromise;
