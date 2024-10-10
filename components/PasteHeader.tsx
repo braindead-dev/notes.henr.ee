@@ -4,6 +4,7 @@ import Header from './Header';
 import CopyButton from './buttons/CopyButton';
 import PublishButton from './buttons/PublishButton';
 import ToggleButton from './buttons/ToggleButton';
+import EncryptButton from './buttons/EncryptButton';
 
 interface PasteHeaderProps {
   isPastePage: boolean;
@@ -30,6 +31,7 @@ const PasteHeader: React.FC<PasteHeaderProps> = ({
         <>
           <PublishButton handleSubmit={handleSubmit} />
           <ToggleButton viewMode={viewMode} setViewMode={setViewMode} />
+          <EncryptButton/>
         </>
       )}
     </Header>

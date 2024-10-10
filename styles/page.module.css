@@ -40,7 +40,7 @@
 .headerRight {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 5px;
 }
 
 .icon {
@@ -48,6 +48,20 @@
   height: auto;
   max-height: 100%; /* Ensure it doesn’t exceed the header’s height */
   object-fit: contain; /* Makes sure the image fits within the header */
+}
+
+.greyIcon {
+  fill: #8d8d8d;
+  height: 26px;
+  width: auto;
+  display: flex;
+}
+
+.greenIcon {
+  fill: #2c992a;
+  height: 26px;
+  width: auto;
+  display: flex;
 }
 
 .editorContainer {
