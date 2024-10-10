@@ -8,7 +8,7 @@ const PasteButton: React.FC = () => {
 
   return (
     <button className={styles.publishButton} onClick={handleRedirect}>
-      Paste
+      Create Paste
     </button>
   );
 };
