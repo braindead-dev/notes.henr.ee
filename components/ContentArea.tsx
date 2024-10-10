@@ -21,6 +21,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
   isEditable = false, // By default, it’s not editable
 }) => {
   const [editorValue, setEditorValue] = useState(content || '');
+  const [isFocused, setIsFocused] = useState(false); // Track focus state
 
   useEffect(() => {
     setEditorValue(content); // Sync editor value with incoming content changes
@@ -31,6 +32,14 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     if (handleContentChange) {
       handleContentChange(value);
     }
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true); // Textbox is focused
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false); // Textbox is blurred
   };
 
   const getCSSVariables = () => {
@@ -134,10 +143,15 @@ const ContentArea: React.FC<ContentAreaProps> = ({
 
   return isEditable && !viewMode ? (
     <div className={`${styles.contentEditable} markdown-content`}>
+      {!isFocused && !editorValue && (
+        <div className={styles.placeholder}>Start typing here...</div>
+      )}
       <CodeMirror
         value={editorValue}
         extensions={[markdown(), EditorView.lineWrapping, myTheme]}
         onChange={onChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         height="100%"
         basicSetup={{
           lineNumbers: false,

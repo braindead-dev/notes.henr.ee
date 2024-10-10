@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from 'react';
+import PageHeader from '../../components/PageHeader';
 import TitleInput from '../../components/TitleInput';
 import ContentArea from '../../components/ContentArea';
 import ScrollContainer from '../../components/ScrollContainer';
@@ -20,6 +21,7 @@ export default function Paste() {
 
   return (
     <div className={styles.pageContainer}>
+      <PageHeader/>
       <ScrollContainer>
         <div className={styles.contentWrapper}>
           <TitleInput

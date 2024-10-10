@@ -19,7 +19,7 @@ export const pageContent = `
 2. **Sharing With Others:** Share your paste link with others! (and supply them with the encryption key if applicable)
 
 
-Enjoy secure and private sharing with **notes.henr.ee**!
+Enjoy sharing with **notes.henr.ee**!
 If you have further questions, feel free to reach out.
 
 **Email** – contact@henrywa[.]ng

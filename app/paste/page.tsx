@@ -1,4 +1,4 @@
-// app/page.tsx
+// paste/page.tsx
 
 "use client";
 
@@ -77,9 +77,9 @@ export default function Home() {
       <ScrollContainer>
         <div className={styles.contentWrapper}>
           <TitleInput
-            initialTitle="Untitled" // Pass the initial title
+            initialTitle={title}
             titleEditableRef={titleEditableRef}
-            handleTitleChange={handleTitleChange} // Update title state on input
+            handleTitleChange={handleTitleChange} 
             isEditable={true}
           />
           <ContentArea

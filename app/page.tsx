@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import TitleInput from '../components/TitleInput';
 import ContentArea from '../components/ContentArea';
-import Header from '../components/Header';
+import PageHeader from '../components/PageHeader';
 import ScrollContainer from '../components/ScrollContainer';
 import styles from '../styles/page.module.css';
 import { pageTitle, pageContent } from './pageContent'; 
@@ -16,7 +16,7 @@ export default function Paste() {
 
   return (
     <div className={styles.pageContainer}>
-      <Header/>
+      <PageHeader/>
       <ScrollContainer>
         <div className={styles.contentWrapper}>
           <TitleInput

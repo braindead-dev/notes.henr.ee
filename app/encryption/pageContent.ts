@@ -3,11 +3,12 @@ export const pageTitle = "Encryption";
 export const pageContent = `
 Here's a breakdown of how the encryption system works to ensure that only you and those you trust can view the contents of your paste.
 
+---
 ### TL;DR
 - **Encryption**: AES-256 with PBKDF2, done entirely in your browser.
 - **Decryption**: Also done locally in your browser with the key you’re given.
-- **Security**: We never store or know your encryption key, and we don’t include it in the URL to avoid potential interception or logging.
-- **Stored Info**: We only store the paste title, creation time, and encrypted content (which we cannot decrypt).
+- **Security**: We don't store or know your encryption key, and we will never transmit it online.
+- **Stored Info**: We store the unencrypted paste title, creation time, and encrypted content (which we cannot decrypt).
 ---
 ## How We Encrypt
 
@@ -44,7 +45,7 @@ The key is **not included** in the URL. Instead, you must enter it manually afte
 
 ### Stay Private, Stay Secure
 
-We built notes.henr.ee to be a pastebin service that prioritizes user privacy. By encrypting everything client-side, we ensure that your paste contents are known only to you and those with whom you share the encryption key.
+We built this pastebin with user privacy as a priority. By encrypting everything client-side, we ensure that your paste contents are known only to you and those with whom you share the encryption key.
 
 If you have further questions, feel free to reach out.
 
