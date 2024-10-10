@@ -19,7 +19,8 @@ const Header: React.FC<Header> = ({ children }) => {
               src={icon}
               alt="Icon"
               className={styles.icon}
-              height={26} 
+              height={32} 
+              style={{ verticalAlign: 'middle' }}
             />
           </Link>
         </div>
