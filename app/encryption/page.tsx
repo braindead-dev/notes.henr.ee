@@ -5,7 +5,6 @@ import TitleInput from '../../components/TitleInput';
 import ContentArea from '../../components/ContentArea';
 import ScrollContainer from '../../components/ScrollContainer';
 import styles from '../../styles/page.module.css';
-import '../../styles/markdownStyles.css';
 import { pageTitle, pageContent } from './pageContent'; 
 
 
@@ -26,11 +25,11 @@ export default function Paste() {
           <TitleInput
             initialTitle={title}
             titleEditableRef={titleEditableRef}
-            isEditable={false} // Non-editable in the paste page
+            isEditable={false} 
           />
           <ContentArea
             content={content}
-            isEditable={false} // Paste page should not be editable
+            isEditable={false} 
           />
         </div>
       </ScrollContainer>

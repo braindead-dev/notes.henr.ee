@@ -1,92 +1,32 @@
-// app/page.tsx
-
 "use client";
 
-import { useState, useRef } from 'react';
-import styles from '../styles/page.module.css';
-import Header from '../components/Header';
+import { useEffect, useRef } from 'react';
 import TitleInput from '../components/TitleInput';
 import ContentArea from '../components/ContentArea';
+import Header from '../components/Header';
 import ScrollContainer from '../components/ScrollContainer';
-import { useRouter } from 'next/navigation';
-import ErrorMessage from '../components/ErrorMessage';
+import styles from '../styles/page.module.css';
+import { pageTitle, pageContent } from './pageContent'; 
 
-export default function Home() {
-  const [title, setTitle] = useState("Untitled"); // Initial title
-  const [content, setContent] = useState("");
-  const [viewMode, setViewMode] = useState(false);
-  const [error, setError] = useState<string | null>(null); // State to track error
+
+export default function Paste() {
   const titleEditableRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null); // Reset error before submitting
-
-    // Update title state from the contentEditable div
-    if (titleEditableRef.current) {
-      setTitle(titleEditableRef.current.innerText);
-    }
-
-    try {
-      const response = await fetch('/api/paste', {
-        method: 'POST',
-        body: JSON.stringify({
-          title: titleEditableRef.current?.innerText,
-          content,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Something went wrong');
-      }
-
-      // Redirect to the new paste page using the slug-based ID
-      router.push(`/${data.id}`);
-    } catch (err: any) {
-      setError(err.message); // Set the error message to be displayed
-    }
-  };
-
-  const handleTitleChange = () => {
-    if (titleEditableRef.current) {
-      setTitle(titleEditableRef.current.innerText);
-    }
-  };
-
-  const handleContentChange = (value: string) => {
-    setContent(value);
-  };
+  const title = pageTitle;
+  const content = pageContent;
 
   return (
     <div className={styles.pageContainer}>
-      {error && <ErrorMessage message={error} />}
-
-      <Header
-        handleSubmit={handleSubmit}
-        viewMode={viewMode}
-        setViewMode={setViewMode}
-        isPastePage={false}
-      />
-
+      <Header/>
       <ScrollContainer>
         <div className={styles.contentWrapper}>
           <TitleInput
-            initialTitle="Untitled" // Pass the initial title
+            initialTitle={title}
             titleEditableRef={titleEditableRef}
-            handleTitleChange={handleTitleChange} // Update title state on input
-            isEditable={true}
+            isEditable={false} 
           />
           <ContentArea
-            handleContentChange={handleContentChange}
-            viewMode={viewMode}
             content={content}
-            isEditable={true}
+            isEditable={false} 
           />
         </div>
       </ScrollContainer>

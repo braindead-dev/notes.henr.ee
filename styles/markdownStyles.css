@@ -161,7 +161,8 @@
 }
 
 /* Sublist */
-.markdown-content ul li > ul, .markdown-content ol li > ol {
+.markdown-content ul li > ul, .markdown-content ol li > ol ,
+.markdown-content ul li > ol, .markdown-content ol li > ul {
   margin-top: -1.5em; /* Space between bullet point and sub-bullet */
   margin-bottom: -1.5em; /* Adjusted margin for sublists */
 }
@@ -181,7 +182,7 @@
 }
 
 /* Ensure sub-bullets are filled in */
-.markdown-content ul ul, .markdown-content ol ol {
+.markdown-content ul ul, .markdown-content ol ol, .markdown-content ol li > ul  {
   list-style-type: disc; /* Use filled bullet points for sublists */
 }
 

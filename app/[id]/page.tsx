@@ -2,12 +2,11 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
-import Header from '../../components/Header';
+import PasteHeader from '../../components/PasteHeader';
 import TitleInput from '../../components/TitleInput';
 import ContentArea from '../../components/ContentArea';
 import ScrollContainer from '../../components/ScrollContainer';
 import styles from '../../styles/page.module.css';
-import '../../styles/markdownStyles.css';
 
 // Helper function to sanitize the title for the browser tab
 const sanitizeTitleForTab = (title: string) => {
@@ -74,7 +73,7 @@ export default function Paste() {
 
   return (
     <div className={styles.pageContainer}>
-      <Header
+      <PasteHeader
         isPastePage={true}
         handleCopy={handleCopy}
         isCopied={isCopied}

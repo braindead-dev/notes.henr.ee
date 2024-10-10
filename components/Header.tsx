@@ -1,37 +1,14 @@
 import React from 'react';
 import styles from '../styles/page.module.css';
-import PublishButton from './buttons/PublishButton';
-import ToggleButton from './buttons/ToggleButton';
-import CopyButton from './buttons/CopyButton';
+import PasteButton from './buttons/PasteButton';
 
-interface HeaderProps {
-  handleSubmit?: (e: React.FormEvent) => void;
-  viewMode?: boolean;
-  setViewMode?: React.Dispatch<React.SetStateAction<boolean>>;
-  isPastePage: boolean;
-  handleCopy?: () => void;
-  isCopied?: boolean;
-}
+interface HeaderProps {}
 
-const Header: React.FC<HeaderProps> = ({
-  handleSubmit,
-  viewMode,
-  setViewMode,
-  isPastePage,
-  handleCopy,
-  isCopied,
-}) => {
+const Header: React.FC<HeaderProps> = () => {
   return (
     <div className={styles.fixedHeader}>
       <div className={styles.headerButtons}>
-        {isPastePage ? (
-          <CopyButton handleCopy={handleCopy} isCopied={isCopied} />
-        ) : (
-          <>
-            <PublishButton handleSubmit={handleSubmit} />
-            <ToggleButton viewMode={viewMode} setViewMode={setViewMode} />
-          </>
-        )}
+        <PasteButton />
       </div>
     </div>
   );
