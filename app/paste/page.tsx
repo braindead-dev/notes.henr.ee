@@ -1,3 +1,5 @@
+// paste/page.tsx
+
 "use client";
 
 import { useState, useRef } from 'react';
@@ -37,52 +39,61 @@ export default function Home() {
   };
 
   // Handle paste submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
+// Handle paste submission
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();  
 
-    if (titleEditableRef.current) {
-      setTitle(titleEditableRef.current.innerText);
+  // Check if the content is empty
+  if (content.trim() === '') {
+    setError('Invalid content. Content cannot be empty.');
+    return; // Stop the submission if content is blank
+  }
+  // Ensure the title is updated from the editable div
+  if (titleEditableRef.current) {
+    setTitle(titleEditableRef.current.innerText);
+  }
+
+  setError(null);
+
+  let contentToSend = content;
+  if (isEncrypted && encryptionKey) {
+    contentToSend = await encryptContent(content, encryptionKey);
+  }
+
+  try {
+    const response = await fetch('/api/paste', {
+      method: 'POST',
+      body: JSON.stringify({
+        title: titleEditableRef.current?.innerText,
+        content: contentToSend,
+        isEncrypted,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Something went wrong');
     }
 
-    let contentToSend = content;
+    // Store the paste ID but don't redirect yet
+    setPasteId(data.id);
+
+    // If encryption is enabled, show the modal before redirecting
     if (isEncrypted && encryptionKey) {
-      contentToSend = await encryptContent(content, encryptionKey);
+      setShowEncryptionModal(true);
+    } else {
+      // Redirect if not encrypted
+      router.push(`/${data.id}`);
     }
-
-    try {
-      const response = await fetch('/api/paste', {
-        method: 'POST',
-        body: JSON.stringify({
-          title: titleEditableRef.current?.innerText,
-          content: contentToSend,
-          isEncrypted,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Something went wrong');
-      }
-
-      // Store the paste ID but don't redirect yet
-      setPasteId(data.id);
-
-      // If encryption is enabled, show the modal before redirecting
-      if (isEncrypted && encryptionKey) {
-        setShowEncryptionModal(true);
-      } else {
-        // Redirect if not encrypted
-        router.push(`/${data.id}`);
-      }
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
+  } catch (err: any) {
+    // Set the error message if the request fails
+    setError(err.message);
+  }
+};
 
   // Close modal and redirect
   const handleCloseModal = () => {

@@ -1,0 +1,114 @@
+/* EncryptButton.module.css */
+
+.btnLock {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 26px;
+    width: auto;
+    box-sizing: border-box;
+    padding: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+.encryptButtonWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 2px;
+}
+  
+  .btnLock svg {
+    fill: none;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .btnLock svg :global(.bling) {
+    stroke: #28b041;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 3;
+    stroke-dashoffset: 15;
+    transition: all 0.3s ease;
+  }
+  
+  .btnLock svg :global(.lock) {
+    stroke: #6e6e6e;
+    stroke-width: 4;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-dasharray: 36;
+    transition: all 0.4s ease;
+  }
+  
+  .btnLock svg :global(.lockb) {
+    fill: #6e6e6e;
+    fill-rule: evenodd;
+    clip-rule: evenodd;
+    transform: rotate(8deg);
+    transform-origin: 14px 20px;
+    transition: all 0.2s ease;
+  }
+  
+  .inpLock {
+    display: none;
+  }
+
+  .btnLock.locked svg :global(.lock) {
+    stroke: #28b041;
+    stroke-width: 4;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-dasharray: 36;
+    transition: all 0.4s ease;
+  }
+
+  .btnLock.locked svg :global(.lockb) {
+    fill: #28b041;
+    fill-rule: evenodd;
+    clip-rule: evenodd;
+    transform: rotate(8deg);
+    transform-origin: 14px 20px;
+    transition: all 0.2s ease;
+  }
+  
+  .btnLock.locked svg {
+    opacity: 1;
+  }
+  
+  .btnLock.locked svg :global(.bling) {
+    animation: bling6132 0.3s linear forwards;
+    animation-delay: 0.2s;
+  }
+  
+  .btnLock.locked svg :global(.lock) {
+    stroke-dasharray: 48;
+    animation: locked 0.3s linear forwards;
+  }
+  
+  .btnLock.locked svg :global(.lockb) {
+    transform: rotate(0);
+    transform-origin: 14px 22px;
+  }
+  
+  @keyframes bling6132 {
+    50% {
+      stroke-dasharray: 3;
+      stroke-dashoffset: 12;
+    }
+    100% {
+      stroke-dasharray: 3;
+      stroke-dashoffset: 9;
+    }
+  }
+  
+  @keyframes locked {
+    50% {
+      transform: translateY(1px);
+    }
+  }
+  
