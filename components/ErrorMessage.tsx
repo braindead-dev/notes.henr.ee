@@ -40,7 +40,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => {
         top: visible ? '10px' : '0px', // Slight movement on fade-in and fade-out
         left: '50%',
         transform: 'translateX(-50%)',
-        backgroundColor: '#fff1f0CC',
+        backgroundColor: '#fff1f095',
         color: '#ED4337',
         zIndex: 1000,
         padding: '8px 12px',

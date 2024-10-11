@@ -91,6 +91,8 @@ export default function Paste() {
   };
 
   const handleDecryption = async () => {
+    setDecryptionError('');
+    
     try {
       const decryptedContent = await decryptContent(content, encryptionKey);
       setContent(decryptedContent);

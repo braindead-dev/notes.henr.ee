@@ -177,6 +177,22 @@
   word-break: break-all;
 }
 
+.modalInput {
+  background-color: #f5f5f5;
+  padding: 14px;
+  margin: 5px 0px 15px 0px;
+  font-family: monospace;
+  word-break: break-all;
+  width: 100%;
+  box-sizing: border-box; /* Ensures padding is included in the width */
+  border: none; /* Removes border */
+  outline: none; /* Removes the blue border when clicked */
+}
+
+.modalInput:focus {
+  outline: none; 
+}
+
 .modalActions {
   display: flex;
   justify-content: flex-end;
