@@ -17,7 +17,7 @@ export default function Home() {
   const [title, setTitle] = useState("Untitled");
   const [content, setContent] = useState("");
   const [viewMode, setViewMode] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<{ message: string; id: number } | null>(null);
   const [isEncrypted, setIsEncrypted] = useState(false);
   const [encryptionKey, setEncryptionKey] = useState<string | null>(null);
   const [showEncryptionModal, setShowEncryptionModal] = useState(false);
@@ -38,22 +38,22 @@ export default function Home() {
     }
   };
 
-  // Handle paste submission
 // Handle paste submission
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();  
 
+  setError(null);
+
   // Check if the content is empty
   if (content.trim() === '') {
-    setError('Invalid content. Content cannot be empty.');
-    return; // Stop the submission if content is blank
+    setError({ message: 'Invalid content. Content cannot be empty.', id: Date.now() });
+    return;
   }
+    
   // Ensure the title is updated from the editable div
   if (titleEditableRef.current) {
     setTitle(titleEditableRef.current.innerText);
   }
-
-  setError(null);
 
   let contentToSend = content;
   if (isEncrypted && encryptionKey) {
@@ -115,7 +115,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   return (
     <div className={styles.pageContainer}>
-      {error && <ErrorMessage message={error} />}  {/* Display error message if any */}
+      {error && <ErrorMessage key={error.id} message={error.message} />} 
 
       <PasteHeader
         handleSubmit={handleSubmit}
