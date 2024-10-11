@@ -37,7 +37,7 @@
   }
   
   .btnLock svg :global(.lock) {
-    stroke: #6e6e6e;
+    stroke: #ababab;
     stroke-width: 4;
     stroke-linejoin: round;
     stroke-linecap: round;
@@ -46,7 +46,7 @@
   }
   
   .btnLock svg :global(.lockb) {
-    fill: #6e6e6e;
+    fill: #ababab;
     fill-rule: evenodd;
     clip-rule: evenodd;
     transform: rotate(8deg);
