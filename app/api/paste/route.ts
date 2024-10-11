@@ -1,10 +1,12 @@
+// app/api/paste/route.ts
+
 import { NextResponse } from 'next/server';
 import clientPromise from '../../../utils/mongodb';
 import { generateUniqueId } from '../../../utils/slugUtils';
 
 export async function POST(request: Request) {
   try {
-    const { title, content } = await request.json();
+    const { title, content, isEncrypted} = await request.json();
 
     // Validate incoming data
     if (!title || typeof title !== 'string' || title.trim() === '') {
@@ -42,6 +44,7 @@ export async function POST(request: Request) {
       id,
       title,
       content,
+      isEncrypted: !!isEncrypted, // Ensure it's a boolean
       createdAt: new Date(),
     });
 

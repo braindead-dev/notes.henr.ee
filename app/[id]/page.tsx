@@ -1,7 +1,11 @@
+// [id]/page.tsx
+
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
+import { decryptContent } from '../../utils/cryptoUtils';
+import DecryptionModal from '../../components/modals/DecryptionModal';  // Import the DecryptionModal
 import PasteHeader from '../../components/PasteHeader';
 import TitleInput from '../../components/TitleInput';
 import ContentArea from '../../components/ContentArea';
@@ -27,7 +31,15 @@ export default function Paste() {
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [isCopied, setIsCopied] = useState(false);
+  const [isEncrypted, setIsEncrypted] = useState(false);
+  const [needsDecryption, setNeedsDecryption] = useState(false);
+  const [encryptionKey, setEncryptionKey] = useState('');
+  const [decryptionError, setDecryptionError] = useState('');
+  const [showDecryptionModal, setShowDecryptionModal] = useState(false);
   const titleEditableRef = useRef<HTMLDivElement>(null);
+
+  const toggleEncryption = () => { //FIX LATER
+  };
 
   useEffect(() => {
     async function fetchContent() {
@@ -38,7 +50,14 @@ export default function Paste() {
 
           if (response.ok) {
             setTitle(data.title);
-            setContent(data.content);
+            setIsEncrypted(data.isEncrypted);
+            if (data.isEncrypted) {
+              setNeedsDecryption(true);
+              setShowDecryptionModal(true);
+              setContent(data.content);
+            } else {
+              setContent(data.content);
+            }
           } else {
             // Handle error based on the response status and message
             setTitle("Error");
@@ -71,12 +90,26 @@ export default function Paste() {
     }, 1000);
   };
 
+  const handleDecryption = async () => {
+    try {
+      const decryptedContent = await decryptContent(content, encryptionKey);
+      setContent(decryptedContent);
+      setNeedsDecryption(false);
+      setShowDecryptionModal(false);
+      setDecryptionError('');
+    } catch (error) {
+      setDecryptionError('Invalid encryption key or corrupted data.');
+    }
+  };
+
   return (
     <div className={styles.pageContainer}>
       <PasteHeader
         isPastePage={true}
         handleCopy={handleCopy}
         isCopied={isCopied}
+        isEncrypted={isEncrypted}  // REMOVE LATER: ASAP
+        toggleEncryption={toggleEncryption}  // REMOVE LATER: ASAP, FIX FIX FIX
       />
       <ScrollContainer>
         <div className={styles.contentWrapper}>
@@ -85,12 +118,25 @@ export default function Paste() {
             titleEditableRef={titleEditableRef}
             isEditable={false} // Non-editable in the paste page
           />
-          <ContentArea
-            content={loading ? "" : content}
-            isEditable={false} // Paste page should not be editable
-          />
+          
+          {!needsDecryption ? (
+            <ContentArea content={loading ? '' : content} isEditable={false} />
+          ) : (
+            <ContentArea content={`\`\`\`\nThis paste is AES-256 encrypted.\n\nEncrypted Content:\n${content}\n\`\`\``} isEditable={false} />
+          )}
         </div>
       </ScrollContainer>
+
+      {showDecryptionModal && (
+        <DecryptionModal
+          encryptionKey={encryptionKey}
+          setEncryptionKey={setEncryptionKey}
+          onClose={() => setShowDecryptionModal(false)}
+          handleDecryption={handleDecryption}
+          decryptionError={decryptionError}
+        />
+      )}
+
     </div>
   );
 }

@@ -6,6 +6,7 @@ import PublishButton from './buttons/PublishButton';
 import ToggleButton from './buttons/ToggleButton';
 import EncryptButton from './buttons/EncryptButton';
 
+// components/PasteHeader.tsx
 interface PasteHeaderProps {
   isPastePage: boolean;
   handleCopy?: () => void;
@@ -13,7 +14,10 @@ interface PasteHeaderProps {
   handleSubmit?: (e: React.FormEvent) => void;
   viewMode?: boolean;
   setViewMode?: React.Dispatch<React.SetStateAction<boolean>>;
+  isEncrypted: boolean; // Remove the "?" to make this required
+  toggleEncryption: () => void; // Remove the "?" to make this required
 }
+
 
 const PasteHeader: React.FC<PasteHeaderProps> = ({
   isPastePage,
@@ -22,6 +26,8 @@ const PasteHeader: React.FC<PasteHeaderProps> = ({
   handleSubmit,
   viewMode,
   setViewMode,
+  isEncrypted,
+  toggleEncryption,
 }) => {
   return (
     <Header>
@@ -31,7 +37,7 @@ const PasteHeader: React.FC<PasteHeaderProps> = ({
         <>
           <PublishButton handleSubmit={handleSubmit} />
           <ToggleButton viewMode={viewMode} setViewMode={setViewMode} />
-          <EncryptButton/>
+          <EncryptButton isEncrypted={isEncrypted} toggleEncryption={toggleEncryption} />
         </>
       )}
     </Header>

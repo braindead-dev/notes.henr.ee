@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+// components/buttons/EncryptButton.tsx
+import React from 'react';
 import LockIcon from '../../app/assets/svg/lock.svg';
 import styles from '../../styles/page.module.css';
 
-const EncryptButton: React.FC = () => {
-  const [isEncrypted, setIsEncrypted] = useState(false);
+interface EncryptButtonProps {
+  isEncrypted: boolean;
+  toggleEncryption: () => void;
+}
 
-  const toggleEncryption = () => {
-    setIsEncrypted(!isEncrypted);
-  };
-
+const EncryptButton: React.FC<EncryptButtonProps> = ({ isEncrypted, toggleEncryption }) => {
   return (
-    <button 
+    <button
       onClick={toggleEncryption}
       style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
     >
-      <LockIcon className={isEncrypted ? styles.greenIcon : styles.greyIcon}/>
+      <LockIcon className={isEncrypted ? styles.greenIcon : styles.greyIcon} />
     </button>
   );
 };

@@ -144,3 +144,45 @@
   line-height: 1.5;
   font-family: inherit;
 }
+
+/* modal styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);  /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;  /* Ensure the modal is in front */
+}
+
+.modalContent {
+  background-color: white;
+  padding: 5px 20px 20px 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width:90%;
+}
+
+.keyContainer {
+  background-color: #f5f5f5;
+  padding: 10px;
+  margin: 20px 0px 15px 0px;
+  font-family: monospace;
+  word-break: break-all;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.modalTitle {
+  margin-bottom: -5px;
+}
