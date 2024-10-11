@@ -4,7 +4,7 @@ export const pageContent = `
 **notes.henr.ee** is a free, secure pastebin designed to store and share markdown notes. We emphasize user security, usability, and affordability.
 
 ## Key Features
-- **Secure Encryption:** Publish [encrypted pastes](/encryption), protecting contents with AES-256 and PBKDF2.
+- **Secure Encryption:** Publish [encrypted pastes](/encryption), protecting contents with AES-256.
 - **Markdown Support:** Pastes are formatted using Markdown, allowing for easy readability.
 - **Simple UI:** Our clean interface makes our platform easy to use and pleasing on the eyes.
 - **Free and Indefinate:** All pastes are hosted forever without any cost to users.

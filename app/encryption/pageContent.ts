@@ -5,14 +5,14 @@ Here's a breakdown of how the encryption system works to ensure that only you an
 
 ---
 ### TL;DR
-- **Encryption**: AES-256 with PBKDF2, done entirely in your browser.
+- **Encryption**: Military grade AES-256 encryption, done entirely in your browser.
 - **Decryption**: Also done locally in your browser with the key you’re given.
 - **Security**: We don't store or know your encryption key, and we will never transmit it online.
 - **Stored Info**: We store the unencrypted paste title, creation time, and encrypted content (which we cannot decrypt).
 ---
 ## How We Encrypt
 
-We use **AES-256** encryption and **PBKDF2** key derivation. Your paste's content is encrypted before it ever reaches our servers, so that no one, not even us, can access your paste's content without your key.
+We use military grade **AES-256** encryption. Your paste's content is encrypted before it ever reaches our servers, so that no one, not even us, can access your paste's content without your key.
 
 1. **Encryption in the browser**: Encryption and key derivation happens locally in your browser, so that the plaintext contents of your paste and the encryption key never leave your device.
 2. **Decryption in the browser**: Decryption happens locally in your browser as well. When you visit an encrypted paste, you're required to enter the encryption key in order to decrypted the content.
