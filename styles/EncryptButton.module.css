@@ -6,7 +6,7 @@
     align-items: center;
     justify-content: center;
     height: 26px;
-    width: auto;
+    width: 26px;
     box-sizing: border-box;
     padding: 0;
     border-radius: 50%;
@@ -19,6 +19,7 @@
     align-items: center;
     justify-content: center;
     padding-left: 2px;
+    margin-right: -8px;
 }
   
   .btnLock svg {
