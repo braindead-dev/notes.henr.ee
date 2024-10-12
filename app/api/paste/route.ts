@@ -6,7 +6,7 @@ import { generateUniqueId } from '../../../utils/slugUtils';
 
 export async function POST(request: Request) {
   try {
-    const { title, content, isEncrypted} = await request.json();
+    const { title, content, isEncrypted, encryptionMethod } = await request.json();
 
     // Validate incoming data
     if (!title || typeof title !== 'string' || title.trim() === '') {
@@ -45,6 +45,7 @@ export async function POST(request: Request) {
       title,
       content,
       isEncrypted: !!isEncrypted, // Ensure it's a boolean
+      encryptionMethod: encryptionMethod || null, // Store encryption method ('key' or 'password') or null
       createdAt: new Date(),
     });
 

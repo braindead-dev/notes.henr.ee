@@ -1,6 +1,8 @@
+// components/DecryptionKeyModal.tsx
+
 import React from 'react';
 import styles from '../../styles/page.module.css';
-import ErrorMessage from '../ErrorMessage';  // Import ErrorMessage
+import ErrorMessage from '../ErrorMessage';
 
 interface DecryptionModalProps {
   encryptionKey: string;
@@ -8,6 +10,7 @@ interface DecryptionModalProps {
   onClose: () => void;
   handleDecryption: () => void;
   decryptionError: string;
+  encryptionMethod: 'key' | 'password' | null;
 }
 
 const DecryptionModal: React.FC<DecryptionModalProps> = ({
@@ -16,21 +19,23 @@ const DecryptionModal: React.FC<DecryptionModalProps> = ({
   onClose,
   handleDecryption,
   decryptionError,
+  encryptionMethod,
 }) => {
+  const isPasswordBased = encryptionMethod === 'password';
+
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
-        <h2 className={styles.modalTitle}>Enter Encryption Key</h2>
-        <p>An encryption key is required to decrypt this paste.</p>
+        <h2 className={styles.modalTitle}>{isPasswordBased ? 'Enter Password' : 'Enter Encryption Key'}</h2>
+        <p>{isPasswordBased ? 'A password is required to decrypt this paste.' : 'An encryption key is required to decrypt this paste.'}</p>
         <input
-            type="password"
-            value={encryptionKey}
-            onChange={(e) => setEncryptionKey(e.target.value)}
-            className={styles.modalInput}  // Add this class to style the input if needed
-            style={{border: 0}}
-            placeholder="Paste here..."
+          type="password"
+          value={encryptionKey}
+          onChange={(e) => setEncryptionKey(e.target.value)}
+          className={styles.modalInput}
+          style={{ border: 0 }}
+          placeholder={isPasswordBased ? 'Enter password...' : 'Enter encryption key...'}
         />
-        {/* Render the ErrorMessage component if there's a decryption error */}
         {decryptionError && <ErrorMessage message={decryptionError} />}
         <div className={styles.modalActions}>
           <button className={styles.publishButton} onClick={handleDecryption}>

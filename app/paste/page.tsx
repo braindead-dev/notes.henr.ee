@@ -75,6 +75,7 @@ export default function Home() {
   // Function to handle closing the modal and proceeding with publishing
   const handleCloseModal = async ({ method, key }: { method: 'key' | 'password'; key: string }) => {
     setShowEncryptionModal(false);
+    // No need to update state encryptionMethod, pass it directly
     await publishPaste(key, method);
   };
 
@@ -87,11 +88,11 @@ export default function Home() {
         if (method === 'password' && key) {
           // Encrypt with password-derived key
           contentToSend = await encryptContentWithPassword(content, key);
-        } else if (key) {
+        } else if (method === 'key' && key) {
           // Encrypt with generated key
           contentToSend = await encryptContentWithKey(content, key);
         } else {
-          throw new Error('Encryption key is missing.');
+          throw new Error('Encryption key or method is missing.');
         }
       }
 
@@ -101,6 +102,7 @@ export default function Home() {
           title: title,
           content: contentToSend,
           isEncrypted,
+          encryptionMethod: isEncrypted ? method : null, // Use method parameter directly
         }),
         headers: {
           'Content-Type': 'application/json',
