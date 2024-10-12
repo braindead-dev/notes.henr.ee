@@ -72,7 +72,7 @@ const EncryptionKeyModal: React.FC<EncryptionKeyModalProps> = ({
                 Set Password
               </button>
               <button className={styles.toggleButton} onClick={handleClose}>
-                Close
+                Done
               </button>
             </div>
           </>
