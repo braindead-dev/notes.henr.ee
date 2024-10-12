@@ -9,9 +9,13 @@ import TitleInput from '../../components/TitleInput';
 import ContentArea from '../../components/ContentArea';
 import ScrollContainer from '../../components/ScrollContainer';
 import { useRouter } from 'next/navigation';
-import { generateEncryptionKey, encryptContent } from '../../utils/cryptoUtils';
+import {
+  generateEncryptionKey,
+  encryptContentWithKey,
+  encryptContentWithPassword,
+} from '../../utils/cryptoUtils';
 import ErrorMessage from '../../components/ErrorMessage';
-import EncryptionKeyModal from '../../components/modals/EncryptionKeyModal';  
+import EncryptionKeyModal from '../../components/modals/EncryptionKeyModal';
 
 export default function Home() {
   const [title, setTitle] = useState("Untitled");
@@ -21,7 +25,6 @@ export default function Home() {
   const [isEncrypted, setIsEncrypted] = useState(false);
   const [encryptionKey, setEncryptionKey] = useState<string | null>(null);
   const [showEncryptionModal, setShowEncryptionModal] = useState(false);
-  const [pasteId, setPasteId] = useState<string | null>(null); // Track the paste ID for redirection
   const titleEditableRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -38,68 +41,82 @@ export default function Home() {
     }
   };
 
-// Handle paste submission
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();  
+  // Handle paste submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
 
-  setError(null);
-
-  // Check if the content is empty
-  if (content.trim() === '') {
-    setError({ message: 'Invalid content. Content cannot be empty.', id: Date.now() });
-    return;
-  }
-    
-  // Ensure the title is updated from the editable div
-  if (titleEditableRef.current) {
-    setTitle(titleEditableRef.current.innerText);
-  }
-
-  let contentToSend = content;
-  if (isEncrypted && encryptionKey) {
-    contentToSend = await encryptContent(content, encryptionKey);
-  }
-
-  try {
-    const response = await fetch('/api/paste', {
-      method: 'POST',
-      body: JSON.stringify({
-        title: titleEditableRef.current?.innerText,
-        content: contentToSend,
-        isEncrypted,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || 'Something went wrong');
+    // Ensure the title is updated from the editable div
+    if (titleEditableRef.current) {
+      setTitle(titleEditableRef.current.innerText);
     }
 
-    // Store the paste ID but don't redirect yet
-    setPasteId(data.id);
+    // Check if the content is empty
+    if (content.trim() === '') {
+      setError({ message: 'Invalid content. Content cannot be empty.', id: Date.now() });
+      return;
+    }
 
-    // If encryption is enabled, show the modal before redirecting
-    if (isEncrypted && encryptionKey) {
+    if (isEncrypted) {
+      // Show modal to choose encryption method
       setShowEncryptionModal(true);
     } else {
-      // Redirect if not encrypted
-      router.push(`/${data.id}`);
+      // Proceed to publish without encryption
+      await publishPaste();
     }
-  } catch (err: any) {
-    // Set the error message if the request fails
-    setError(err.message);
-  }
-};
+  };
 
-  // Close modal and redirect
-  const handleCloseModal = () => {
+  // Function to regenerate encryption key
+  const regenerateKey = () => {
+    const key = generateEncryptionKey();
+    setEncryptionKey(key);
+  };
+
+  // Function to handle closing the modal and proceeding with publishing
+  const handleCloseModal = async ({ method, key }: { method: 'key' | 'password'; key: string }) => {
     setShowEncryptionModal(false);
-    if (pasteId) {
-      router.push(`/${pasteId}`);
+    await publishPaste(key, method);
+  };
+
+  // Function to publish the paste
+  const publishPaste = async (key?: string, method?: 'key' | 'password') => {
+    let contentToSend = content;
+
+    try {
+      if (isEncrypted) {
+        if (method === 'password' && key) {
+          // Encrypt with password-derived key
+          contentToSend = await encryptContentWithPassword(content, key);
+        } else if (key) {
+          // Encrypt with generated key
+          contentToSend = await encryptContentWithKey(content, key);
+        } else {
+          throw new Error('Encryption key is missing.');
+        }
+      }
+
+      const response = await fetch('/api/paste', {
+        method: 'POST',
+        body: JSON.stringify({
+          title: title,
+          content: contentToSend,
+          isEncrypted,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Something went wrong');
+      }
+
+      // Redirect to the new paste page using the generated ID
+      router.push(`/${data.id}`);
+    } catch (err: any) {
+      setError({ message: err.message, id: Date.now() });
     }
   };
 
@@ -115,7 +132,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   return (
     <div className={styles.pageContainer}>
-      {error && <ErrorMessage key={error.id} message={error.message} />} 
+      {error && <ErrorMessage key={error.id} message={error.message} />}
 
       <PasteHeader
         handleSubmit={handleSubmit}
@@ -144,7 +161,11 @@ const handleSubmit = async (e: React.FormEvent) => {
       </ScrollContainer>
 
       {showEncryptionModal && encryptionKey && (
-        <EncryptionKeyModal encryptionKey={encryptionKey} onClose={handleCloseModal} />
+        <EncryptionKeyModal
+          encryptionKey={encryptionKey}
+          onClose={handleCloseModal}
+          regenerateKey={regenerateKey}
+        />
       )}
     </div>
   );
