@@ -19,7 +19,7 @@ import EncryptionKeyModal from '../../components/modals/EncryptionKeyModal';
 
 export default function Home() {
   const [title, setTitle] = useState("Untitled");
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState("```\nLoading...\n```");
   const [viewMode, setViewMode] = useState(false);
   const [error, setError] = useState<{ message: string; id: number } | null>(null);
   const [isEncrypted, setIsEncrypted] = useState(false);
