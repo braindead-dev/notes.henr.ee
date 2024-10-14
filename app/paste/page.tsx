@@ -167,6 +167,9 @@ export default function Home() {
           encryptionKey={encryptionKey}
           onClose={handleCloseModal}
           regenerateKey={regenerateKey}
+          onCancel={() => {
+            setShowEncryptionModal(false);
+          }}
         />
       )}
     </div>

@@ -1,3 +1,5 @@
+// components/modals/EncryptionKeyModal.tsx
+
 import React, { useState } from 'react';
 import styles from '../../styles/page.module.css';
 import CopyButton from '../buttons/CopyButton';
@@ -8,12 +10,14 @@ interface EncryptionKeyModalProps {
   encryptionKey: string;
   onClose: (options: { method: 'key' | 'password'; key: string }) => void;
   regenerateKey: () => void;
+  onCancel: () => void; // Add this prop
 }
 
 const EncryptionKeyModal: React.FC<EncryptionKeyModalProps> = ({
   encryptionKey,
   onClose,
   regenerateKey,
+  onCancel, // Add this
 }) => {
   const [isCopied, setIsCopied] = useState(false);
   const [usePassword, setUsePassword] = useState(false);
@@ -46,13 +50,18 @@ const EncryptionKeyModal: React.FC<EncryptionKeyModalProps> = ({
     onClose({ method: 'password', key: password });
   };
 
-  const handleClose = () => {
-    onClose({ method: 'key', key: encryptionKey });
+  // Remove handleClose function if it directly calls onClose
+
+  const handleOverlayClick = () => {
+    onCancel(); // Close the modal without proceeding
   };
 
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
+    <div className={styles.modalOverlay} onClick={handleOverlayClick}>
+      <div
+        className={styles.modalContent}
+        onClick={(e) => e.stopPropagation()} // Prevent event bubbling
+      >
         {!usePassword ? (
           <>
             <h2 className={styles.modalTitle}>Encryption Key</h2>
@@ -71,7 +80,10 @@ const EncryptionKeyModal: React.FC<EncryptionKeyModalProps> = ({
               </div>
               <div className={styles.rightActions}>
                 <CopyButton handleCopy={handleCopy} isCopied={isCopied} />
-                <button className={styles.publishButton} onClick={handleClose}>
+                <button
+                  className={styles.publishButton}
+                  onClick={() => onClose({ method: 'key', key: encryptionKey })}
+                >
                   Done
                 </button>
               </div>

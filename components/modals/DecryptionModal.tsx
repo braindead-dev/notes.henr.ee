@@ -1,4 +1,4 @@
-// components/DecryptionKeyModal.tsx
+// components/modals/DecryptionModal.tsx
 
 import React from 'react';
 import styles from '../../styles/page.module.css';
@@ -23,9 +23,16 @@ const DecryptionModal: React.FC<DecryptionModalProps> = ({
 }) => {
   const isPasswordBased = encryptionMethod === 'password';
 
+  const handleOverlayClick = () => {
+    onClose(); // Close the modal without proceeding
+  };
+
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
+    <div className={styles.modalOverlay} onClick={handleOverlayClick}>
+      <div
+        className={styles.modalContent}
+        onClick={(e) => e.stopPropagation()} // Prevent event bubbling
+      >
         <h2 className={styles.modalTitle}>{isPasswordBased ? 'Enter Password' : 'Enter Encryption Key'}</h2>
         <p>{isPasswordBased ? 'A password is required to decrypt this paste.' : 'An encryption key is required to decrypt this paste.'}</p>
         <input
