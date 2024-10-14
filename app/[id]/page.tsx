@@ -127,7 +127,7 @@ export default function Paste() {
           {!needsDecryption ? (
             <ContentArea content={loading ? '' : content} isEditable={false} />
           ) : (
-            <ContentArea content={`\`\`\`\nThis paste is AES-256 encrypted.\n\nEncrypted Content:\n${content}\n\`\`\``} isEditable={false} />
+            <ContentArea content={`\`\`\`\nThis paste is AES-256 encrypted. \n\nTo re-prompt decryption key input, refresh this page.\n\nEncrypted Content:\n${content}\n\`\`\``} isEditable={false} />
           )}
         </div>
       </ScrollContainer>

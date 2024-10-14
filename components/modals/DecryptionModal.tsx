@@ -37,7 +37,7 @@ const DecryptionModal: React.FC<DecryptionModalProps> = ({
           placeholder={isPasswordBased ? 'Enter password...' : 'Enter encryption key...'}
         />
         {decryptionError && <ErrorMessage message={decryptionError} />}
-        <div className={styles.modalActions}>
+        <div className={styles.modalActionsRight}>
           <button className={styles.publishButton} onClick={handleDecryption}>
             Submit
           </button>

@@ -71,7 +71,7 @@ const EncryptionKeyModal: React.FC<EncryptionKeyModalProps> = ({
               </div>
               <div className={styles.rightActions}>
                 <CopyButton handleCopy={handleCopy} isCopied={isCopied} />
-                <button className={styles.toggleButton} onClick={handleClose}>
+                <button className={styles.publishButton} onClick={handleClose}>
                   Done
                 </button>
               </div>

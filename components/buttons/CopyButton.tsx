@@ -8,10 +8,12 @@ interface CopyButtonProps {
 
 const CopyButton: React.FC<CopyButtonProps> = ({ handleCopy, isCopied }) => (
   <button
-    className={styles.publishButton}
+    className={styles.toggleButton}
     style={{
-      backgroundColor: isCopied ? '#008001' : '#222222',
-      border: isCopied ? '2px solid #439443' : '2px solid #545454',
+      backgroundColor: isCopied ? '#008001' : '#eaeaea',
+      border: isCopied ? '2px solid #439443' : '2px solid #bababa',
+      color: isCopied ? '#fff' : '#222222',
+      width: 'auto',
     }}
     onClick={handleCopy}
   >
