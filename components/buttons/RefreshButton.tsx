@@ -1,38 +1,33 @@
-// components/buttons/RefreshButton.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../../styles/RefreshButton.module.css';
 
 interface RefreshButtonProps {
-  isEncrypted: boolean;
-  toggleEncryption: () => void;
+  onClick: () => void;
 }
 
-const RefreshButton: React.FC<RefreshButtonProps> = ({ isEncrypted, toggleEncryption }) => {
+const RefreshButton: React.FC<RefreshButtonProps> = ({ onClick }) => {
+  const [isSpinning, setIsSpinning] = useState(false);
+
+  const handleClick = () => {
+    setIsSpinning(true);
+    onClick();
+
+    setTimeout(() => setIsSpinning(false), 250);
+  };
+
   return (
-    <div>
-      <input
-        id="inpLock"
-        type="checkbox"
-        className={styles.inpLock}
-        checked={isEncrypted}
-        onChange={toggleEncryption}
-      />
-      <label
-        className={`${styles.btnLock} ${isEncrypted ? styles.locked : ''}`}
-        htmlFor="inpLock"
+    <button className={styles.iconButton} onClick={handleClick} title="Regenerate Key">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className={`${styles.icon} ${isSpinning ? styles.spin : ''}`}
+        width="24px"
+        height="24px"
       >
-
-        <svg fill="#000000" height="100%" width="100%" viewBox="0 0 383.748 383.748" xmlns="http://www.w3.org/2000/svg">
-          <path d="M62.772,95.042C90.904,54.899,137.496,30,187.343,30c83.743,0,151.874,68.13,151.874,151.874h30
-            C369.217,81.588,287.629,0,187.343,0c-35.038,0-69.061,9.989-98.391,28.888C70.368,40.862,54.245,56.032,41.221,73.593
-            L2.081,34.641v113.365h113.91L62.772,95.042z"/>
-          <path d="M381.667,235.742h-113.91l53.219,52.965c-28.132,40.142-74.724,65.042-124.571,65.042
-            c-83.744,0-151.874-68.13-151.874-151.874h-30c0,100.286,81.588,181.874,181.874,181.874c35.038,0,69.062-9.989,98.391-28.888
-            c18.584-11.975,34.707-27.145,47.731-44.706l39.139,38.952V235.742z"/>
-        </svg>
-
-      </label>
-    </div>
+        <path d="M12,4V1L8,5l4,4V6c3.31,0,6,2.69,6,6s-2.69,6-6,6s-6-2.69-6-6H4c0,4.42,3.58,8,8,8s8-3.58,8-8S16.42,4,12,4z" />
+      </svg>
+    </button>
   );
 };
 

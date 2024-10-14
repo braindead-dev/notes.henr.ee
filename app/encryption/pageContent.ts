@@ -13,7 +13,7 @@ Here's a breakdown of how the encryption system works to ensure that only you an
 ---
 ## How We Encrypt
 
-We use military grade **AES-256** encryption with PBKDF2 key derivation supported. Your paste's content is encrypted before it ever reaches our servers, so that no one, not even us, can access your paste's content without your key.
+We use military grade **AES-256** encryption with **PBKDF2 key derivation** supported. Your paste's content is encrypted before it ever reaches our servers, so that no one, not even us, can access your paste's content without your key.
 
 1. **Encryption in the browser**: Encryption and key derivation happens locally in your browser, so that the plaintext contents of your paste and the encryption key never leave your device.
 2. **Decryption in the browser**: Decryption happens locally in your browser as well. When you visit an encrypted paste, you're required to enter the encryption key in order to decrypted the content.

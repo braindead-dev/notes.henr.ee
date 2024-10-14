@@ -175,6 +175,9 @@
   margin: 20px 0px 15px 0px;
   font-family: monospace;
   word-break: break-all;
+  display: flex;  /* Use flexbox to align children */
+  align-items: center;  /* Vertically center content */
+  justify-content: space-between;  /* Ensure space between key and button */
 }
 
 .modalInput {
@@ -195,7 +198,24 @@
 
 .modalActions {
   display: flex;
+  justify-content: space-between; /* Main page layout */
+  gap: 5px;
+  align-items: center;
+}
+
+.leftActions {
+  flex-grow: 1; /* Push the right actions to the right */
+}
+
+.rightActions {
+  display: flex;
   justify-content: flex-end;
+  gap: 5px;
+}
+
+.modalActionsRight {
+  display: flex;
+  justify-content: flex-end; /* Right align both buttons on the password page */
   gap: 5px;
 }
 

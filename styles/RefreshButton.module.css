@@ -1,1 +1,28 @@
 /* RefreshButton.module.css */
+
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0px 3px;
+  margin: -10px 0px -15px 0px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  fill: #989898;
+}
+
+@keyframes spinCounterclockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.spin {
+  animation: spinCounterclockwise 0.25s ease-in-out;
+}

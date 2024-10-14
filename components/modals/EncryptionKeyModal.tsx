@@ -1,9 +1,8 @@
-// components/EncryptionKeyModal.tsx
-
 import React, { useState } from 'react';
 import styles from '../../styles/page.module.css';
 import CopyButton from '../buttons/CopyButton';
-import ErrorMessage from '../ErrorMessage'; 
+import RefreshButton from '../buttons/RefreshButton';
+import ErrorMessage from '../ErrorMessage';
 
 interface EncryptionKeyModalProps {
   encryptionKey: string;
@@ -40,7 +39,7 @@ const EncryptionKeyModal: React.FC<EncryptionKeyModalProps> = ({
       return;
     }
     if (password.length === 0) {
-      setPasswordError({ message: 'Password cannot be empty.', id: Date.now() }); 
+      setPasswordError({ message: 'Password cannot be empty.', id: Date.now() });
       return;
     }
     setPasswordError(null);
@@ -62,18 +61,20 @@ const EncryptionKeyModal: React.FC<EncryptionKeyModalProps> = ({
             </p>
             <div className={styles.keyContainer}>
               <code>{encryptionKey}</code>
+              <RefreshButton onClick={regenerateKey} />
             </div>
             <div className={styles.modalActions}>
-              <button className={styles.publishButton} onClick={regenerateKey}>
-                Regenerate
-              </button>
-              <CopyButton handleCopy={handleCopy} isCopied={isCopied} />
-              <button className={styles.publishButton} onClick={handleUsePassword}>
-                Set Password
-              </button>
-              <button className={styles.toggleButton} onClick={handleClose}>
-                Done
-              </button>
+              <div className={styles.leftActions}>
+                <button className={styles.publishButton} onClick={handleUsePassword}>
+                  Set Password
+                </button>
+              </div>
+              <div className={styles.rightActions}>
+                <CopyButton handleCopy={handleCopy} isCopied={isCopied} />
+                <button className={styles.toggleButton} onClick={handleClose}>
+                  Done
+                </button>
+              </div>
             </div>
           </>
         ) : (
@@ -95,7 +96,7 @@ const EncryptionKeyModal: React.FC<EncryptionKeyModalProps> = ({
               placeholder="Confirm Password"
             />
             {passwordError && <ErrorMessage key={passwordError.id} message={passwordError.message} />}
-            <div className={styles.modalActions}>
+            <div className={styles.modalActionsRight}>
               <button className={styles.publishButton} onClick={handleSubmitPassword}>
                 Submit
               </button>

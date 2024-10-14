@@ -28,7 +28,7 @@ const sanitizeTitleForTab = (title: string) => {
 export default function Paste() {
   const { id } = useParams();
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState('```\nLoading...\n```');
   const [loading, setLoading] = useState(true);
   const [isCopied, setIsCopied] = useState(false);
   const [isEncrypted, setIsEncrypted] = useState(false);
