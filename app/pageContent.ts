@@ -15,8 +15,8 @@ export const pageContent = `
 
 ## As Simple as...
 1. **Creating a Paste:** Enter your content and title. Choose if you want it encrypted.
-    - **Encryption Key:** If you encrypted your paste, you'll receive an encryption key to share with others.
-2. **Sharing With Others:** Share your paste link with others! (and supply them with the encryption key if applicable)
+    - **Encryption:** If you encrypted your paste, you'll be prompted with the option to copy your encryption key or set a password.
+2. **Sharing With Others:** Share your paste link with others! (and supply them with the key / password if applicable)
 
 
 Enjoy sharing with **notes.henr.ee**!
