@@ -5,6 +5,7 @@ import styles from "@/styles/page.module.css";
 import DashHeader from "@/components/DashHeader";
 import ScrollContainer from "@/components/ScrollContainer";
 import NotAuthenticatedPage from "@/app/admin/components/NotAuthenticatedPage";
+import LoadingPage from "@/app/admin/components/LoadingPage";
 import ErrorMessage from "@/components/ErrorMessage";
 import { useSearchParams } from "next/navigation";
 
@@ -31,7 +32,14 @@ function SignInContent() {
 
 export default function SignInPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={
+      <div className={styles.pageContainer}>
+        <DashHeader isAuthenticated={false} />
+        <ScrollContainer>
+          <LoadingPage />
+        </ScrollContainer>
+      </div>
+    }>
       <DashHeader isAuthenticated={false} />
       <SignInContent />
     </Suspense>
