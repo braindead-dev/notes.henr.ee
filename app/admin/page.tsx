@@ -4,7 +4,7 @@
 
 import { useSession } from "next-auth/react";
 import DashHeader from "@/components/DashHeader";
-import AdminDashboard from "./components/AdminDashboard";
+import AdminDashboard from "./components/AdminDashboard/AdminDashboard";
 import NotAuthenticatedPage from "./components/NotAuthenticatedPage";
 import LoadingPage from "./components/LoadingPage";
 import styles from "@/styles/page.module.css";

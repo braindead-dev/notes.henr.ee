@@ -18,6 +18,8 @@
     "codemirror": "^5.65.18",
     "hypermd": "^0.3.11",
     "mongodb": "^6.9.0",
+    "mongoose": "^8.7.1",
+    "net": "^1.0.2",
     "next": "14.2.14",
     "next-auth": "^4.24.8",
     "next-storage": "^1.2.3",

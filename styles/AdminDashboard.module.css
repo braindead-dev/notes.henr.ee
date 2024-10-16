@@ -1,0 +1,76 @@
+.dashboardContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0px;
+    padding-bottom: 10rem;
+  }
+  
+  .gridRow {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Performance takes 2/3, Overview takes 1/3 */
+    gap: 20px;
+  }
+  
+  .row {
+    display: grid;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .container {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sectionTitle {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .statsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .statsCard {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .statsCard h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .statsCard p, .statsCard ul {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .statsCard ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .label {
+    padding: 20px;
+    background-color: #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #555;
+    text-align: center;
+  }
+  
+  .contentWrapper {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
