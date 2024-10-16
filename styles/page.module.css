@@ -223,3 +223,60 @@
 .modalTitle {
   margin-bottom: -5px;
 }
+
+/* OAuth-style sign-in button */
+.oauthButton {
+  background-color: #161b22;
+  color: white;
+  border: 1.5px solid #cecece;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; /* Use flexbox to align the content */
+  align-items: center;
+  justify-content: center; /* Center content */
+  width: fit-content; /* Adjust width based on content */
+  margin: 0 auto; /* Center button horizontally */
+  gap: 16px; /* Add space between the icon and text */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* GitHub logo styling inside the button */
+.githubIcon {
+  font-size: 24px; /* Adjust size for the logo */
+}
+
+/* Hover effects for OAuth button */
+.oauthButton:hover {
+  background-color: #232b35; /* Slight dimming effect */
+  border-color: #b1b1b1; /* Darken border on hover */
+}
+
+/* Focus effect */
+.oauthButton:focus {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1); /* Add focus ring */
+  outline: none;
+}
+
+.signInContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.1);  /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signInContent {
+  background-color: white;
+  padding: 5px 20px 20px 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  width:90%;
+  z-index: 1001;
+}

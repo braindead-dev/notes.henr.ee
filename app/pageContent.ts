@@ -20,7 +20,7 @@ export const pageContent = `
 
 
 Enjoy sharing with **notes.henr.ee**!
-If you have further questions, feel free to reach out.
+If you have further questions or would like to report a paste, feel free to reach out.
 
 **Email** – contact@henrywa[.]ng
 **Telegram** – [@henry99x](https://t.me/henry99x)
