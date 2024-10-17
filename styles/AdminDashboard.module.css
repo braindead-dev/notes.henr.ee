@@ -113,3 +113,14 @@
     height: 10px;
     margin-right: 5px;
   }
+
+  .unstyledLink {
+    color: inherit;  /* Keep the same color as the surrounding text */
+    text-decoration: underline;  /* Only show underline */
+  }
+  
+  .unstyledLink:hover, .unstyledLink:focus, .unstyledLink:active {
+    color: inherit;  /* Prevent color change on hover, focus, or active state */
+    text-decoration: underline;  /* Keep underline on hover */
+  }
+  

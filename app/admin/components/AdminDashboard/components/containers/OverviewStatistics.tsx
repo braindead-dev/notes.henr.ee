@@ -5,7 +5,7 @@ import { VictoryPie } from 'victory';
 import styles from '@/styles/AdminDashboard.module.css';
 
 interface Paste {
-  _id: string;
+  id: string;
   title: string;
   isEncrypted: boolean;
 }
@@ -21,7 +21,6 @@ const OverviewStatistics: React.FC = () => {
   const [encryptionStats, setEncryptionStats] = useState<EncryptionStats>({ encrypted: 0, nonEncrypted: 0 });
   const [storageUsage, setStorageUsage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
-  const maxStorage = 512; // Maximum storage in MB
 
   useEffect(() => {
     const fetchStatistics = async () => {
@@ -46,7 +45,7 @@ const OverviewStatistics: React.FC = () => {
     return <p>Loading...</p>;
   }
 
-  const availableStorage = maxStorage - storageUsage; // Calculate available storage
+  const availableStorage = 512 - storageUsage; // Assuming maxStorage of 512 MB
 
   const encryptedPercentage = ((encryptionStats.encrypted / totalPastes) * 100).toFixed(2);
   const nonEncryptedPercentage = ((encryptionStats.nonEncrypted / totalPastes) * 100).toFixed(2);
@@ -56,12 +55,15 @@ const OverviewStatistics: React.FC = () => {
       <div className={styles.statsCard}>
         <h3>Total Pastes</h3>
         <p>{totalPastes}</p>
-        
+
         <h3>Recent Pastes</h3>
         <ul>
           {recentPastes.map((paste) => (
-            <li key={paste._id}>
-              {paste.title} - {paste.isEncrypted ? 'Encrypted' : 'Non-Encrypted'}
+            <li key={paste.id}>
+              <a className={styles.unstyledLink} href={`https://notes.henr.ee/${paste.id}`} target="_blank" rel="noopener noreferrer">
+                {paste.title}
+              </a>
+              - {paste.isEncrypted ? 'Encrypted' : 'Non-Encrypted'}
             </li>
           ))}
         </ul>
@@ -112,7 +114,7 @@ const OverviewStatistics: React.FC = () => {
                 {/* Storage Usage Key */}
                 <div className={styles.key}>
                     <div className={styles.keyItem}>
-                        <span>{storageUsage.toFixed(2)} / {maxStorage} MB </span>
+                        <span>{storageUsage.toFixed(2)} MB / 512 MB</span>
                     </div>
                 </div>
             </div>
