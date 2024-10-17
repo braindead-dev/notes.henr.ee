@@ -74,3 +74,42 @@
     margin: 0 auto;
     padding: 0 20px;
   }
+
+  .pieChartsContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .pieCard {
+    flex: 1;
+    text-align: center;
+    margin: -10px;
+  }
+
+  .pieChart {
+    flex: 1;
+    text-align: center;
+    margin: -10px;
+    margin-top: -45px;
+  }
+  
+  .key {
+    margin-top: -30px;
+    margin-bottom: 30px;
+  }
+  
+  .keyItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 3px 0px;
+    font-size: 12px;
+  }
+  
+  .colorBox {
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+  }

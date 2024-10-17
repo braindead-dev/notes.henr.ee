@@ -1,4 +1,7 @@
+// app/admin/components/AdminDashboard/components/OverviewStatistics.tsx
+
 import React, { useEffect, useState } from 'react';
+import { VictoryPie } from 'victory';
 import styles from '@/styles/AdminDashboard.module.css';
 
 interface Paste {
@@ -18,6 +21,7 @@ const OverviewStatistics: React.FC = () => {
   const [encryptionStats, setEncryptionStats] = useState<EncryptionStats>({ encrypted: 0, nonEncrypted: 0 });
   const [storageUsage, setStorageUsage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
+  const maxStorage = 512; // Maximum storage in MB
 
   useEffect(() => {
     const fetchStatistics = async () => {
@@ -42,6 +46,11 @@ const OverviewStatistics: React.FC = () => {
     return <p>Loading...</p>;
   }
 
+  const availableStorage = maxStorage - storageUsage; // Calculate available storage
+
+  const encryptedPercentage = ((encryptionStats.encrypted / totalPastes) * 100).toFixed(2);
+  const nonEncryptedPercentage = ((encryptionStats.nonEncrypted / totalPastes) * 100).toFixed(2);
+
   return (
     <div className={styles.statsContainer}>
       <div className={styles.statsCard}>
@@ -57,11 +66,57 @@ const OverviewStatistics: React.FC = () => {
           ))}
         </ul>
 
-        <h3>Encryption Stats</h3>
-        <p>{encryptionStats.encrypted} Encrypted / {encryptionStats.nonEncrypted} Non-Encrypted</p>
+        {/* Encryption Stats and Storage Usage Pie Charts */}
+        <div className={styles.pieChartsContainer}>
+            <div className={styles.pieCard}>
+                <h5>Encryption Stats</h5>
+                <div className={styles.pieChart}>
+                    <VictoryPie
+                        data={[
+                            { y: encryptionStats.encrypted },
+                            { y: encryptionStats.nonEncrypted },
+                        ]}
+                        colorScale={['#4caf50', '#dbdbdb']}
+                        labels={() => null} // Remove labels
+                        radius={100}
+                        innerRadius={65}
+                    />
+                </div>
+                {/* Encryption Stats Key */}
+                <div className={styles.key}>
+                    <div className={styles.keyItem}>
+                        <div className={styles.colorBox} style={{ backgroundColor: '#dbdbdb' }}></div>
+                        <span>Regular - {nonEncryptedPercentage}%</span>
+                    </div>
+                    <div className={styles.keyItem}>
+                        <div className={styles.colorBox} style={{ backgroundColor: '#4caf50' }}></div>
+                        <span>Encrypted - {encryptedPercentage}%</span>
+                    </div>
+                </div>
+            </div>
 
-        <h3>Storage Usage</h3>
-        <p>{storageUsage.toFixed(2)} MB used</p>
+            <div className={styles.pieCard}>
+                <h5>Storage Usage</h5>
+                <div className={styles.pieChart}>
+                    <VictoryPie
+                        data={[
+                            { y: storageUsage },
+                            { y: availableStorage },
+                        ]}
+                        colorScale={['#90caf9', '#dbdbdb']}
+                        labels={() => null} // Remove labels
+                        radius={100}
+                        innerRadius={65}
+                    />
+                </div>
+                {/* Storage Usage Key */}
+                <div className={styles.key}>
+                    <div className={styles.keyItem}>
+                        <span>{storageUsage.toFixed(2)} / {maxStorage} MB </span>
+                    </div>
+                </div>
+            </div>
+        </div>
       </div>
     </div>
   );
