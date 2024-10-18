@@ -38,7 +38,7 @@ export async function GET() {
       storageUsage: storageUsage / (1024 * 1024), // Convert bytes to MB for easier reading
     });
   } catch (error) {
-    console.error('Error fetching dashboard data:', error);
-    return NextResponse.json({ error: 'Unable to fetch dashboard data' }, { status: 500 });
+    console.error('Error fetching overview data:', error);
+    return NextResponse.json({ error: 'Unable to fetch overview data' }, { status: 500 });
   }
 }
