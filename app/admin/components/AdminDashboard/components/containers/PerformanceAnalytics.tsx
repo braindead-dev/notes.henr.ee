@@ -6,9 +6,7 @@ const PerformanceAnalytics: React.FC = () => {
     <div className={styles.container}>
         <h2 className={styles.sectionTitle}>Performance and Analytics</h2>
         <div className={styles.label}>Graph for pastes created over time (coming soon)</div>
-        <h3>Average Paste Size</h3>
-        <p>300 bytes</p>
-        <p>include a notification system for alerts</p>
+        <p>Average Size 300 bytes</p>
     </div>
   );
 };

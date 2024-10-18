@@ -32,9 +32,9 @@ const ExportBackup: React.FC = () => {
 
   return (
     <div className={styles.container} style={{ width: '100%' }}>
-      <h2 className={styles.sectionTitle}>Export and Backup Options</h2>
+      <h2 className={styles.sectionTitle}>Export Database</h2>
       <button className={styles.exportButton} onClick={handleExport}>
-        Export Database Backup
+        Export Database
       </button>
     </div>
   );

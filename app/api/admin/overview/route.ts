@@ -26,6 +26,7 @@ export async function GET() {
     // Use the dbStats command to get storage statistics
     const stats = await db.command({ dbStats: 1 });
     const storageUsage = stats.storageSize; // Total storage used in bytes
+    const averageSize = stats.avgObjSize; // Average size in bytes
 
     // Respond with the statistics
     return NextResponse.json({
@@ -36,6 +37,7 @@ export async function GET() {
         nonEncrypted: nonEncryptedCount,
       },
       storageUsage: storageUsage / (1024 * 1024), // Convert bytes to MB for easier reading
+      averageSize: averageSize,
     });
   } catch (error) {
     console.error('Error fetching overview data:', error);

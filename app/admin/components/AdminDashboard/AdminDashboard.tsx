@@ -13,6 +13,7 @@ const AdminDashboard: React.FC<{ userName: string }> = ({ userName }) => {
       <h1>Welcome, {userName}</h1>
 
       <div className={styles.dashboardContainer}>
+        {/* include a notification system for alerts */}
 
         {/* Row 1: Performance and Analytics & Overview/Statistics */}
         <div className={styles.gridRow}>
