@@ -18,43 +18,30 @@
     gap: 20px;
   }
   
-  .container {
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
   .sectionTitle {
     margin-bottom: 20px;
     font-size: 1.5rem;
     color: #333;
   }
   
-  .statsContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-  
-  .statsCard {
+  .container {
     background-color: #ffffff;
     border-radius: 8px;
-    padding: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
   }
   
-  .statsCard h3 {
+  .container h3 {
     font-size: 1.2rem;
     margin-bottom: 10px;
   }
   
-  .statsCard p, .statsCard ul {
+  .container p, .container ul {
     font-size: 1rem;
     color: #555;
   }
   
-  .statsCard ul {
+  .container ul {
     list-style-type: none;
     padding-left: 0;
   }
@@ -136,5 +123,20 @@
     padding: 3px 8px; /* Padding inside the tag */
     border-radius: 12px; /* Rounded corners */
     font-size: 12px; /* Small font size */
+  }
+  
+  .exportButton {
+    background-color: #2196f3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 20px;
+  }
+  
+  .exportButton:hover {
+    background-color: #1976d2;
   }
   

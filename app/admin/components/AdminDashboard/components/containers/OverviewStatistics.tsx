@@ -51,8 +51,7 @@ const OverviewStatistics: React.FC = () => {
   const nonEncryptedPercentage = ((encryptionStats.nonEncrypted / totalPastes) * 100).toFixed(2);
 
   return (
-    <div className={styles.statsContainer}>
-      <div className={styles.statsCard}>
+      <div className={styles.container}>
         <h3>Total Pastes</h3>
         <p>{totalPastes}</p>
 
@@ -122,7 +121,6 @@ const OverviewStatistics: React.FC = () => {
             </div>
         </div>
       </div>
-    </div>
   );
 };
 

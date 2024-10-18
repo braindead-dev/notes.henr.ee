@@ -19,9 +19,22 @@ export async function GET() {
 
     // Fetch data for export
 
+    // Get all collections in the database
+    const collections = await db.listCollections().toArray();
+
+    // Prepare an object to store all collection data
+    const databaseExport: { [key: string]: any[] } = {};
+
+    // Iterate over all collections and fetch their documents
+    for (const collection of collections) {
+      const collectionName = collection.name;
+      const documents = await db.collection(collectionName).find().toArray();
+      databaseExport[collectionName] = documents;
+    }
+
     // Respond with the export
     return NextResponse.json({
-
+      database: databaseExport,
     });
   } catch (error) {
     console.error('Error fetching export data:', error);

@@ -36,7 +36,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className={styles.pageContainer}>
+    <div className={styles.admindashContainer}>
       <DashHeader isAuthenticated={true} />
       <ScrollContainer>
         <AdminDashboard userName={session.user.name} />
