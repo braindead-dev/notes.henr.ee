@@ -55,7 +55,7 @@
   
   .contentWrapper {
     width: 100%;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 0 20px;
   }
@@ -101,7 +101,7 @@
 
   .unstyledLink {
     color: inherit;  /* Keep the same color as the surrounding text */
-    text-decoration: underline;  /* Only show underline */
+    text-decoration: none;  /* Only show underline */
   }
   
   .unstyledLink:hover, .unstyledLink:focus, .unstyledLink:active {
@@ -113,14 +113,6 @@
     display: flex;
     align-items: center;
     gap: 8px; /* Spacing between title and tag */
-  }
-  
-  .encryptedTag {
-    background-color: #2196f3; /* Blue background */
-    color: white; /* White text */
-    padding: 3px 8px; /* Padding inside the tag */
-    border-radius: 12px; /* Rounded corners */
-    font-size: 12px; /* Small font size */
   }
   
   .exportButton {
@@ -141,5 +133,83 @@
   
   .sectionTitle {
     margin-top: 0px;
+  }
+  
+
+  .pasteTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .pasteTable th,
+  .pasteTable td {
+    padding: 3px 4px;
+    text-align: left;
+  }
+
+  .pasteTable td {
+    color: #313131;
+    font-size: 14px;
+  }
+  
+  .pasteTable th {
+    color: #92959f;
+    font-weight: 400;
+    font-size: 13.5px;
+    border-bottom: 1px solid #e0e0e0;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .pasteID {
+    color: #c6c6c6;
+    font-family: monospace;
+    margin-left: 10px;
+  }
+
+  .encryptedTag {
+    background-color: #bbe8a395;
+    color: #0b440e;
+    padding: 2.5px 6px; /* Padding inside the tag */
+    border-radius: 12px; /* Rounded corners */
+    font-size: 12px; /* Small font size */
+  }
+  
+  .noneTag {
+    background-color: #ebebebb5;
+    color: #313131;
+    padding: 3px 8px; /* Padding inside the tag */
+    border-radius: 12px; /* Rounded corners */
+    font-size: 12px; /* Small font size */
+  }
+  
+  .filterButtons {
+    margin-bottom: 20px;
+  }
+  
+  .paginationContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    word-spacing: 10px;
+    margin-top: 10px;
+  }
+  
+  .paginationButton {
+    background-color: transparent;
+    border: none;
+    padding: 5px 25px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 1.2em;
+  }
+  
+  .paginationButton:disabled {
+    opacity: 0.5;
+    cursor: default
+  }
+  
+  .paginationInfo {
+    font-size: 1.1em;
   }
   
