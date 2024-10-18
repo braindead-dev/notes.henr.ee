@@ -13,7 +13,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
 
-    // Fetch data from MongoDB
+    // Fetch data from MongoDB 
     const client = await clientPromise;
     const db = client.db('notes'); // Your MongoDB database name
 
