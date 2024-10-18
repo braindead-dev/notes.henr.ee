@@ -59,11 +59,13 @@ const OverviewStatistics: React.FC = () => {
         <h3>Recent Pastes</h3>
         <ul>
           {recentPastes.map((paste) => (
-            <li key={paste.id}>
+            <li key={paste.id} className={styles.pasteItem}>
               <a className={styles.unstyledLink} href={`https://notes.henr.ee/${paste.id}`} target="_blank" rel="noopener noreferrer">
                 {paste.title}
               </a>
-              - {paste.isEncrypted ? 'Encrypted' : 'Non-Encrypted'}
+              {paste.isEncrypted && (
+                <span className={styles.encryptedTag}>Encrypted</span>
+              )}
             </li>
           ))}
         </ul>
@@ -78,7 +80,7 @@ const OverviewStatistics: React.FC = () => {
                             { y: encryptionStats.encrypted },
                             { y: encryptionStats.nonEncrypted },
                         ]}
-                        colorScale={['#4caf50', '#dbdbdb']}
+                        colorScale={['#4caf50', '#ebebeb']}
                         labels={() => null} // Remove labels
                         radius={100}
                         innerRadius={65}
@@ -87,7 +89,7 @@ const OverviewStatistics: React.FC = () => {
                 {/* Encryption Stats Key */}
                 <div className={styles.key}>
                     <div className={styles.keyItem}>
-                        <div className={styles.colorBox} style={{ backgroundColor: '#dbdbdb' }}></div>
+                        <div className={styles.colorBox} style={{ backgroundColor: '#ebebeb' }}></div>
                         <span>Regular - {nonEncryptedPercentage}%</span>
                     </div>
                     <div className={styles.keyItem}>
@@ -105,7 +107,7 @@ const OverviewStatistics: React.FC = () => {
                             { y: storageUsage },
                             { y: availableStorage },
                         ]}
-                        colorScale={['#90caf9', '#dbdbdb']}
+                        colorScale={['#90caf9', '#ebebeb']}
                         labels={() => null} // Remove labels
                         radius={100}
                         innerRadius={65}
@@ -114,7 +116,7 @@ const OverviewStatistics: React.FC = () => {
                 {/* Storage Usage Key */}
                 <div className={styles.key}>
                     <div className={styles.keyItem}>
-                        <span>{storageUsage.toFixed(2)} MB / 512 MB</span>
+                        <span>{storageUsage.toFixed(2)} / 512 MB</span>
                     </div>
                 </div>
             </div>

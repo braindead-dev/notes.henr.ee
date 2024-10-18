@@ -78,7 +78,7 @@
   .pieChartsContainer {
     display: flex;
     justify-content: space-around;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
   }
   
@@ -122,5 +122,19 @@
   .unstyledLink:hover, .unstyledLink:focus, .unstyledLink:active {
     color: inherit;  /* Prevent color change on hover, focus, or active state */
     text-decoration: underline;  /* Keep underline on hover */
+  }
+  
+  .pasteItem {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Spacing between title and tag */
+  }
+  
+  .encryptedTag {
+    background-color: #2196f3; /* Blue background */
+    color: white; /* White text */
+    padding: 3px 8px; /* Padding inside the tag */
+    border-radius: 12px; /* Rounded corners */
+    font-size: 12px; /* Small font size */
   }
   
