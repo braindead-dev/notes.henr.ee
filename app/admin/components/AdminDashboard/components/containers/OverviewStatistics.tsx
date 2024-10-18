@@ -25,7 +25,7 @@ const OverviewStatistics: React.FC = () => {
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        const response = await fetch('/api/admin');
+        const response = await fetch('/api/admin/overview');
         const data = await response.json();
 
         setTotalPastes(data.totalPastes);
