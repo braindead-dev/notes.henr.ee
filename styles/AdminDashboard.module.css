@@ -135,7 +135,6 @@
     margin-top: 0px;
   }
   
-
   .pasteTable {
     width: 100%;
     border-collapse: collapse;
@@ -147,23 +146,49 @@
     text-align: left;
   }
 
+  /* Alternatively, use a pseudo-element for more control */
+  .pasteTable tbody tr:first-child td::before {
+    content: "";
+    display: block;
+    height: 5px; /* Creates space above the first row */
+  }
+
   .pasteTable td {
     color: #313131;
     font-size: 14px;
+    border-bottom: 1px solid #f3f3f3;
   }
   
   .pasteTable th {
-    color: #92959f;
+    color: #313131;
     font-weight: 400;
     font-size: 13.5px;
-    border-bottom: 1px solid #e0e0e0;
-    border-top: 1px solid #e0e0e0;
+    background-color: #f4f4f4;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  /* Apply border-radius to the entire row */
+  .pasteTable thead tr {
+    background-color: #f4f4f4;
+    border-radius: 5px;
+  }
+
+  /* Specific styling for the first and last header to round corners */
+  .pasteTable thead tr th:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+
+  .pasteTable thead tr th:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
 
   .pasteID {
     color: #c6c6c6;
     font-family: monospace;
-    margin-left: 10px;
+    margin-left: 5px;
   }
 
   .encryptedTag {
@@ -181,19 +206,38 @@
     border-radius: 12px; /* Rounded corners */
     font-size: 12px; /* Small font size */
   }
-  
-  .filterButtons {
-    margin-bottom: 20px;
+
+  .paginationWrapper {
+    display: flex;
+    justify-content: center; /* Ensure pagination is centered */
+    align-items: center; /* Vertically center both elements */
+    margin-top: 10px;
+    position: relative;
   }
   
   .paginationContainer {
     display: flex;
     justify-content: center;
-    align-items: center;
-    font-size: 12px;
-    word-spacing: 10px;
-    margin-top: 10px;
+    align-items: center; /* Vertically center the pagination controls */
+    width: 100%;
   }
+  
+  .paginationCenter {
+    display: flex;
+    justify-content: center; /* Center the pagination controls */
+    align-items: center; /* Vertically align controls */
+    font-size: 12px;
+  }
+  
+  .entriesInfo {
+    position: absolute;
+    right: 0; /* Aligns the entries info to the far right */
+    font-size: 12px;
+    text-align: right;
+    top: 50%;
+    transform: translateY(-50%); /* Vertically centers the entries info */
+    margin-right: 15px;
+  }  
   
   .paginationButton {
     background-color: transparent;
@@ -201,7 +245,7 @@
     padding: 5px 25px;
     margin: 0 5px;
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
   
   .paginationButton:disabled {
@@ -210,6 +254,88 @@
   }
   
   .paginationInfo {
-    font-size: 1.1em;
+    font-size: 1em;
   }
   
+  /* Add the styles for the search bar and filter button */
+.controlsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.searchBar {
+  flex: 1;
+  padding: 8px 8px;
+  font-size: 13px;
+  border: 1.5px solid #e4e4e4;
+  border-radius: 8px;
+}
+
+.modifierButton {
+  background-color: #ffffff;
+  color: #313131;
+  padding: 8px 10px;
+  font-size: 13px;
+  border: 1.5px solid #e4e4e4;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.modifierButton:hover {
+  background-color: #f3f3f3b3;
+}
+
+.modifierIcon {
+  width: 15px;
+  height: 15px;
+  stroke: #313131;
+}
+
+/* Reduce padding in the first and second column */
+.pasteTable td:first-child,
+.pasteTable th:first-child {
+  padding-right: 0px; /* Adjust the right padding of the first column */
+}
+
+.pasteTable td:nth-child(2),
+.pasteTable th:nth-child(2) {
+  padding-left: 0px; /* Adjust the left padding of the second column */
+}
+
+/* Custom style for checkboxes */
+.customCheckbox {
+  background-color: #ffffff;
+  appearance: none; /* Remove default checkbox styling */
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #ccc; /* Grey border */
+  border-radius: 4px; /* Optional: for rounded corners */
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.customCheckbox:checked {
+  border-color: #545454; /* Change border color when checked */
+  background-color: #222222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 12.6111L8.92308 17.5L20 6.5' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px; /* Adjust size as needed */
+}
+
+
+.customCheckbox:checked::after {
+  content: '';
+}
