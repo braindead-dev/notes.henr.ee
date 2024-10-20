@@ -262,7 +262,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .searchBar {
@@ -346,7 +346,7 @@
 
 .sortMenu {
   position: absolute;
-  top: calc(100% + 5px);
+  top: calc(100% + 10px);
   left: 0;
   background-color: #ffffff;
   color: #313131;
