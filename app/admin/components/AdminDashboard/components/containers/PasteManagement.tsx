@@ -1,6 +1,6 @@
 // app/admin/components/AdminDashboard/components/PasteManagement.tsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from '@/styles/AdminDashboard.module.css';
 
 // Define the type for each Paste
@@ -33,6 +33,8 @@ const PasteManagement: React.FC = () => {
   const [totalPastes, setTotalPastes] = useState<number>(0);  // Track total number of entries=
   const [selectedPastes, setSelectedPastes] = useState<string[]>([]);  // Track selected pastes by ID
   const pastesPerPage = 20; // Assuming 20 pastes per page
+
+  const sortMenuRef = useRef<HTMLDivElement>(null); // Reference for the sort menu
 
   const fetchPastes = async () => {
     try {
@@ -87,7 +89,6 @@ const PasteManagement: React.FC = () => {
     }
   };
 
-
   // sort functions
 
   const toggleSortMenu = () => {
@@ -105,6 +106,26 @@ const PasteManagement: React.FC = () => {
     setShowSortMenu(false);
   };
 
+  const closeSortMenu = () => {
+    setShowSortMenu(false);
+  };
+
+  // Hook to handle outside clicks
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (sortMenuRef.current && !sortMenuRef.current.contains(event.target as Node)) {
+        closeSortMenu();
+      }
+    };
+
+    // Add event listener
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Cleanup listener when component unmounts or when effect is re-run
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // Calculate the range of entries being displayed
   const startEntry = (page - 1) * pastesPerPage + 1;
@@ -124,7 +145,6 @@ const PasteManagement: React.FC = () => {
           className={styles.searchBar}
         />
 
-
         <div className={styles.modifierButtonsWrapper}>
           <button onClick={toggleSortMenu} className={styles.modifierButton}>
             <svg
@@ -140,7 +160,11 @@ const PasteManagement: React.FC = () => {
             <span>Sort by</span>
 
             {showSortMenu && (
-              <div className={styles.sortMenu}>
+              <div
+                ref={sortMenuRef}
+                className={styles.sortMenu}
+                onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the dropdown
+              >
                 <h4>Sort by</h4>
                 <div className={styles.sortGroup}>
                   <p>Date</p>
@@ -179,19 +203,14 @@ const PasteManagement: React.FC = () => {
                 </div>
 
                 <div className={styles.sortActions}>
-                  <button onClick={resetSort} className={styles.resetButton}>Reset</button>
+                  <button onClick={resetSort} className={styles.resetButton}>Cancel</button>
                   <button onClick={applySort} className={styles.applyButton}>Apply now</button>
                 </div>
               </div>
             )}
-          
           </button>
 
-
-
-
           {/* Filter Button with SVG */}
-
           <button className={styles.modifierButton}>
             <svg
               viewBox="0 0 24 24"
@@ -215,7 +234,8 @@ const PasteManagement: React.FC = () => {
           </button>
         </div>
       </div>
-      
+
+
       {/* Table for displaying pastes */}
       <table className={styles.pasteTable}>
         <thead>
@@ -258,8 +278,6 @@ const PasteManagement: React.FC = () => {
         </tbody>
       </table>
 
-
-
       <div className={styles.paginationWrapper}>
         <div className={styles.paginationContainer}>
           {/* Center-aligned Pagination Controls */}
@@ -288,9 +306,6 @@ const PasteManagement: React.FC = () => {
           Entries {startEntry} - {endEntry} of {totalPastes}
         </div>
       </div>
-
-
-
     </div>
   );
 };
