@@ -203,7 +203,7 @@ const PasteManagement: React.FC = () => {
                 </div>
 
                 <div className={styles.sortActions}>
-                  <button onClick={resetSort} className={styles.resetButton}>Cancel</button>
+                  <button onClick={resetSort} className={styles.modifierButton}>Cancel</button>
                   <button onClick={applySort} className={styles.applyButton}>Apply now</button>
                 </div>
               </div>

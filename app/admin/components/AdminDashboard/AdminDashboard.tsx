@@ -3,7 +3,7 @@
 import React from 'react';
 import PerformanceAnalytics from './components/containers/PerformanceAnalytics';
 import OverviewStatistics from './components/containers/OverviewStatistics';
-import PasteManagement from './components/containers/PasteManagement';
+import PasteManagement from './components/containers/PasteManagement/PasteManagement';
 import ExportBackup from './components/containers/ExportBackup';
 import styles from '@/styles/AdminDashboard.module.css';
 
