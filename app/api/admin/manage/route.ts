@@ -19,6 +19,18 @@ export async function GET(request: Request) {
     const limit = 20;
     const skip = (page - 1) * limit;
 
+    const sortBy = url.searchParams.get('sortBy') ?? 'date';
+    const sortOrder = url.searchParams.get('sortOrder') ?? 'desc';
+
+    const sortFieldMapping: Record<string, string> = {
+      date: 'createdAt',
+      name: 'title',
+      size: 'size',
+    };
+
+    const sortField = sortFieldMapping[sortBy] ?? 'createdAt';
+    const sortDir = sortOrder === 'asc' ? 1 : -1;
+
     const client = await clientPromise;
     const db = client.db('notes');
 
@@ -37,23 +49,30 @@ export async function GET(request: Request) {
     // Fetch total number of pastes that match the query
     const totalPastes = await db.collection('pastes').countDocuments(query);
 
-    // Use aggregation to get the document size using $bsonSize
-    const pastes = await db.collection('pastes')
-      .aggregate([
-        { $match: query },
-        { $skip: skip },
-        { $limit: limit },
-        {
-          $project: {
-            id: '$id',  // Rename _id to id for frontend compatibility
-            title: 1,
-            isEncrypted: 1,
-            createdAt: 1,
-            size: { $bsonSize: '$$ROOT' }  // Calculate the document size in bytes
-          }
-        }
-      ])
-      .toArray();
+    // Modify the aggregation pipeline
+    const pipeline = [
+      { $match: query },
+      {
+        $project: {
+          id: '$id',
+          title: 1,
+          isEncrypted: 1,
+          createdAt: 1,
+          size: { $bsonSize: '$$ROOT' },
+          _id: 1, // Explicitly include _id
+        },
+      },
+      {
+        $sort: {
+          [sortField]: sortDir,
+          _id: 1, // Secondary sort on _id to ensure stable sorting
+        },
+      },
+      { $skip: skip },
+      { $limit: limit },
+    ];
+
+    const pastes = await db.collection('pastes').aggregate(pipeline).toArray();
 
     return NextResponse.json({
       pastes,
@@ -61,9 +80,11 @@ export async function GET(request: Request) {
       totalPages: Math.ceil(totalPastes / limit),
       page,
     });
-
   } catch (error) {
     console.error('Error fetching pastes:', error);
-    return NextResponse.json({ error: 'Unable to fetch pastes' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Unable to fetch pastes' },
+      { status: 500 }
+    );
   }
 }
