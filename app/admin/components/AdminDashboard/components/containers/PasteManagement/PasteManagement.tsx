@@ -165,46 +165,47 @@ const PasteManagement: React.FC = () => {
                 className={styles.sortMenu}
                 onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the dropdown
               >
-                <h4>Sort by</h4>
+                <p>Sort by</p>
+
                 <div className={styles.sortGroup}>
                   <p>Date</p>
                   <label>
-                    <input type="radio" checked={sortBy === 'date'} onChange={() => setSortBy('date')} />
+                    <input type="radio" checked={sortBy === 'date' && sortOrder === 'asc'} onChange={() => { setSortBy('date'); setSortOrder('asc'); }} />
                     Ascending
                   </label>
                   <label>
-                    <input type="radio" checked={sortBy === 'date'} onChange={() => setSortBy('date-desc')} />
+                    <input type="radio" checked={sortBy === 'date' && sortOrder === 'desc'} onChange={() => { setSortBy('date'); setSortOrder('desc'); }} />
                     Descending
-                  </label>
-                </div>
-
-                <div className={styles.sortGroup}>
-                  <p>Activity</p>
-                  <label>
-                    <input type="radio" checked={sortBy === 'activity'} onChange={() => setSortBy('activity')} />
-                    A-Z
-                  </label>
-                  <label>
-                    <input type="radio" checked={sortBy === 'activity'} onChange={() => setSortBy('activity-desc')} />
-                    Z-A
                   </label>
                 </div>
 
                 <div className={styles.sortGroup}>
                   <p>Name</p>
                   <label>
-                    <input type="radio" checked={sortBy === 'name'} onChange={() => setSortBy('name')} />
+                    <input type="radio" checked={sortBy === 'name' && sortOrder === 'asc'} onChange={() => { setSortBy('name'); setSortOrder('asc'); }} />
                     A-Z
                   </label>
                   <label>
-                    <input type="radio" checked={sortBy === 'name'} onChange={() => setSortBy('name-desc')} />
+                    <input type="radio" checked={sortBy === 'name' && sortOrder === 'desc'} onChange={() => { setSortBy('name'); setSortOrder('desc'); }} />
                     Z-A
+                  </label>
+                </div>
+
+                <div className={styles.sortGroup}>
+                  <p>Size</p>
+                  <label>
+                    <input type="radio" checked={sortBy === 'size' && sortOrder === 'asc'} onChange={() => { setSortBy('size'); setSortOrder('asc'); }} />
+                    Ascending
+                  </label>
+                  <label>
+                    <input type="radio" checked={sortBy === 'size' && sortOrder === 'desc'} onChange={() => { setSortBy('size'); setSortOrder('desc'); }} />
+                    Descending
                   </label>
                 </div>
 
                 <div className={styles.sortActions}>
                   <button onClick={resetSort} className={styles.modifierButton}>Cancel</button>
-                  <button onClick={applySort} className={styles.applyButton}>Apply now</button>
+                  <button onClick={applySort} className={styles.applyButton}>Apply</button>
                 </div>
               </div>
             )}
