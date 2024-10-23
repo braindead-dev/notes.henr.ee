@@ -265,12 +265,41 @@
   margin-bottom: 10px;
 }
 
-.searchBar {
+/* Container for search bar and icon */
+.searchBarContainer {
+  position: relative;
   width: 400px;
-  padding: 8px 8px;
-  font-size: 13px;
+  display: flex;
+  align-items: center;
   border: 1.5px solid #e4e4e4;
   border-radius: 8px;
+  padding: 8px;
+  font-size: 13px;
+  transition: border-color 0.3s ease;
+}
+
+.searchBarContainer:focus-within {
+  border-color: #888888; /* Darker grey when focused */
+}
+
+/* Search icon inside the search bar */
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  width: 18px;
+  height: 18px;
+  stroke: #888888;
+}
+
+/* Search input with padding for the icon */
+.searchBar {
+  flex: 1;
+  padding-left: 28px; /* Add left padding for the icon */
+  font-size: 13px;
+  border: none;
+  outline: none;
+  width: 100%;
+  background: transparent;
 }
 
 .modifierButton {
