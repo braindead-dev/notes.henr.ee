@@ -21,7 +21,14 @@ interface ApiResponse {
 const PasteManagement: React.FC = () => {
   const [pastes, setPastes] = useState<Paste[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  
+  // Track the state of the top checkbox
+  const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
+
+  // Filtering
+  const [showFilterMenu, setShowFilterMenu] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>('');
+  const filterMenuRef = useRef<HTMLDivElement>(null);
 
   // Sorting
   const [sortBy, setSortBy] = useState<string>('date');
@@ -72,6 +79,19 @@ const PasteManagement: React.FC = () => {
     );
   };
 
+  // Handle top checkbox toggle (select/deselect all)
+  const handleSelectAllChange = () => {
+    setIsAllSelected(!isAllSelected);
+    if (!isAllSelected) {
+      // Select all pastes
+      const allPasteIds = pastes.map((paste) => paste.id);
+      setSelectedPastes(allPasteIds);
+    } else {
+      // Deselect all pastes
+      setSelectedPastes([]);
+    }
+  };
+
   const formatBytes = (bytes: number, decimals = 2) => {
     if (bytes === 0) return '0 B';
     const k = 1024;
@@ -91,6 +111,15 @@ const PasteManagement: React.FC = () => {
     if (page < totalPages) {
       setPage(page + 1);
     }
+  };
+
+  // Filter functions
+  const toggleFilterMenu = () => {
+    setShowFilterMenu(!showFilterMenu);
+  };
+  
+  const closeFilterMenu = () => {
+    setShowFilterMenu(false);
   };
 
   // Sort functions
@@ -134,14 +163,17 @@ const PasteManagement: React.FC = () => {
       if (sortMenuRef.current && !sortMenuRef.current.contains(event.target as Node)) {
         closeSortMenu();
       }
+      if (filterMenuRef.current && !filterMenuRef.current.contains(event.target as Node)) {
+        closeFilterMenu();
+      }
     };
-
+  
     document.addEventListener('mousedown', handleClickOutside);
-
+  
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [sortMenuRef]);
+  }, []);  
 
   // Calculate the range of entries being displayed
   const startEntry = (page - 1) * pastesPerPage + 1;
@@ -287,7 +319,7 @@ const PasteManagement: React.FC = () => {
           </button>
 
           {/* Filter Button */}
-          <button className={styles.modifierButton}>
+          <button onClick={toggleFilterMenu} className={styles.modifierButton}>
             <svg
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -307,6 +339,104 @@ const PasteManagement: React.FC = () => {
                 </g>
             </svg>
             <span>Filter</span>
+
+            {showFilterMenu && (
+              <div
+                ref={filterMenuRef} // Add this line
+                className={styles.sortMenu}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <p>Show records that</p>
+
+                <div className={styles.sortGroup}>
+                  <p>Date</p>
+                  <label>
+                    <input
+                      type="radio"
+                      checked={tempSortBy === 'date' && tempSortOrder === 'asc'}
+                      onChange={() => {
+                        setTempSortBy('date');
+                        setTempSortOrder('asc');
+                      }}
+                    />
+                    Ascending
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      checked={tempSortBy === 'date' && tempSortOrder === 'desc'}
+                      onChange={() => {
+                        setTempSortBy('date');
+                        setTempSortOrder('desc');
+                      }}
+                    />
+                    Descending
+                  </label>
+                </div>
+
+                <div className={styles.sortGroup}>
+                  <p>Name</p>
+                  <label>
+                    <input
+                      type="radio"
+                      checked={tempSortBy === 'name' && tempSortOrder === 'asc'}
+                      onChange={() => {
+                        setTempSortBy('name');
+                        setTempSortOrder('asc');
+                      }}
+                    />
+                    A-Z
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      checked={tempSortBy === 'name' && tempSortOrder === 'desc'}
+                      onChange={() => {
+                        setTempSortBy('name');
+                        setTempSortOrder('desc');
+                      }}
+                    />
+                    Z-A
+                  </label>
+                </div>
+
+                <div className={styles.sortGroup}>
+                  <p>Size</p>
+                  <label>
+                    <input
+                      type="radio"
+                      checked={tempSortBy === 'size' && tempSortOrder === 'asc'}
+                      onChange={() => {
+                        setTempSortBy('size');
+                        setTempSortOrder('asc');
+                      }}
+                    />
+                    Ascending
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      checked={tempSortBy === 'size' && tempSortOrder === 'desc'}
+                      onChange={() => {
+                        setTempSortBy('size');
+                        setTempSortOrder('desc');
+                      }}
+                    />
+                    Descending
+                  </label>
+                </div>
+
+                <div className={styles.sortActions}>
+                  <button onClick={resetSort} className={styles.modifierButton}>
+                    Cancel
+                  </button>
+                  <button onClick={applySort} className={styles.applyButton}>
+                    Apply
+                  </button>
+                </div>
+              </div>
+            )}
+
           </button>
         </div>
       </div>
@@ -316,7 +446,11 @@ const PasteManagement: React.FC = () => {
         <thead>
           <tr>
             <th>
-              <input type="checkbox" className={styles.customCheckbox} />
+              <input 
+                type="checkbox" 
+                className={styles.customCheckbox} 
+                onChange={handleSelectAllChange}
+              />
             </th>
             <th>Title</th>
             <th>Date Created</th>

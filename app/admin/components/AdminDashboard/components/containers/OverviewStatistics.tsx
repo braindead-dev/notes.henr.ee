@@ -82,7 +82,7 @@ const OverviewStatistics: React.FC = () => {
                         colorScale={['#4caf50', '#ebebeb']}
                         labels={() => null} // Remove labels
                         radius={100}
-                        innerRadius={65}
+                        innerRadius={75}
                     />
                 </div>
                 {/* Encryption Stats Key */}
@@ -109,7 +109,7 @@ const OverviewStatistics: React.FC = () => {
                         colorScale={['#90caf9', '#ebebeb']}
                         labels={() => null} // Remove labels
                         radius={100}
-                        innerRadius={65}
+                        innerRadius={75}
                     />
                 </div>
                 {/* Storage Usage Key */}

@@ -195,15 +195,15 @@
     background-color: #bbe8a395;
     color: #0b440e;
     padding: 2.5px 6px; /* Padding inside the tag */
-    border-radius: 12px; /* Rounded corners */
+    border-radius: 8px; /* Rounded corners */
     font-size: 12px; /* Small font size */
   }
   
   .noneTag {
     background-color: #ebebebb5;
     color: #313131;
-    padding: 3px 8px; /* Padding inside the tag */
-    border-radius: 12px; /* Rounded corners */
+    padding: 2.5px 6px; /* Padding inside the tag */
+    border-radius: 8px; /* Rounded corners */
     font-size: 12px; /* Small font size */
   }
 
