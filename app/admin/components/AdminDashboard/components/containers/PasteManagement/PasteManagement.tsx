@@ -473,7 +473,7 @@ const PasteManagement: React.FC = () => {
               <td>
                 <a
                   className={styles.unstyledLink}
-                  href={`https://notes.henr.ee/${paste.id}`}
+                  href={`/${paste.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
