@@ -63,8 +63,14 @@ export async function GET(request: Request) {
         },
       },
       {
+        $addFields: {
+          // Add a lowercase version of the title for case-insensitive sorting
+          lowerTitle: { $toLower: '$title' }
+        }
+      },
+      {
         $sort: {
-          [sortField]: sortDir,
+          [sortField === 'title' ? 'lowerTitle' : sortField]: sortDir,
           _id: 1, // Secondary sort on _id to ensure stable sorting
         },
       },

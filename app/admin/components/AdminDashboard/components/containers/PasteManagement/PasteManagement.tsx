@@ -239,7 +239,7 @@ const PasteManagement: React.FC = () => {
                         setTempSortOrder('asc');
                       }}
                     />
-                    Ascending
+                    Oldest
                   </label>
                   <label>
                     <input
@@ -250,7 +250,7 @@ const PasteManagement: React.FC = () => {
                         setTempSortOrder('desc');
                       }}
                     />
-                    Descending
+                    Newest
                   </label>
                 </div>
 
