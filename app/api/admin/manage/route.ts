@@ -57,27 +57,45 @@ export async function GET(request: Request) {
           id: '$id',
           title: 1,
           isEncrypted: 1,
+          encryptionType: {
+            $cond: {
+              if: { $eq: ['$isEncrypted', true] },
+              then: {
+                $cond: {
+                  if: { $eq: ['$encryptionMethod', 'password'] },
+                  then: 'password',
+                  else: {
+                    $cond: {
+                      if: { $eq: ['$encryptionMethod', 'key'] },
+                      then: 'key',
+                      else: 'key', // Default to 'key' if encryptionMethod is missing
+                    },
+                  },
+                },
+              },
+              else: null,
+            },
+          },
           createdAt: 1,
           size: { $bsonSize: '$$ROOT' },
-          _id: 1, // Explicitly include _id
+          _id: 1,
         },
       },
       {
         $addFields: {
-          // Add a lowercase version of the title for case-insensitive sorting
-          lowerTitle: { $toLower: '$title' }
-        }
+          lowerTitle: { $toLower: '$title' },
+        },
       },
       {
         $sort: {
           [sortField === 'title' ? 'lowerTitle' : sortField]: sortDir,
-          _id: 1, // Secondary sort on _id to ensure stable sorting
+          _id: 1,
         },
       },
       { $skip: skip },
       { $limit: limit },
-    ];
-
+    ];    
+    
     const pastes = await db.collection('pastes').aggregate(pipeline).toArray();
 
     return NextResponse.json({

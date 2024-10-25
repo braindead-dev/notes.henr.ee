@@ -198,6 +198,22 @@
     border-radius: 8px; /* Rounded corners */
     font-size: 12px; /* Small font size */
   }
+
+  .keyTag {
+    background-color: #bbe8a395;
+    color: #0b440e;
+    padding: 2.5px 6px; /* Padding inside the tag */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 12px; /* Small font size */
+  }
+
+  .passwordTag {
+    background-color: #a3dee895;
+    color: #0b2344;
+    padding: 2.5px 6px; /* Padding inside the tag */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 12px; /* Small font size */
+  }
   
   .noneTag {
     background-color: #ebebebb5;

@@ -8,6 +8,7 @@ interface Paste {
   id: string;
   title: string;
   isEncrypted: boolean;
+  encryptionType: 'key' | 'password' | null; // Add this line
   createdAt: string;
   size: number;
 }
@@ -482,8 +483,10 @@ const PasteManagement: React.FC = () => {
               </td>
               <td>{new Date(paste.createdAt).toISOString().split('T')[0]}</td>
               <td>
-                {paste.isEncrypted ? (
-                  <span className={styles.encryptedTag}>Encrypted</span>
+                {paste.encryptionType === 'key' ? (
+                  <span className={styles.keyTag}>Encrypted</span>
+                ) : paste.encryptionType === 'password' ? (
+                  <span className={styles.passwordTag}>PBKDF2</span>
                 ) : (
                   <span className={styles.noneTag}>None</span>
                 )}

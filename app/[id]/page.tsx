@@ -124,11 +124,19 @@ export default function Paste() {
             isEditable={false} // Non-editable in the paste page
           />
 
-          {!needsDecryption ? (
-            <ContentArea content={loading ? '' : content} isEditable={false} />
-          ) : (
-            <ContentArea content={`\`\`\`\nThis paste is AES-256 encrypted. \n\nTo re-prompt decryption key input, refresh this page.\n\nEncrypted Content:\n${content}\n\`\`\``} isEditable={false} />
-          )}
+          <ContentArea
+            content={
+              !needsDecryption
+                ? loading
+                  ? ''
+                  : content
+                : encryptionMethod === 'password'
+                ? `\`\`\`\nThis paste is AES-256 encrypted with PBKDF2. \n\nTo re-prompt password input, refresh this page.\n\nEncrypted Content:\n${content}\n\`\`\``
+                : `\`\`\`\nThis paste is AES-256 encrypted. \n\nTo re-prompt decryption key input, refresh this page.\n\nEncrypted Content:\n${content}\n\`\`\``
+            }
+            isEditable={false}
+          />
+
         </div>
       </ScrollContainer>
 
