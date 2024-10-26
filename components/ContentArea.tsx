@@ -5,30 +5,45 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import styles from '../styles/page.module.css';
 import { EditorView } from '@codemirror/view';
-import '../styles/markdownStyles.css';
-
 import '../styles/remark.css';
 import '../styles/starryNight.css';
 
+import { createStarryNight, common } from '@wooorm/starry-night';
+import { toHtml } from 'hast-util-to-html';
+
 interface ContentAreaProps {
   content: string;
-  handleContentChange?: (value: string) => void; // Optional in case it's used in the paste page
-  viewMode?: boolean; // Optional, as paste pages will always be in view mode
-  isEditable?: boolean; // To determine if the content area is editable or just displays content
+  handleContentChange?: (value: string) => void;
+  viewMode?: boolean;
+  isEditable?: boolean;
 }
+
+type StarryNightType = Awaited<ReturnType<typeof createStarryNight>>;
 
 const ContentArea: React.FC<ContentAreaProps> = ({
   content,
   handleContentChange,
   viewMode = true,
-  isEditable = false, // By default, it’s not editable
+  isEditable = false,
 }) => {
   const [editorValue, setEditorValue] = useState(content || '');
-  const [isFocused, setIsFocused] = useState(false); // Track focus state
+  const [isFocused, setIsFocused] = useState(false);
+  const [starryNight, setStarryNight] = useState<StarryNightType | null>(null);
 
   useEffect(() => {
-    setEditorValue(content); // Sync editor value with incoming content changes
+    setEditorValue(content);
   }, [content]);
+
+  // Load Starry Night for syntax highlighting
+  useEffect(() => {
+    async function loadStarryNight() {
+      const sn = await createStarryNight(common);
+      setStarryNight(sn);
+    }
+    if (!starryNight) {
+      loadStarryNight();
+    }
+  }, [starryNight]);
 
   const onChange = (value: string) => {
     setEditorValue(value);
@@ -38,17 +53,15 @@ const ContentArea: React.FC<ContentAreaProps> = ({
   };
 
   const handleFocus = () => {
-    setIsFocused(true); // Textbox is focused
+    setIsFocused(true);
   };
 
   const handleBlur = () => {
-    setIsFocused(false); // Textbox is blurred
+    setIsFocused(false);
   };
 
   const getCSSVariables = () => {
-
-    if (typeof window === "undefined") {
-      // Return some default values for SSR
+    if (typeof window === 'undefined') {
       return {
         fontSize: '16px',
         lineHeight: '1.5',
@@ -62,7 +75,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
         selectionBackground: '#b3d4fc',
       };
     }
-    
+
     const root = getComputedStyle(document.documentElement);
     return {
       fontSize: root.getPropertyValue('--font-size').trim(),
@@ -144,8 +157,44 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     },
   });
 
+  // Custom CodeBlock component using Starry Night for syntax highlighting
+  const CodeBlock: React.FC<{
+    node: any;
+    inline?: boolean;
+    className?: string;
+    children?: React.ReactNode[];
+    [key: string]: any;
+  }> = ({ node, inline, className, children, ...props }) => {
+    const [html, setHtml] = useState<string | null>(null);
+
+    useEffect(() => {
+      if (starryNight) {
+        const content = String(children?.[0] || '');
+        if (!inline && className) {
+          const language = className.replace('language-', '');
+          const scope = starryNight.flagToScope(language);
+          if (scope) {
+            const highlighted = starryNight.highlight(content, scope);
+            const htmlString = toHtml(highlighted);
+            setHtml(htmlString);
+          } else {
+            setHtml(`<pre><code>${content}</code></pre>`);
+          }
+        } else {
+          setHtml(`<code>${content}</code>`);
+        }
+      }
+    }, [children, className, inline, starryNight]);
+
+    if (html) {
+      return <div dangerouslySetInnerHTML={{ __html: html }} />;
+    } else {
+      return <code>{children}</code>;
+    }
+  };
+
   return isEditable && !viewMode ? (
-    <div className={`${styles.contentEditable} markdown-content`}>
+    <div className={`${styles.contentEditable} content`}>
       {!isFocused && !editorValue && (
         <div className={styles.placeholder}>Start typing here...</div>
       )}
@@ -161,12 +210,14 @@ const ContentArea: React.FC<ContentAreaProps> = ({
           highlightActiveLine: false,
           foldGutter: false,
         }}
-        className={`${styles.codeMirror} markdown-content`}
+        className={`${styles.codeMirror} content`}
       />
     </div>
   ) : (
-    <div className={`${styles.markdownView} markdown-content`}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+    <div className={`${styles.markdownView} content`}>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+      >
         {editorValue || ''}
       </ReactMarkdown>
     </div>

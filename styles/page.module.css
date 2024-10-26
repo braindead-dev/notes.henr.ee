@@ -140,7 +140,6 @@
 .markdownView {
   flex: 1;
   min-height: calc(100vh - 150px);
-  white-space: pre-wrap;
   overflow-wrap: break-word;
   padding-bottom: 20em;
 }
