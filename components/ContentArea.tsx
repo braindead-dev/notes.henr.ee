@@ -3,6 +3,9 @@ import CodeMirror from '@uiw/react-codemirror';
 import { markdown } from '@codemirror/lang-markdown';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math'; // Import remark-math
+import rehypeKatex from 'rehype-katex'; // Import rehype-katex
+import 'katex/dist/katex.min.css'; // Import KaTeX CSS
 import styles from '../styles/page.module.css';
 import { EditorView } from '@codemirror/view';
 import 'github-markdown-css/github-markdown.css';
@@ -189,7 +192,8 @@ const ContentArea: React.FC<ContentAreaProps> = ({
   ) : (
     <div className={`${styles.markdownView} markdown-body markdown-content`}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkMath]} // Add remarkMath
+        rehypePlugins={[rehypeKatex]} // Add rehypeKatex
       >
         {editorValue || ''}
       </ReactMarkdown>
