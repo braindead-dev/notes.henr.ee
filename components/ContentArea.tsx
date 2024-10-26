@@ -7,6 +7,9 @@ import styles from '../styles/page.module.css';
 import { EditorView } from '@codemirror/view';
 import '../styles/markdownStyles.css';
 
+import '../styles/remark.css';
+import '../styles/starryNight.css';
+
 interface ContentAreaProps {
   content: string;
   handleContentChange?: (value: string) => void; // Optional in case it's used in the paste page
