@@ -21,13 +21,13 @@
   --h5-weight: 600;
   --h6-weight: 600;
   --p-spacing: 1rem;
-  --header-margin: 0;
-  --header-margin-bottom: 0;
   --blockquote-border: 2px solid #a67371;
-  --blockquote-padding: 1em;
   --code-background: #f5f5f5;
   --link-color: #8f2221;
   --selection-background: #BBDFFF;
+
+
+  --heading-spacing: calc(var(--p-spacing) * 2.5);
 }
 
 /* Base styles */
@@ -38,12 +38,17 @@
   font-family: inherit;
 }
 
+/* Remove underline for headers 1, 2, and 3 */
+.markdown-content h1,
+.markdown-content h2 {
+  border-bottom: none;
+}
+
 /* Headings */
 .markdown-content h1, .cm-header-1 {
   font-size: var(--header1-size);
   font-weight: var(--h1-weight);
   line-height: var(--h1-line-height);
-  margin-block: var(--header-margin) var(--header-margin); 
   letter-spacing: -0.015em;
 }
 
@@ -51,7 +56,6 @@
   font-size: var(--header2-size);
   font-weight: var(--h2-weight);
   line-height: var(--h2-line-height);
-  margin-block: var(--header-margin) var(--header-margin); 
   letter-spacing: -0.015em;
 }
 
@@ -59,7 +63,6 @@
   font-size: var(--header3-size);
   font-weight: var(--h3-weight);
   line-height: var(--h3-line-height);
-  margin-block: var(--header-margin) var(--header-margin); 
   letter-spacing: -0.015em;
 }
 
@@ -67,24 +70,17 @@
   font-size: var(--header4-size);
   font-weight: var(--h4-weight);
   line-height: var(--h4-line-height);
-  margin-block: var(--header-margin) var(--header-margin); 
 }
 
 .markdown-content h5, .cm-header-5 {
   font-size: var(--header5-size);
   font-weight: var(--h5-weight);
-  margin-block: var(--header-margin) var(--header-margin); 
 }
 
 .markdown-content h6, .cm-header-5 {
   font-size: var(--header6-size);
   font-weight: var(--h6-weight);
-  margin-block: var(--header-margin) var(--header-margin); 
-}
-
-/* Paragraphs */
-.markdown-content p, .cm-line {
-  margin: var(--header-margin) 0;
+  color: var(--color);
 }
 
 /* Bold Text */
@@ -92,57 +88,9 @@
   font-weight: 600;
 }
 
-/* Italic Text */
-.markdown-content em, .cm-em {
-  font-style: italic;
-}
-
-/* Blockquotes */
-.markdown-content blockquote, .cm-quote {
-  border-left: var(--blockquote-border);
-  padding-left: var(--blockquote-padding);
-  color: var(--color);
-  margin-top: -0.5em; /* Reduced space above */
-  margin-bottom: -0.5em; /* Reduced space below */
-}
-
-/* Reduce spacing only for the first and last paragraph within blockquote */
-.markdown-content blockquote > *:first-child {
-  margin-top: -1.5em; /* Reduce space at the start */
-}
-
-/* Adjust for headers at the start */
-.markdown-content blockquote > :is(h1, h2, h3, h4, h5, h6):first-child {
-  margin-top: -1em; /* Less reduction for headers */
-}
-
-.markdown-content blockquote > *:last-child {
-  margin-bottom: -1.5em; /* Reduce space at the end */
-}
-
-/* Adjust for headers at the end */
-.markdown-content blockquote > :is(h1, h2, h3, h4, h5, h6):last-child {
-  margin-bottom: -1em; /* Less reduction for headers */
-}
-
-/* Leave normal paragraph spacing for paragraphs inside blockquote */
-.markdown-content blockquote > * {
-  margin-top: -0.5em;
-}
-
-/* Code Blocks */
-.markdown-content pre, .cm-codeblock {
-  background-color: var(--code-background);
-  padding: 10px;
-  border-radius: 4px;
-  overflow: auto;
-}
-
-.markdown-content code, .cm-inline-code {
-  font-family: monospace;
-  background-color: var(--code-background);
-  padding: 2px 4px;
-  border-radius: 4px;
+.markdown-content hr {
+  height: 2px;
+  opacity: 0.5;
 }
 
 /* Links */
@@ -156,27 +104,6 @@
   color: #a35656; 
 }
 
-/* Lists */
-.markdown-content ul, .markdown-content ol, .cm-list {
-  line-height: 1.55em;
-  margin-top: -1.7em;
-}
-
-/* Sublist */
-.markdown-content ul li > ul, .markdown-content ol li > ol ,
-.markdown-content ul li > ol, .markdown-content ol li > ul {
-  margin-top: -1.5em; /* Space between bullet point and sub-bullet */
-  margin-bottom: -1.5em; /* Adjusted margin for sublists */
-}
-
-.markdown-content ul, .markdown-content ol {
-  margin-bottom: 0em; /* Adjusted margin for main lists */
-}
-
-.markdown-content ul li, .markdown-content ol li {
-  margin-bottom: -1.5em;
-}
-
 /* Styling only the bullet points */
 .markdown-content ul li::marker, 
 .markdown-content ol li::marker {
@@ -186,29 +113,6 @@
 /* Ensure sub-bullets are filled in */
 .markdown-content ul ul, .markdown-content ol ol, .markdown-content ol li > ul  {
   list-style-type: disc; /* Use filled bullet points for sublists */
-}
-
-/* Horizontal Rule */
-.markdown-content hr {
-  border: none;
-  border-top: 2px solid #E0E0E0;
-  margin: 1em 0;
-}
-
-/* Images */
-.markdown-content img {
-  max-width: 100%;
-}
-
-/* Tables */
-.markdown-content table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.markdown-content th, .markdown-content td {
-  border: 1px solid #ddd;
-  padding: 8px;
 }
 
 .markdown-content th {

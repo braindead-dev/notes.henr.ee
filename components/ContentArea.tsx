@@ -7,6 +7,7 @@ import styles from '../styles/page.module.css';
 import { EditorView } from '@codemirror/view';
 import 'github-markdown-css/github-markdown.css';
 import '../styles/starryNight.css';
+import '../styles/markdownStyles.css';
 
 import { createStarryNight, common } from '@wooorm/starry-night';
 import { toHtml } from 'hast-util-to-html';
@@ -186,7 +187,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
       />
     </div>
   ) : (
-    <div className={`${styles.markdownView} markdown-body`}>
+    <div className={`${styles.markdownView} markdown-body markdown-content`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
       >
