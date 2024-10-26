@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import styles from '../styles/page.module.css';
 import { EditorView } from '@codemirror/view';
-import '../styles/remark.css';
+import 'github-markdown-css/github-markdown.css';
 import '../styles/starryNight.css';
 
 import { createStarryNight, common } from '@wooorm/starry-night';
@@ -60,46 +60,13 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     setIsFocused(false);
   };
 
-  const getCSSVariables = () => {
-    if (typeof window === 'undefined') {
-      return {
-        fontSize: '16px',
-        lineHeight: '1.5',
-        header1Size: '32px',
-        header2Size: '28px',
-        header3Size: '24px',
-        blockquoteBorder: '4px solid #ccc',
-        blockquotePadding: '10px',
-        codeBackground: '#f5f5f5',
-        linkColor: '#0070f3',
-        selectionBackground: '#b3d4fc',
-      };
-    }
-
-    const root = getComputedStyle(document.documentElement);
-    return {
-      fontSize: root.getPropertyValue('--font-size').trim(),
-      lineHeight: root.getPropertyValue('--line-height').trim(),
-      header1Size: root.getPropertyValue('--header1-size').trim(),
-      header2Size: root.getPropertyValue('--header2-size').trim(),
-      header3Size: root.getPropertyValue('--header3-size').trim(),
-      blockquoteBorder: root.getPropertyValue('--blockquote-border').trim(),
-      blockquotePadding: root.getPropertyValue('--blockquote-padding').trim(),
-      codeBackground: root.getPropertyValue('--code-background').trim(),
-      linkColor: root.getPropertyValue('--link-color').trim(),
-      selectionBackground: root.getPropertyValue('--selection-background').trim(),
-    };
-  };
-
-  const cssVars = getCSSVariables();
-
   const myTheme = EditorView.theme({
     '&': {
       color: 'inherit',
       backgroundColor: 'transparent',
       fontFamily: 'inherit',
-      fontSize: cssVars.fontSize,
-      lineHeight: cssVars.lineHeight,
+      fontSize: '16px',
+      lineHeight: '1.5',
       border: 'none',
     },
     '.cm-content': {
@@ -123,37 +90,37 @@ const ContentArea: React.FC<ContentAreaProps> = ({
       lineHeight: 'inherit',
     },
     '.cm-header-1': {
-      fontSize: cssVars.header1Size,
+      fontSize: '32px',
       fontWeight: 'bold',
       margin: '10px 0',
     },
     '.cm-header-2': {
-      fontSize: cssVars.header2Size,
+      fontSize: '28px',
       fontWeight: 'bold',
       margin: '0.75em 0',
     },
     '.cm-header-3': {
-      fontSize: cssVars.header3Size,
+      fontSize: '24px',
       fontWeight: 'bold',
       margin: '0.83em 0',
     },
     '.cm-blockquote': {
-      borderLeft: cssVars.blockquoteBorder,
-      paddingLeft: cssVars.blockquotePadding,
+      borderLeft: '4px solid #ccc',
+      paddingLeft: '10px',
       color: 'inherit',
       margin: '0.5em 0',
     },
     '.cm-inline-code': {
-      backgroundColor: cssVars.codeBackground,
+      backgroundColor: '#f5f5f5',
       padding: '2px 4px',
       borderRadius: 'inherit',
     },
     '.cm-link': {
-      color: cssVars.linkColor,
+      color: '#0366d6', // GitHub link color
       textDecoration: 'inherit',
     },
     '&.cm-focused .cm-selectionBackground, ::selection': {
-      backgroundColor: cssVars.selectionBackground,
+      backgroundColor: '#b3d4fc',
     },
   });
 
@@ -170,8 +137,8 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     useEffect(() => {
       if (starryNight) {
         const content = String(children?.[0] || '');
-        if (!inline && className) {
-          const language = className.replace('language-', '');
+        if (!inline) {
+          const language = className?.replace('language-', '') || 'text';
           const scope = starryNight.flagToScope(language);
           if (scope) {
             const highlighted = starryNight.highlight(content, scope);
@@ -187,14 +154,19 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     }, [children, className, inline, starryNight]);
 
     if (html) {
-      return <div dangerouslySetInnerHTML={{ __html: html }} />;
+      return (
+        <div
+          className="code-container"
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      );
     } else {
       return <code>{children}</code>;
     }
   };
 
   return isEditable && !viewMode ? (
-    <div className={`${styles.contentEditable} content`}>
+    <div className={`${styles.contentEditable} markdown-body`}>
       {!isFocused && !editorValue && (
         <div className={styles.placeholder}>Start typing here...</div>
       )}
@@ -210,11 +182,11 @@ const ContentArea: React.FC<ContentAreaProps> = ({
           highlightActiveLine: false,
           foldGutter: false,
         }}
-        className={`${styles.codeMirror} content`}
+        className={`${styles.codeMirror} markdown-body`}
       />
     </div>
   ) : (
-    <div className={`${styles.markdownView} content`}>
+    <div className={`${styles.markdownView} markdown-body`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
       >
