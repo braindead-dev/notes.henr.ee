@@ -48,8 +48,9 @@ The key is **not included** in the URL. Instead, you must enter it manually afte
 
 We built this pastebin with user privacy as a priority. By encrypting everything client-side, we ensure that your paste contents are known only to you and those with whom you share the encryption key.
 
+----
+
 If you have further questions, feel free to reach out.
 
 **Email** – contact@henrywa[.]ng
-**Telegram** – [@henry99x](https://t.me/henry99x)
 `;

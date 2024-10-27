@@ -19,9 +19,9 @@ export const pageContent = `
 2. **Sharing With Others:** Share your paste link with others! (and supply them with the key / password if applicable)
 
 
-Enjoy sharing with **notes.henr.ee**!
-If you have further questions or would like to report a paste, feel free to reach out.
+----
+Enjoy sharing with **notes.henr.ee**! 
+If you have further questions, feel free to reach out.
 
 **Email** – contact@henrywa[.]ng
-**Telegram** – [@henry99x](https://t.me/henry99x)
 `;
