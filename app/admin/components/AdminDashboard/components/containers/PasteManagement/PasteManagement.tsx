@@ -248,6 +248,9 @@ const PasteManagement: React.FC = () => {
       if (filterMenuRef.current && !filterMenuRef.current.contains(event.target as Node)) {
         closeFilterMenu();
       }
+      if (actionMenuRef.current && !actionMenuRef.current.contains(event.target as Node)) {
+        setShowActionMenu(false);
+      }
     };
   
     document.addEventListener('mousedown', handleClickOutside);
@@ -260,6 +263,135 @@ const PasteManagement: React.FC = () => {
   // Calculate the range of entries being displayed
   const startEntry = (page - 1) * pastesPerPage + 1;
   const endEntry = Math.min(page * pastesPerPage, totalPastes);
+
+  // Add these state variables at the top with other states
+  const [showActionMenu, setShowActionMenu] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const actionMenuRef = useRef<HTMLDivElement>(null);
+
+  // Add this to your useEffect for click outside handling
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (actionMenuRef.current && !actionMenuRef.current.contains(event.target as Node)) {
+        setShowActionMenu(false);
+      }
+      // ... existing sort and filter menu handlers
+    };
+    // ... rest of the useEffect
+  }, []);
+
+  // Add these handler functions
+  const handleExportSelected = async () => {
+    try {
+      if (selectedPastes.length === 0) {
+        // Fetch all results
+        const filterParams = new URLSearchParams();
+        filterParams.append('search', searchQuery);
+        filterParams.append('sortBy', sortBy);
+        filterParams.append('sortOrder', sortOrder);
+        
+        // Add filter parameters
+        if (activeFilter.dateFrom) filterParams.append('dateFrom', activeFilter.dateFrom);
+        if (activeFilter.dateTo) filterParams.append('dateTo', activeFilter.dateTo);
+        if (activeFilter.sizeFrom) filterParams.append('sizeFrom', activeFilter.sizeFrom);
+        if (activeFilter.sizeTo) filterParams.append('sizeTo', activeFilter.sizeTo);
+        
+        // Handle encryption types
+        const encryptionTypes = Object.entries(activeFilter.encryption)
+          .filter(([_, value]) => value)
+          .map(([key]) => key);
+        if (encryptionTypes.length > 0) {
+          filterParams.append('encryptionTypes', encryptionTypes.join(','));
+        }
+
+        const res = await fetch(`/api/admin/export-all?${filterParams.toString()}`);
+        const allPastes = await res.json();
+        
+        const exportData = {
+          pastes: allPastes,
+          exportDate: new Date().toISOString(),
+          totalCount: allPastes.length,
+        };
+
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `all-pastes-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } else {
+        // Export only selected pastes (existing functionality)
+        const selectedPastesData = pastes.filter(paste => selectedPastes.includes(paste.id));
+        const exportData = {
+          pastes: selectedPastesData,
+          exportDate: new Date().toISOString(),
+          totalCount: selectedPastesData.length,
+        };
+
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `selected-pastes-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+      setShowActionMenu(false);
+    } catch (error) {
+      console.error('Error exporting pastes:', error);
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    try {
+      if (selectedPastes.length === 0) {
+        // Delete all results matching current filters
+        const filterParams = new URLSearchParams();
+        filterParams.append('search', searchQuery);
+        if (activeFilter.dateFrom) filterParams.append('dateFrom', activeFilter.dateFrom);
+        if (activeFilter.dateTo) filterParams.append('dateTo', activeFilter.dateTo);
+        if (activeFilter.sizeFrom) filterParams.append('sizeFrom', activeFilter.sizeFrom);
+        if (activeFilter.sizeTo) filterParams.append('sizeTo', activeFilter.sizeTo);
+        
+        const encryptionTypes = Object.entries(activeFilter.encryption)
+          .filter(([_, value]) => value)
+          .map(([key]) => key);
+        if (encryptionTypes.length > 0) {
+          filterParams.append('encryptionTypes', encryptionTypes.join(','));
+        }
+
+        const response = await fetch(`/api/admin/delete-all?${filterParams.toString()}`, {
+          method: 'DELETE',
+        });
+
+        if (!response.ok) throw new Error('Failed to delete pastes');
+      } else {
+        // Delete selected pastes (existing functionality)
+        const response = await fetch('/api/admin/delete-pastes', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ pasteIds: selectedPastes }),
+        });
+
+        if (!response.ok) throw new Error('Failed to delete pastes');
+      }
+      
+      setSelectedPastes([]);
+      setIsAllSelected(false);
+      fetchPastes();
+      setShowDeleteModal(false);
+      setShowActionMenu(false);
+    } catch (error) {
+      console.error('Error deleting pastes:', error);
+    }
+  };
 
   return (
     <div className={styles.container} style={{ width: '100%' }}>
@@ -551,21 +683,74 @@ const PasteManagement: React.FC = () => {
             )}
           </button>
 
-          <button className={styles.iconButton}>
-            <svg
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              className={styles.modifierIcon}
-              fill="none"
-              stroke-width="2"
+          {/* Action Button - Note the position: relative wrapper */}
+          <div style={{ position: 'relative' }}>
+            <button 
+              className={styles.iconButton} 
+              onClick={() => setShowActionMenu(!showActionMenu)}
             >
-              <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
+              <svg
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                className={styles.modifierIcon}
+                fill="none"
+                stroke-width="2"
+              >
+                <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            {showActionMenu && (
+              <div ref={actionMenuRef} className={styles.actionMenu}>
+                <button 
+                  onClick={handleExportSelected} 
+                  className={styles.actionButton}
+                >
+                  {selectedPastes.length === 0 ? 'Export all results' : `Export selected (${selectedPastes.length})`}
+                </button>
+                <button 
+                  onClick={() => setShowDeleteModal(true)} 
+                  className={`${styles.actionButton} ${styles.deleteButton}`}
+                >
+                  {selectedPastes.length === 0 ? 'Delete all results' : `Delete selected (${selectedPastes.length})`}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h3>Confirm Deletion</h3>
+            <p>
+              {selectedPastes.length === 0 
+                ? `Are you sure you want to delete all ${totalPastes} paste(s)?`
+                : `Are you sure you want to delete ${selectedPastes.length} selected paste(s)?`
+              }
+            </p>
+            <p className={styles.warningText}>This action cannot be undone.</p>
+            <div className={styles.modalActions}>
+              <button 
+                onClick={() => setShowDeleteModal(false)} 
+                className={styles.modifierButton}
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleDeleteSelected} 
+                className={styles.deleteButton}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Table for displaying pastes */}
       <table className={styles.pasteTable}>
