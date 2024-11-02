@@ -62,18 +62,18 @@ export async function GET(request: Request) {
       if (encryptionTypes.includes('none')) {
         encryptionConditions.push({ 
           $or: [
-            { isEncrypted: false }, 
-            { isEncrypted: { $exists: false } },
-            { encryptionMethod: { $exists: false } },
-            { encryptionMethod: null }
+            { isEncrypted: false },
+            { isEncrypted: { $exists: false } }
           ] 
         });
       }
       
       if (encryptionTypes.includes('key')) {
         encryptionConditions.push({ 
-          isEncrypted: true,
-          encryptionMethod: 'key'
+          $or: [
+            { isEncrypted: true, encryptionMethod: 'key' },
+            { isEncrypted: true, encryptionMethod: { $exists: false } }
+          ]
         });
       }
       
@@ -107,17 +107,11 @@ export async function GET(request: Request) {
                 $cond: {
                   if: { $eq: ['$encryptionMethod', 'password'] },
                   then: 'password',
-                  else: {
-                    $cond: {
-                      if: { $eq: ['$encryptionMethod', 'key'] },
-                      then: 'key',
-                      else: 'key', // Default to 'key' if encryptionMethod is missing
-                    },
-                  },
-                },
+                  else: 'key'
+                }
               },
-              else: null,
-            },
+              else: null
+            }
           },
           createdAt: 1,
           size: { $bsonSize: '$$ROOT' },

@@ -118,10 +118,9 @@ const PasteManagement: React.FC = () => {
 
   // Add new filter functions
   const applyFilter = () => {
-    setActiveFilter(tempFilter);
+    setActiveFilter({...tempFilter});
     setShowFilterMenu(false);
-    setPage(1); // Reset to first page when applying new filters
-    fetchPastes(); // Explicitly call fetchPastes when filters are applied
+    setPage(1);
   };
 
   const resetFilter = () => {
@@ -136,14 +135,14 @@ const PasteManagement: React.FC = () => {
         password: false,
       }
     };
-    setTempFilter(emptyFilter);
-    setActiveFilter(emptyFilter);
+    setTempFilter({...emptyFilter});
+    setActiveFilter({...emptyFilter});
     setShowFilterMenu(false);
     setPage(1);
-    fetchPastes(); // Explicitly call fetchPastes when filters are reset
   };
 
   useEffect(() => {
+    console.log('Fetching pastes with filters:', activeFilter);
     fetchPastes();
   }, [page, searchQuery, sortBy, sortOrder, activeFilter]);
 
@@ -529,16 +528,41 @@ const PasteManagement: React.FC = () => {
                 </div>
 
                 <div className={styles.filterActions}>
-                  <button onClick={resetFilter} className={styles.modifierButton}>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      resetFilter();
+                    }} 
+                    className={styles.modifierButton}
+                  >
                     Cancel
                   </button>
-                  <button onClick={applyFilter} className={styles.applyButton}>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      applyFilter();
+                    }} 
+                    className={styles.applyButton}
+                  >
                     Apply
                   </button>
                 </div>
               </div>
             )}
+          </button>
 
+          <button className={styles.iconButton}>
+            <svg
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              className={styles.modifierIcon}
+              fill="none"
+              stroke-width="2"
+            >
+              <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </button>
         </div>
       </div>

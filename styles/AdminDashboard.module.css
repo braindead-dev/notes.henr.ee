@@ -329,12 +329,14 @@
   align-items: center;
   gap: 4px;
   cursor: pointer;
-  margin-left: 5px;
   position: relative;
+  white-space: nowrap; /* Prevent text wrapping */
 }
 
 .modifierButtonsWrapper {
   display: flex;
+  gap: 5px; /* Consistent spacing between buttons */
+  margin-left: auto; /* This will push the buttons to the right */
 }
 
 .modifierButton:hover {
@@ -428,7 +430,6 @@
   margin-bottom: 8px;  /* Adds some spacing between each option */
 }
 
-
 .sortActions {
   display: flex;
   justify-content: space-between;
@@ -448,7 +449,6 @@
 .applyButton:hover {
   background-color: #242424;
 }
-
 
 .resetButton {
   background-color: transparent;
@@ -475,4 +475,25 @@
 /* If you need to adjust the checkbox styling specifically for the filter menu */
 .filterGroup .customCheckbox {
   margin: 0;  /* Reset any default margins */
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.iconButton:hover {
+  background-color: #f3f3f3b3;
+}
+
+.iconButton .modifierIcon {
+  width: 18px;  /* Slightly larger than the icons in the other buttons */
+  height: 18px;
+  stroke: #313131;
 }
