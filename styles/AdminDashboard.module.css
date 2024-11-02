@@ -318,6 +318,25 @@
   background: transparent;
 }
 
+.deleteButton {
+  background-color: #f64f4f;
+  color: #ffffff;
+  padding: 8px 10px;
+  font-size: 13px;
+  border: 1.5px solid #c73030;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.deleteButton:hover {
+  background-color: #e73333;
+}
+
 .modifierButton {
   background-color: #ffffff;
   color: #313131;

@@ -370,8 +370,11 @@ const PasteManagement: React.FC = () => {
         });
 
         if (!response.ok) throw new Error('Failed to delete pastes');
+        
+        const data = await response.json();
+        console.log('Deleted count:', data.deletedCount);
       } else {
-        // Delete selected pastes (existing functionality)
+        // Delete selected pastes
         const response = await fetch('/api/admin/delete-pastes', {
           method: 'DELETE',
           headers: {
@@ -381,11 +384,14 @@ const PasteManagement: React.FC = () => {
         });
 
         if (!response.ok) throw new Error('Failed to delete pastes');
+        
+        const data = await response.json();
+        console.log('Deleted count:', data.deletedCount);
       }
       
       setSelectedPastes([]);
       setIsAllSelected(false);
-      fetchPastes();
+      await fetchPastes(); // Add await here
       setShowDeleteModal(false);
       setShowActionMenu(false);
     } catch (error) {

@@ -37,8 +37,8 @@ export async function DELETE(request: Request) {
     // Add date range conditions
     if (dateFrom || dateTo) {
       query.createdAt = {};
-      if (dateFrom) query.createdAt.$gte = new Date(dateFrom).toISOString();
-      if (dateTo) query.createdAt.$lte = new Date(dateTo).toISOString();
+      if (dateFrom) query.createdAt.$gte = new Date(dateFrom);
+      if (dateTo) query.createdAt.$lte = new Date(dateTo);
     }
 
     // Add size range conditions
@@ -82,8 +82,12 @@ export async function DELETE(request: Request) {
       }
     }
 
+    console.log('Delete-all query:', JSON.stringify(query, null, 2));
+
     // Delete all matching documents
     const result = await db.collection('pastes').deleteMany(query);
+    
+    console.log('Delete-all result:', result);
 
     return NextResponse.json({ 
       success: true, 

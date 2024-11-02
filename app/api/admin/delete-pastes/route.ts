@@ -16,7 +16,7 @@ export async function DELETE(request: Request) {
     const db = client.db('notes');
     
     const result = await db.collection('pastes').deleteMany({
-      _id: { $in: pasteIds.map((id: string) => id) }
+      id: { $in: pasteIds }
     });
 
     return NextResponse.json({ 
