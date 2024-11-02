@@ -63,7 +63,9 @@ export async function GET(request: Request) {
         encryptionConditions.push({ 
           $or: [
             { isEncrypted: false }, 
-            { isEncrypted: { $exists: false } }
+            { isEncrypted: { $exists: false } },
+            { encryptionMethod: { $exists: false } },
+            { encryptionMethod: null }
           ] 
         });
       }
