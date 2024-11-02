@@ -484,6 +484,7 @@ const PasteManagement: React.FC = () => {
                   <label>
                     <input
                       type="checkbox"
+                      className={styles.customCheckbox}
                       checked={tempFilter.encryption.none}
                       onChange={(e) => setTempFilter({
                         ...tempFilter,
@@ -498,6 +499,7 @@ const PasteManagement: React.FC = () => {
                   <label>
                     <input
                       type="checkbox"
+                      className={styles.customCheckbox}
                       checked={tempFilter.encryption.key}
                       onChange={(e) => setTempFilter({
                         ...tempFilter,
@@ -512,6 +514,7 @@ const PasteManagement: React.FC = () => {
                   <label>
                     <input
                       type="checkbox"
+                      className={styles.customCheckbox}
                       checked={tempFilter.encryption.password}
                       onChange={(e) => setTempFilter({
                         ...tempFilter,
