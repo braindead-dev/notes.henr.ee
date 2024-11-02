@@ -269,17 +269,6 @@ const PasteManagement: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const actionMenuRef = useRef<HTMLDivElement>(null);
 
-  // Add this to your useEffect for click outside handling
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (actionMenuRef.current && !actionMenuRef.current.contains(event.target as Node)) {
-        setShowActionMenu(false);
-      }
-      // ... existing sort and filter menu handlers
-    };
-    // ... rest of the useEffect
-  }, []);
-
   // Add these handler functions
   const handleExportSelected = async () => {
     try {
