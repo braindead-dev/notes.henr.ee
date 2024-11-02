@@ -19,6 +19,18 @@ interface ApiResponse {
   totalPastes: number;
 }
 
+interface FilterState {
+  dateFrom: string;
+  dateTo: string;
+  sizeFrom: string;
+  sizeTo: string;
+  encryption: {
+    none: boolean;
+    key: boolean;
+    password: boolean;
+  };
+}
+
 const PasteManagement: React.FC = () => {
   const [pastes, setPastes] = useState<Paste[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -30,6 +42,30 @@ const PasteManagement: React.FC = () => {
   const [showFilterMenu, setShowFilterMenu] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>('');
   const filterMenuRef = useRef<HTMLDivElement>(null);
+
+  // Add new filter states
+  const [tempFilter, setTempFilter] = useState<FilterState>({
+    dateFrom: '',
+    dateTo: '',
+    sizeFrom: '',
+    sizeTo: '',
+    encryption: {
+      none: false,
+      key: false,
+      password: false,
+    }
+  });
+  const [activeFilter, setActiveFilter] = useState<FilterState>({
+    dateFrom: '',
+    dateTo: '',
+    sizeFrom: '',
+    sizeTo: '',
+    encryption: {
+      none: false,
+      key: false,
+      password: false,
+    }
+  });
 
   // Sorting
   const [sortBy, setSortBy] = useState<string>('date');
@@ -46,11 +82,30 @@ const PasteManagement: React.FC = () => {
 
   const sortMenuRef = useRef<HTMLDivElement>(null);
 
+  // First, update the fetchPastes function to handle the new filter parameters
   const fetchPastes = async () => {
     try {
-      const res = await fetch(
-        `/api/admin/manage?page=${page}&search=${searchQuery}&filter=${filter}&sortBy=${sortBy}&sortOrder=${sortOrder}`
-      );
+      const filterParams = new URLSearchParams();
+      filterParams.append('page', page.toString());
+      filterParams.append('search', searchQuery);
+      filterParams.append('sortBy', sortBy);
+      filterParams.append('sortOrder', sortOrder);
+      
+      // Add filter parameters
+      if (activeFilter.dateFrom) filterParams.append('dateFrom', activeFilter.dateFrom);
+      if (activeFilter.dateTo) filterParams.append('dateTo', activeFilter.dateTo);
+      if (activeFilter.sizeFrom) filterParams.append('sizeFrom', activeFilter.sizeFrom);
+      if (activeFilter.sizeTo) filterParams.append('sizeTo', activeFilter.sizeTo);
+      
+      // Handle encryption types
+      const encryptionTypes = Object.entries(activeFilter.encryption)
+        .filter(([_, value]) => value)
+        .map(([key]) => key);
+      if (encryptionTypes.length > 0) {
+        filterParams.append('encryptionTypes', encryptionTypes.join(','));
+      }
+
+      const res = await fetch(`/api/admin/manage?${filterParams.toString()}`);
       const data: ApiResponse = await res.json();
 
       setPastes(data.pastes);
@@ -61,9 +116,36 @@ const PasteManagement: React.FC = () => {
     }
   };
 
+  // Add new filter functions
+  const applyFilter = () => {
+    setActiveFilter(tempFilter);
+    setShowFilterMenu(false);
+    setPage(1); // Reset to first page when applying new filters
+    fetchPastes(); // Explicitly call fetchPastes when filters are applied
+  };
+
+  const resetFilter = () => {
+    const emptyFilter = {
+      dateFrom: '',
+      dateTo: '',
+      sizeFrom: '',
+      sizeTo: '',
+      encryption: {
+        none: false,
+        key: false,
+        password: false,
+      }
+    };
+    setTempFilter(emptyFilter);
+    setActiveFilter(emptyFilter);
+    setShowFilterMenu(false);
+    setPage(1);
+    fetchPastes(); // Explicitly call fetchPastes when filters are reset
+  };
+
   useEffect(() => {
     fetchPastes();
-  }, [page, searchQuery, filter, sortBy, sortOrder]);
+  }, [page, searchQuery, sortBy, sortOrder, activeFilter]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -343,95 +425,111 @@ const PasteManagement: React.FC = () => {
 
             {showFilterMenu && (
               <div
-                ref={filterMenuRef} // Add this line
+                ref={filterMenuRef}
                 className={styles.sortMenu}
                 onClick={(e) => e.stopPropagation()}
               >
-                <p>Show records that</p>
+                <p>Filter pastes</p>
 
-                <div className={styles.sortGroup}>
-                  <p>Date</p>
+                <div className={styles.filterGroup}>
+                  <p>Date Range</p>
+                  <div className={styles.rangeInputs}>
+                    <input
+                      type="date"
+                      value={tempFilter.dateFrom}
+                      onChange={(e) => setTempFilter({
+                        ...tempFilter,
+                        dateFrom: e.target.value
+                      })}
+                      placeholder="From"
+                    />
+                    <input
+                      type="date"
+                      value={tempFilter.dateTo}
+                      onChange={(e) => setTempFilter({
+                        ...tempFilter,
+                        dateTo: e.target.value
+                      })}
+                      placeholder="To"
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <p>Size Range (bytes)</p>
+                  <div className={styles.rangeInputs}>
+                    <input
+                      type="number"
+                      value={tempFilter.sizeFrom}
+                      onChange={(e) => setTempFilter({
+                        ...tempFilter,
+                        sizeFrom: e.target.value
+                      })}
+                      placeholder="Min size"
+                    />
+                    <input
+                      type="number"
+                      value={tempFilter.sizeTo}
+                      onChange={(e) => setTempFilter({
+                        ...tempFilter,
+                        sizeTo: e.target.value
+                      })}
+                      placeholder="Max size"
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <p>Encryption Type</p>
                   <label>
                     <input
-                      type="radio"
-                      checked={tempSortBy === 'date' && tempSortOrder === 'asc'}
-                      onChange={() => {
-                        setTempSortBy('date');
-                        setTempSortOrder('asc');
-                      }}
+                      type="checkbox"
+                      checked={tempFilter.encryption.none}
+                      onChange={(e) => setTempFilter({
+                        ...tempFilter,
+                        encryption: {
+                          ...tempFilter.encryption,
+                          none: e.target.checked
+                        }
+                      })}
                     />
-                    Ascending
+                    None
                   </label>
                   <label>
                     <input
-                      type="radio"
-                      checked={tempSortBy === 'date' && tempSortOrder === 'desc'}
-                      onChange={() => {
-                        setTempSortBy('date');
-                        setTempSortOrder('desc');
-                      }}
+                      type="checkbox"
+                      checked={tempFilter.encryption.key}
+                      onChange={(e) => setTempFilter({
+                        ...tempFilter,
+                        encryption: {
+                          ...tempFilter.encryption,
+                          key: e.target.checked
+                        }
+                      })}
                     />
-                    Descending
+                    Encrypted
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={tempFilter.encryption.password}
+                      onChange={(e) => setTempFilter({
+                        ...tempFilter,
+                        encryption: {
+                          ...tempFilter.encryption,
+                          password: e.target.checked
+                        }
+                      })}
+                    />
+                    PBKDF2
                   </label>
                 </div>
 
-                <div className={styles.sortGroup}>
-                  <p>Name</p>
-                  <label>
-                    <input
-                      type="radio"
-                      checked={tempSortBy === 'name' && tempSortOrder === 'asc'}
-                      onChange={() => {
-                        setTempSortBy('name');
-                        setTempSortOrder('asc');
-                      }}
-                    />
-                    A-Z
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      checked={tempSortBy === 'name' && tempSortOrder === 'desc'}
-                      onChange={() => {
-                        setTempSortBy('name');
-                        setTempSortOrder('desc');
-                      }}
-                    />
-                    Z-A
-                  </label>
-                </div>
-
-                <div className={styles.sortGroup}>
-                  <p>Size</p>
-                  <label>
-                    <input
-                      type="radio"
-                      checked={tempSortBy === 'size' && tempSortOrder === 'asc'}
-                      onChange={() => {
-                        setTempSortBy('size');
-                        setTempSortOrder('asc');
-                      }}
-                    />
-                    Ascending
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      checked={tempSortBy === 'size' && tempSortOrder === 'desc'}
-                      onChange={() => {
-                        setTempSortBy('size');
-                        setTempSortOrder('desc');
-                      }}
-                    />
-                    Descending
-                  </label>
-                </div>
-
-                <div className={styles.sortActions}>
-                  <button onClick={toggleFilterMenu} className={styles.modifierButton}>
+                <div className={styles.filterActions}>
+                  <button onClick={resetFilter} className={styles.modifierButton}>
                     Cancel
                   </button>
-                  <button onClick={applySort} className={styles.applyButton}>
+                  <button onClick={applyFilter} className={styles.applyButton}>
                     Apply
                   </button>
                 </div>

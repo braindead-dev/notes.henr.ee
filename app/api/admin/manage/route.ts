@@ -14,7 +14,6 @@ export async function GET(request: Request) {
 
     const url = new URL(request.url);
     const searchQuery = url.searchParams.get('search') ?? '';
-    const filter = url.searchParams.get('filter') ?? '';
     const page = parseInt(url.searchParams.get('page') ?? '1', 10);
     const limit = 20;
     const skip = (page - 1) * limit;
@@ -40,10 +39,52 @@ export async function GET(request: Request) {
       query.content = { $regex: searchQuery, $options: 'i' };
     }
 
-    if (filter === 'encrypted') {
-      query.isEncrypted = true;
-    } else if (filter === 'nonEncrypted') {
-      query.$or = [{ isEncrypted: false }, { isEncrypted: { $exists: false } }];
+    const dateFrom = url.searchParams.get('dateFrom');
+    const dateTo = url.searchParams.get('dateTo');
+    if (dateFrom || dateTo) {
+      query.createdAt = {};
+      if (dateFrom) query.createdAt.$gte = new Date(dateFrom);
+      if (dateTo) query.createdAt.$lte = new Date(dateTo);
+    }
+
+    const sizeFrom = url.searchParams.get('sizeFrom');
+    const sizeTo = url.searchParams.get('sizeTo');
+    if (sizeFrom || sizeTo) {
+      query.size = {};
+      if (sizeFrom) query.size.$gte = parseInt(sizeFrom);
+      if (sizeTo) query.size.$lte = parseInt(sizeTo);
+    }
+
+    const encryptionTypes = url.searchParams.get('encryptionTypes')?.split(',') ?? [];
+    if (encryptionTypes.length > 0) {
+      const encryptionConditions = [];
+      
+      if (encryptionTypes.includes('none')) {
+        encryptionConditions.push({ 
+          $or: [
+            { isEncrypted: false }, 
+            { isEncrypted: { $exists: false } }
+          ] 
+        });
+      }
+      
+      if (encryptionTypes.includes('key')) {
+        encryptionConditions.push({ 
+          isEncrypted: true,
+          encryptionMethod: 'key'
+        });
+      }
+      
+      if (encryptionTypes.includes('password')) {
+        encryptionConditions.push({ 
+          isEncrypted: true,
+          encryptionMethod: 'password'
+        });
+      }
+
+      if (encryptionConditions.length > 0) {
+        query.$or = encryptionConditions;
+      }
     }
 
     // Fetch total number of pastes that match the query
