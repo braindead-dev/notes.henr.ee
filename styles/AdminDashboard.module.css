@@ -407,12 +407,37 @@
   text-align: left;
 }
 
+.filterMenu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: -2px;
+  background-color: #ffffff;
+  color: #222222;
+  padding: 8px 10px;
+  font-size: 13px;
+  border: 1.5px solid #e4e4e4;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  width: 300px;
+  text-align: left;
+}
+
 .sortMenu, .sortMenu * {
   color: #222222 !important; /* Force the color to be #222222 */
 }
 
 /* Apply a specific color for the apply button */
 .sortMenu .applyButton {
+  color: #fff !important; /* Keep the apply button text white */
+}
+
+.filterMenu, .filterMenu * {
+  color: #222222 !important; /* Force the color to be #222222 */
+}
+
+/* Apply a specific color for the apply button */
+.filterMenu .applyButton {
   color: #fff !important; /* Keep the apply button text white */
 }
 
@@ -496,4 +521,25 @@
   width: 18px;  /* Slightly larger than the icons in the other buttons */
   height: 18px;
   stroke: #313131;
+}
+
+.rangeInputs {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  width: 100%; /* Take full width of container */
+}
+
+.rangeInputs input {
+  flex: 1; /* Make each input take equal space */
+  min-width: 0; /* Prevent input from overflowing */
+  padding: 6px 8px;
+  border: 1.5px solid #e4e4e4;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.rangeInputs input:focus {
+  outline: none;
+  border-color: #888888;
 }

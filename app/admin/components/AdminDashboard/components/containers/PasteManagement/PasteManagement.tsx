@@ -425,7 +425,7 @@ const PasteManagement: React.FC = () => {
             {showFilterMenu && (
               <div
                 ref={filterMenuRef}
-                className={styles.sortMenu}
+                className={styles.filterMenu}
                 onClick={(e) => e.stopPropagation()}
               >
                 <p>Filter pastes</p>
