@@ -1,4 +1,4 @@
-// app/admin/components/AdminDashboard/components/PasteManagement.tsx
+// app/admin/components/AdminDashboard/components/PasteManagement/PasteManagement.tsx
 
 import React, { useState, useEffect, useRef } from 'react';
 import styles from '@/styles/AdminDashboard.module.css';
