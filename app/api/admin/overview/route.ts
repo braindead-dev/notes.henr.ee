@@ -19,9 +19,39 @@ export async function GET() {
 
     // Fetch general statistics (e.g., total pastes, encryption stats)
     const totalPastes = await db.collection('pastes').countDocuments();
-    const recentPastes = await db.collection('pastes').find().sort({ createdAt: -1 }).limit(5).toArray();
-    const encryptedCount = await db.collection('pastes').countDocuments({ isEncrypted: true });
-    const nonEncryptedCount = totalPastes - encryptedCount;
+    
+    // Modified encryption stats queries
+    const keyEncryptedCount = await db.collection('pastes').countDocuments({ 
+      $or: [
+        { isEncrypted: true, encryptionMethod: 'key' },
+        { isEncrypted: true, encryptionMethod: { $exists: false } }
+      ]
+    });
+    
+    const passwordEncryptedCount = await db.collection('pastes').countDocuments({
+      isEncrypted: true,
+      encryptionMethod: 'password'
+    });
+    
+    const nonEncryptedCount = await db.collection('pastes').countDocuments({
+      $or: [
+        { isEncrypted: false },
+        { isEncrypted: { $exists: false } }
+      ]
+    });
+
+    // Fetch recent pastes with encryption method info
+    const recentPastes = await db.collection('pastes')
+      .find()
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .project({
+        id: 1,
+        title: 1,
+        isEncrypted: 1,
+        encryptionMethod: 1
+      })
+      .toArray();
 
     // Use the dbStats command to get storage statistics
     const stats = await db.command({ dbStats: 1 });
@@ -33,8 +63,9 @@ export async function GET() {
       totalPastes,
       recentPastes,
       encryptionStats: {
-        encrypted: encryptedCount,
-        nonEncrypted: nonEncryptedCount,
+        keyEncrypted: keyEncryptedCount,
+        passwordEncrypted: passwordEncryptedCount,
+        nonEncrypted: nonEncryptedCount
       },
       storageUsage: storageUsage / (1024 * 1024), // Convert bytes to MB for easier reading
       averageSize: averageSize,

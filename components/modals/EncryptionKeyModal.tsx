@@ -109,11 +109,11 @@ const EncryptionKeyModal: React.FC<EncryptionKeyModalProps> = ({
             />
             {passwordError && <ErrorMessage key={passwordError.id} message={passwordError.message} />}
             <div className={styles.modalActionsRight}>
-              <button className={styles.publishButton} onClick={handleSubmitPassword}>
-                Submit
-              </button>
               <button className={styles.toggleButton} onClick={() => setUsePassword(false)}>
                 Back
+              </button>
+              <button className={styles.publishButton} onClick={handleSubmitPassword}>
+                Submit
               </button>
             </div>
           </>

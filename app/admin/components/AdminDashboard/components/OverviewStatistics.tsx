@@ -8,17 +8,23 @@ interface Paste {
   id: string;
   title: string;
   isEncrypted: boolean;
+  encryptionMethod?: 'key' | 'password' | null;
 }
 
 interface EncryptionStats {
-  encrypted: number;
+  keyEncrypted: number;
+  passwordEncrypted: number;
   nonEncrypted: number;
 }
 
 const OverviewStatistics: React.FC = () => {
   const [totalPastes, setTotalPastes] = useState<number>(0);
   const [recentPastes, setRecentPastes] = useState<Paste[]>([]);
-  const [encryptionStats, setEncryptionStats] = useState<EncryptionStats>({ encrypted: 0, nonEncrypted: 0 });
+  const [encryptionStats, setEncryptionStats] = useState<EncryptionStats>({
+    keyEncrypted: 0,
+    passwordEncrypted: 0,
+    nonEncrypted: 0
+  });
   const [storageUsage, setStorageUsage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -45,82 +51,89 @@ const OverviewStatistics: React.FC = () => {
     return <p>Loading...</p>;
   }
 
-  const availableStorage = 512 - storageUsage; // Assuming maxStorage of 512 MB
+  const availableStorage = 512 - storageUsage;
 
-  const encryptedPercentage = ((encryptionStats.encrypted / totalPastes) * 100).toFixed(2);
+  const keyEncryptedPercentage = ((encryptionStats.keyEncrypted / totalPastes) * 100).toFixed(2);
+  const passwordEncryptedPercentage = ((encryptionStats.passwordEncrypted / totalPastes) * 100).toFixed(2);
   const nonEncryptedPercentage = ((encryptionStats.nonEncrypted / totalPastes) * 100).toFixed(2);
 
   return (
-      <div className={styles.container}>
-        <h3>Total Pastes</h3>
-        <p>{totalPastes}</p>
+    <div className={styles.container}>
+      <h3>Total Pastes</h3>
+      <p>{totalPastes}</p>
 
-        <h3>Recent Pastes</h3>
-        <ul>
-          {recentPastes.map((paste) => (
-            <li key={paste.id} className={styles.pasteItem}>
-              <a className={styles.unstyledLink} href={`https://notes.henr.ee/${paste.id}`} target="_blank" rel="noopener noreferrer">
-                {paste.title}
-              </a>
-              {paste.isEncrypted && (
-                <span className={styles.encryptedTag}>Encrypted</span>
-              )}
-            </li>
-          ))}
-        </ul>
+      <h3>Recent Pastes</h3>
+      <ul>
+        {recentPastes.map((paste) => (
+          <li key={paste.id} className={styles.pasteItem}>
+            <a className={styles.unstyledLink} href={`https://notes.henr.ee/${paste.id}`} target="_blank" rel="noopener noreferrer">
+              {paste.title}
+            </a>
+            {paste.isEncrypted && (
+              paste.encryptionMethod === 'password' ? (
+                <span className={styles.passwordTag}>PBKDF2</span>
+              ) : (
+                <span className={styles.keyTag}>Encrypted</span>
+              )
+            )}
+          </li>
+        ))}
+      </ul>
 
-        {/* Encryption Stats and Storage Usage Pie Charts */}
-        <div className={styles.pieChartsContainer}>
-            <div className={styles.pieCard}>
-                <h5>Encryption Stats</h5>
-                <div className={styles.pieChart}>
-                    <VictoryPie
-                        data={[
-                            { y: encryptionStats.encrypted },
-                            { y: encryptionStats.nonEncrypted },
-                        ]}
-                        colorScale={['#4caf50', '#ebebeb']}
-                        labels={() => null} // Remove labels
-                        radius={100}
-                        innerRadius={75}
-                    />
-                </div>
-                {/* Encryption Stats Key */}
-                <div className={styles.key}>
-                    <div className={styles.keyItem}>
-                        <div className={styles.colorBox} style={{ backgroundColor: '#ebebeb' }}></div>
-                        <span>Regular - {nonEncryptedPercentage}%</span>
-                    </div>
-                    <div className={styles.keyItem}>
-                        <div className={styles.colorBox} style={{ backgroundColor: '#4caf50' }}></div>
-                        <span>Encrypted - {encryptedPercentage}%</span>
-                    </div>
-                </div>
+      <div className={styles.pieChartsContainer}>
+        <div className={styles.pieCard}>
+          <h5>Encryption Stats</h5>
+          <div className={styles.pieChart}>
+            <VictoryPie
+              data={[
+                { y: encryptionStats.keyEncrypted },
+                { y: encryptionStats.passwordEncrypted },
+                { y: encryptionStats.nonEncrypted },
+              ]}
+              colorScale={['#4caf50', '#90caf9', '#ebebeb']}
+              labels={() => null}
+              radius={100}
+              innerRadius={75}
+            />
+          </div>
+          <div className={styles.key}>
+            <div className={styles.keyItem}>
+              <div className={styles.colorBox} style={{ backgroundColor: '#ebebeb' }}></div>
+              <span>Regular - {nonEncryptedPercentage}%</span>
             </div>
-
-            <div className={styles.pieCard}>
-                <h5>Storage Usage</h5>
-                <div className={styles.pieChart}>
-                    <VictoryPie
-                        data={[
-                            { y: storageUsage },
-                            { y: availableStorage },
-                        ]}
-                        colorScale={['#90caf9', '#ebebeb']}
-                        labels={() => null} // Remove labels
-                        radius={100}
-                        innerRadius={75}
-                    />
-                </div>
-                {/* Storage Usage Key */}
-                <div className={styles.key}>
-                    <div className={styles.keyItem}>
-                        <span>{storageUsage.toFixed(2)} / 512 MB</span>
-                    </div>
-                </div>
+            <div className={styles.keyItem}>
+              <div className={styles.colorBox} style={{ backgroundColor: '#4caf50' }}></div>
+              <span>Encrypted - {keyEncryptedPercentage}%</span>
             </div>
+            <div className={styles.keyItem}>
+              <div className={styles.colorBox} style={{ backgroundColor: '#90caf9' }}></div>
+              <span>PBKDF2 - {passwordEncryptedPercentage}%</span>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.pieCard}>
+          <h5>Storage Usage</h5>
+          <div className={styles.pieChart}>
+            <VictoryPie
+              data={[
+                { y: storageUsage },
+                { y: availableStorage },
+              ]}
+              colorScale={['#90caf9', '#ebebeb']}
+              labels={() => null}
+              radius={100}
+              innerRadius={75}
+            />
+          </div>
+          <div className={styles.key}>
+            <div className={styles.keyItem}>
+              <span>{storageUsage.toFixed(2)} / 512 MB</span>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
   );
 };
 

@@ -25,17 +25,19 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
             ? `Are you sure you want to delete all ${totalPastes} paste(s)?`
             : `Are you sure you want to delete ${selectedPastes.length} selected paste(s)?`}
         </p>
-        <p className={styles.warningText}>This action cannot be undone.</p>
-        <div className={styles.modalActions}>
+        <p style={{ marginBottom: '-10px', marginTop: '-10px' }}>This action cannot be undone.</p>
+        <div className={styles.modalActions} style={{ marginBottom: '-5px' }}>
           <button
             onClick={() => setShowDeleteModal(false)}
             className={styles.modifierButton}
+            style={{ height: '32px' }}
           >
             Cancel
           </button>
           <button
             onClick={handleDeleteSelected}
             className={styles.deleteButton}
+            style={{ height: '32px' }}
           >
             Delete
           </button>

@@ -45,11 +45,11 @@ const DecryptionModal: React.FC<DecryptionModalProps> = ({
         />
         {decryptionError && <ErrorMessage message={decryptionError} />}
         <div className={styles.modalActionsRight}>
-          <button className={styles.publishButton} onClick={handleDecryption}>
-            Submit
-          </button>
           <button className={styles.toggleButton} onClick={onClose}>
             Close
+          </button>
+          <button className={styles.publishButton} onClick={handleDecryption}>
+            Submit
           </button>
         </div>
       </div>

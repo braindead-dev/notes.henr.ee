@@ -191,14 +191,6 @@
     margin-left: 5px;
   }
 
-  .encryptedTag {
-    background-color: #bbe8a395;
-    color: #0b440e;
-    padding: 2.5px 6px; /* Padding inside the tag */
-    border-radius: 8px; /* Rounded corners */
-    font-size: 12px; /* Small font size */
-  }
-
   .keyTag {
     background-color: #bbe8a395;
     color: #0b440e;
@@ -621,12 +613,6 @@
   border-radius: 8px;
   max-width: 400px;
   width: 90%;
-}
-
-.warningText {
-  color: #dc2626;
-  font-size: 14px;
-  margin-top: 8px;
 }
 
 .modalActions {
