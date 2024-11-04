@@ -9,11 +9,7 @@ import 'katex/dist/katex.min.css'; // Import KaTeX CSS
 import styles from '../styles/page.module.css';
 import { EditorView } from '@codemirror/view';
 import 'github-markdown-css/github-markdown.css';
-import '../styles/starryNight.css';
 import '../styles/markdownStyles.css';
-
-import { createStarryNight, common } from '@wooorm/starry-night';
-import { toHtml } from 'hast-util-to-html';
 
 interface ContentAreaProps {
   content: string;
@@ -21,8 +17,6 @@ interface ContentAreaProps {
   viewMode?: boolean;
   isEditable?: boolean;
 }
-
-type StarryNightType = Awaited<ReturnType<typeof createStarryNight>>;
 
 const ContentArea: React.FC<ContentAreaProps> = ({
   content,
@@ -32,22 +26,10 @@ const ContentArea: React.FC<ContentAreaProps> = ({
 }) => {
   const [editorValue, setEditorValue] = useState(content || '');
   const [isFocused, setIsFocused] = useState(false);
-  const [starryNight, setStarryNight] = useState<StarryNightType | null>(null);
 
   useEffect(() => {
     setEditorValue(content);
   }, [content]);
-
-  // Load Starry Night for syntax highlighting
-  useEffect(() => {
-    async function loadStarryNight() {
-      const sn = await createStarryNight(common);
-      setStarryNight(sn);
-    }
-    if (!starryNight) {
-      loadStarryNight();
-    }
-  }, [starryNight]);
 
   const onChange = (value: string) => {
     setEditorValue(value);
@@ -128,47 +110,6 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     },
   });
 
-  // Custom CodeBlock component using Starry Night for syntax highlighting
-  const CodeBlock: React.FC<{
-    node: any;
-    inline?: boolean;
-    className?: string;
-    children?: React.ReactNode[];
-    [key: string]: any;
-  }> = ({ node, inline, className, children, ...props }) => {
-    const [html, setHtml] = useState<string | null>(null);
-
-    useEffect(() => {
-      if (starryNight) {
-        const content = String(children?.[0] || '');
-        if (!inline) {
-          const language = className?.replace('language-', '') || 'text';
-          const scope = starryNight.flagToScope(language);
-          if (scope) {
-            const highlighted = starryNight.highlight(content, scope);
-            const htmlString = toHtml(highlighted);
-            setHtml(htmlString);
-          } else {
-            setHtml(`<pre><code>${content}</code></pre>`);
-          }
-        } else {
-          setHtml(`<code>${content}</code>`);
-        }
-      }
-    }, [children, className, inline, starryNight]);
-
-    if (html) {
-      return (
-        <div
-          className="code-container"
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
-      );
-    } else {
-      return <code>{children}</code>;
-    }
-  };
-
   return isEditable && !viewMode ? (
     <div className={`${styles.contentEditable} markdown-body`}>
       {!isFocused && !editorValue && (
@@ -192,8 +133,8 @@ const ContentArea: React.FC<ContentAreaProps> = ({
   ) : (
     <div className={`${styles.markdownView} markdown-body markdown-content`}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkMath]} // Add remarkMath
-        rehypePlugins={[rehypeKatex]} // Add rehypeKatex
+        remarkPlugins={[remarkGfm, remarkMath]}
+        rehypePlugins={[rehypeKatex]}
       >
         {editorValue || ''}
       </ReactMarkdown>

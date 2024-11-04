@@ -54,7 +54,7 @@ async function encryptContent(content: string, key: CryptoKey, salt?: Uint8Array
 // Function to derive a key from password using PBKDF2
 async function deriveKeyFromPassword(password: string): Promise<{ key: CryptoKey; salt: Uint8Array }> {
   const encoder = new TextEncoder();
-  const salt = window.crypto.getRandomValues(new Uint8Array(16)); // 128-bit salt
+  const salt = window.crypto.getRandomValues(new Uint8Array(32)); // 128-bit salt
 
   const keyMaterial = await window.crypto.subtle.importKey(
     'raw',
@@ -68,7 +68,7 @@ async function deriveKeyFromPassword(password: string): Promise<{ key: CryptoKey
     {
       name: 'PBKDF2',
       salt: salt,
-      iterations: 100000,
+      iterations: 1500000,
       hash: 'SHA-256',
     },
     keyMaterial,
@@ -91,17 +91,16 @@ export async function decryptContent(encryptedBase64: string, keyInput: string):
   if (keyInput.length >= 44) {
     // Assume it's a Base64 encoded key (generated key)
     key = await importKeyFromBase64(keyInput);
-
+    
     // Extract IV (first 12 bytes)
     iv = encryptedData.slice(0, 12);
     ciphertext = encryptedData.slice(12);
   } else {
     // Assume it's a password; derive key
-    // Extract salt (first 16 bytes)
-    const salt = encryptedData.slice(0, 16);
-    // Extract IV (next 12 bytes)
-    iv = encryptedData.slice(16, 28);
-    ciphertext = encryptedData.slice(28);
+    // Fixed indices to match encryption function's data structure
+    const salt = encryptedData.slice(0, 32);
+    iv = encryptedData.slice(32, 44);  // Changed from (16, 28)
+    ciphertext = encryptedData.slice(44);  // Changed from 28
 
     key = await deriveKeyFromPasswordForDecryption(keyInput, salt);
   }
@@ -135,7 +134,7 @@ async function deriveKeyFromPasswordForDecryption(password: string, salt: Uint8A
     {
       name: 'PBKDF2',
       salt: salt,
-      iterations: 100000,
+      iterations: 1500000,
       hash: 'SHA-256',
     },
     keyMaterial,

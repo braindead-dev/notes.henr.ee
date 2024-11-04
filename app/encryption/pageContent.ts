@@ -6,17 +6,20 @@ Here's a breakdown of how the encryption system works to ensure that only you an
 ---
 ### TL;DR
 - **Enabling Encryption:** Click the grey lock button on your paste to encrypt it. When the lock turns green, encryption is enabled.
-- **Encryption**: We use military-grade AES-256 encryption, performed entirely in your browser.
+- **Encryption**: We use military-grade AES-256-GCM encryption, performed entirely in your browser.
 - **Decryption**: Also done locally in your browser with the key or password you’re given.
 - **Security**: We don't know your encryption key or password, and we will never transmit it online.
 - **Stored Info**: We store the unencrypted paste title, creation time, and encrypted content (which we cannot decrypt).
 ---
 ## How We Encrypt
+For key-based encryption, we employ **AES-256-GCM** with a **256-bit key**, a standard known for its robust security even against the anticipated advancements in quantum computing.
 
-Our pastebin utilizes **AES-256** encryption with optional **PBKDF2 key derivation**. Your paste's content is encrypted before it ever reaches our servers, meaning no one, not even us, can access your paste's content without the password or encryption key.
+For password-based encryption, we use **PBKDF2 key derivation** using **1.5 million iterations** and **SHA-256**. This setup ensures that even a powerful computer would require millions of years to break a strong password.
 
-1. **Encryption in the browser**: Encryption and key derivation happen entirely in your browser, so that the plaintext contents of your paste and the encryption key never leave your device.
-2. **Decryption in the browser**: Decryption also occurs locally in your browser. When you access an encrypted paste, you’ll need to enter the encryption key or password to decrypt the content.
+Your paste’s content is securely encrypted on your device before it reaches our servers, so only you or those you share the password or encryption key with can access it. Not even we have access to your paste’s content.
+
+1. **Encryption in the browser**: Encryption and key derivation happen entirely in your browser, using a 256-bit key (for direct key encryption) or PBKDF2 with 1.5 million iterations (for password encryption). The plaintext contents of your paste and the encryption key never leave your device.
+2. **Decryption in the browser**: Decryption also occurs locally in your browser. When you access an encrypted paste, you'll need to enter the encryption key or password to decrypt the content.
 3. **Zero knowledge**: Since paste content is encrypted on your device before being sent to us, we have no way of knowing its contents. Your encryption key or password is never transmitted online.
 
 ## Accessing an Encrypted Paste
