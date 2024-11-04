@@ -63,22 +63,32 @@ const OverviewStatistics: React.FC = () => {
       <p>{totalPastes}</p>
 
       <h3>Recent Pastes</h3>
-      <ul>
-        {recentPastes.map((paste) => (
-          <li key={paste.id} className={styles.pasteItem}>
-            <a className={styles.unstyledLink} href={`https://notes.henr.ee/${paste.id}`} target="_blank" rel="noopener noreferrer">
-              {paste.title}
-            </a>
-            {paste.isEncrypted && (
-              paste.encryptionMethod === 'password' ? (
-                <span className={styles.passwordTag}>PBKDF2</span>
-              ) : (
-                <span className={styles.keyTag}>Encrypted</span>
-              )
-            )}
-          </li>
-        ))}
-      </ul>
+      <div className={styles.tableWrapper}>
+        <table className={styles.table} style={{ marginTop: '12px' }}>
+          <tbody>
+            {recentPastes.map((paste) => (
+              <tr key={paste.id} className={styles.tableRow}>
+                <td className={styles.tableCell}>
+                  <a 
+                    className={styles.unstyledLink} 
+                    href={`https://notes.henr.ee/${paste.id}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ marginRight: '8px' }}
+                  >
+                    {paste.title}
+                  </a>
+                  {paste.isEncrypted && (
+                    <span className={paste.encryptionMethod === 'password' ? styles.passwordTag : styles.keyTag}>
+                      {paste.encryptionMethod === 'password' ? 'PBKDF2' : 'Encrypted'}
+                    </span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <div className={styles.pieChartsContainer}>
         <div className={styles.pieCard}>
