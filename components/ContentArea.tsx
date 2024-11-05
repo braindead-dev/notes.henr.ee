@@ -8,7 +8,7 @@ import rehypeKatex from 'rehype-katex'; // Import rehype-katex
 import 'katex/dist/katex.min.css'; // Import KaTeX CSS
 import styles from '../styles/page.module.css';
 import { EditorView } from '@codemirror/view';
-import 'github-markdown-css/github-markdown.css';
+import 'github-markdown-css/github-markdown-light.css';
 import '../styles/markdownStyles.css';
 
 interface ContentAreaProps {
