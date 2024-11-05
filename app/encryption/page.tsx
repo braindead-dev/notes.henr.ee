@@ -43,7 +43,11 @@ export default function Paste() {
 
           </span>
 
-          <ContentArea content={content} isEditable={false} />
+          <ContentArea
+            content={content}
+            isEditable={false}
+            isInfoPage={true}
+          />
         </div>
       </ScrollContainer>
     </div>

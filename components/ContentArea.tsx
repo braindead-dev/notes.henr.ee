@@ -16,6 +16,7 @@ interface ContentAreaProps {
   handleContentChange?: (value: string) => void;
   viewMode?: boolean;
   isEditable?: boolean;
+  isInfoPage?: boolean;
 }
 
 const ContentArea: React.FC<ContentAreaProps> = ({
@@ -23,6 +24,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
   handleContentChange,
   viewMode = true,
   isEditable = false,
+  isInfoPage = false,
 }) => {
   const [editorValue, setEditorValue] = useState(content || '');
   const [isFocused, setIsFocused] = useState(false);
@@ -131,7 +133,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
       />
     </div>
   ) : (
-    <div className={`${styles.markdownView} markdown-body markdown-content`}>
+    <div className={`${isInfoPage ? styles.markdownViewInfo : styles.markdownView} markdown-body markdown-content`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}

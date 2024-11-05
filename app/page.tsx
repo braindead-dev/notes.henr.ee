@@ -26,7 +26,8 @@ export default function Paste() {
           />
           <ContentArea
             content={content}
-            isEditable={false} 
+            isEditable={false}
+            isInfoPage={true}
           />
         </div>
       </ScrollContainer>
