@@ -21,6 +21,7 @@ A free, secure pastebin designed for markdown notes with client-side encryption.
 ### Administrative Features
 - **Admin Dashboard**:
   - Real-time statistics and analytics
+      - NOTE: [PerformanceAnalytics.tsx](app/admin/components/AdminDashboard/components/PerformanceAnalytics.tsx), the data graphing component of the dashboard, is not yet implemented
   - Paste management with search, sort, and filter capabilities
   - Bulk operations (delete, export)
   - Storage usage monitoring
