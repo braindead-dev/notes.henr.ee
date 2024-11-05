@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# notes.henr.ee - Secure Markdown Pastebin
 
-## Getting Started
+A free, secure pastebin designed for markdown notes with client-side encryption. Built with Next.js, MongoDB, and TypeScript. I began this side project to share markdown notes with my classmates, focusing on an elegant UI and security.
 
-First, run the development server:
+## Features
 
+### Core Functionality
+- **Markdown Support**: Full markdown rendering with support for GFM, KaTeX math, and syntax highlighting
+- **Clean UI**: Minimalist interface focused on content creation and readability
+- **Free & Permanent**: All pastes are hosted indefinitely at no cost
+- **No Account Required**: Create and share pastes without registration
+
+### Security
+- **Client-Side Encryption**: 
+  - AES-256-GCM encryption performed entirely in the browser
+  - Two encryption methods:
+    - Key-based: Uses a generated 256-bit key
+    - Password-based: PBKDF2 with 1.5M iterations and SHA-256
+  - Zero-knowledge: Server never sees unencrypted content or encryption keys
+
+### Administrative Features
+- **Admin Dashboard**:
+  - Real-time statistics and analytics
+  - Paste management with search, sort, and filter capabilities
+  - Bulk operations (delete, export)
+  - Storage usage monitoring
+- **Discord Integration**: Webhook notifications for new pastes
+
+## Technology Stack
+
+- **Frontend**: Next.js, React, TypeScript
+- **Backend**: Next.js API Routes, MongoDB
+- **Editor**: CodeMirror 6
+- **Markdown**: React-Markdown with remark/rehype plugins
+- **Authentication**: NextAuth.js (admin only)
+- **Styling**: CSS Modules
+
+## Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/notes.henr.ee.git
+cd notes.henr.ee
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```env
+MONGODB_URI=your_mongodb_connection_string
+NEXTAUTH_SECRET=your_nextauth_secret
+GITHUB_SECRET=your_github_secret
+ALLOWED_USERS=adminlist by github uid (ex. "134236009,7150848")
+DISCORD_WEBHOOK_URL=your_discord_webhook_url (optional)
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Run the development server:
+```bash
+npm run dev
+```
 
-## Learn More
+## API Routes
 
-To learn more about Next.js, take a look at the following resources:
+### Public Routes
+- `POST /api/paste`: Create new paste
+- `GET /api/getPaste`: Retrieve paste by ID
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Admin Routes
+- `GET /api/admin/overview`: Dashboard statistics
+- `GET /api/admin/manage`: Paste management
+- `DELETE /api/admin/delete-all`: Bulk delete with filters
+- `DELETE /api/admin/delete-pastes`: Delete selected pastes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Security Considerations
 
-## Deploy on Vercel
+### Encryption Implementation
+The project uses the Web Crypto API for all cryptographic operations.
+(See [cryptoUtils.ts](utils/cryptoUtils.ts))
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Data Storage
+- Only encrypted content is stored on the server
+- Paste titles remain unencrypted for searchability
+- No encryption keys or passwords are ever transmitted
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+
+Contributions are welcome! Please read our contributing guidelines before submitting pull requests.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Built with [Next.js](https://nextjs.org)
+- Hosted on [Vercel](https://vercel.com)
+- Database hosting by [MongoDB Atlas](https://www.mongodb.com/atlas)
+
+## Contact
+
+For questions or support, please reach out to contact@henrywa[.]ng
+
+---
+
+*Note: This is an open-source project. While the code is available for learning and reference, please ensure you implement your own security measures and testing before deploying in production.*
