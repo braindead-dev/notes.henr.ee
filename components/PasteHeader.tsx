@@ -14,7 +14,7 @@ interface PasteHeaderProps {
   handleSubmit?: (e: React.FormEvent) => void;
   viewMode?: boolean;
   setViewMode?: React.Dispatch<React.SetStateAction<boolean>>;
-  isEncrypted: boolean; // Remove the "?" to make this required
+  encryptionMethod:  'key' | 'password' | null; // Remove the "?" to make this required
   toggleEncryption: () => void; // Remove the "?" to make this required
 }
 
@@ -26,7 +26,7 @@ const PasteHeader: React.FC<PasteHeaderProps> = ({
   handleSubmit,
   viewMode,
   setViewMode,
-  isEncrypted,
+  encryptionMethod,
   toggleEncryption,
 }) => {
   return (
@@ -37,7 +37,7 @@ const PasteHeader: React.FC<PasteHeaderProps> = ({
         <>
           <PublishButton handleSubmit={handleSubmit} />
           <ToggleButton viewMode={viewMode} setViewMode={setViewMode} />
-          <EncryptButton isEncrypted={isEncrypted} toggleEncryption={toggleEncryption} />
+          <EncryptButton encryptionMethod={encryptionMethod} toggleEncryption={toggleEncryption} />
         </>
       )}
     </Header>

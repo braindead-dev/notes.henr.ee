@@ -7,8 +7,7 @@ import styles from '@/styles/AdminDashboard.module.css';
 interface Paste {
   id: string;
   title: string;
-  isEncrypted: boolean;
-  encryptionMethod?: 'key' | 'password' | null;
+  encryptionMethod: 'key' | 'password' | null;
 }
 
 interface EncryptionStats {
@@ -78,7 +77,7 @@ const OverviewStatistics: React.FC = () => {
                   >
                     {paste.title}
                   </a>
-                  {paste.isEncrypted && (
+                  {paste.encryptionMethod && (
                     <span className={paste.encryptionMethod === 'password' ? styles.passwordTag : styles.keyTag}>
                       {paste.encryptionMethod === 'password' ? 'PBKDF2' : 'Encrypted'}
                     </span>

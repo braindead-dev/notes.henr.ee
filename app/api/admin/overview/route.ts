@@ -22,22 +22,15 @@ export async function GET() {
     
     // Modified encryption stats queries
     const keyEncryptedCount = await db.collection('pastes').countDocuments({ 
-      $or: [
-        { isEncrypted: true, encryptionMethod: 'key' },
-        { isEncrypted: true, encryptionMethod: { $exists: false } }
-      ]
+      encryptionMethod: 'key'
     });
     
     const passwordEncryptedCount = await db.collection('pastes').countDocuments({
-      isEncrypted: true,
       encryptionMethod: 'password'
     });
     
     const nonEncryptedCount = await db.collection('pastes').countDocuments({
-      $or: [
-        { isEncrypted: false },
-        { isEncrypted: { $exists: false } }
-      ]
+      encryptionMethod: null
     });
 
     // Fetch recent pastes with encryption method info
@@ -48,7 +41,6 @@ export async function GET() {
       .project({
         id: 1,
         title: 1,
-        isEncrypted: 1,
         encryptionMethod: 1
       })
       .toArray();

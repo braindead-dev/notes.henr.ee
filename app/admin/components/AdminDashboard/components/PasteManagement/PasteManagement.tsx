@@ -16,8 +16,7 @@ import DeleteModal from './components/DeleteModal';
 interface Paste {
   id: string;
   title: string;
-  isEncrypted: boolean;
-  encryptionType: 'key' | 'password' | null;
+  encryptionMethod: 'key' | 'password' | null;
   createdAt: string;
   size: number;
 }

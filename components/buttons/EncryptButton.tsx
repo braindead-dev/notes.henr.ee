@@ -3,22 +3,22 @@ import React from 'react';
 import styles from '../../styles/EncryptButton.module.css';
 
 interface EncryptButtonProps {
-  isEncrypted: boolean;
+  encryptionMethod: 'key' | 'password' | null;
   toggleEncryption: () => void;
 }
 
-const EncryptButton: React.FC<EncryptButtonProps> = ({ isEncrypted, toggleEncryption }) => {
+const EncryptButton: React.FC<EncryptButtonProps> = ({ encryptionMethod, toggleEncryption }) => {
   return (
     <div className={styles.encryptButtonWrapper}>
       <input
         id="inpLock"
         type="checkbox"
         className={styles.inpLock}
-        checked={isEncrypted}
+        checked={encryptionMethod !== null}
         onChange={toggleEncryption}
       />
       <label
-        className={`${styles.btnLock} ${isEncrypted ? styles.locked : ''}`}
+        className={`${styles.btnLock} ${encryptionMethod ? styles.locked : ''}`}
         htmlFor="inpLock"
       >
         <svg width="100%" height="100%" viewBox="0 0 36 40">

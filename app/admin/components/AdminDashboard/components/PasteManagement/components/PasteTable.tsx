@@ -6,8 +6,7 @@ import styles from '@/styles/AdminDashboard.module.css';
 interface Paste {
   id: string;
   title: string;
-  isEncrypted: boolean;
-  encryptionType: 'key' | 'password' | null;
+  encryptionMethod: 'key' | 'password' | null;
   createdAt: string;
   size: number;
 }
@@ -68,9 +67,9 @@ const PasteTable: React.FC<PasteTableProps> = ({
             </td>
             <td>{new Date(paste.createdAt).toISOString().split('T')[0]}</td>
             <td>
-              {paste.encryptionType === 'key' ? (
+              {paste.encryptionMethod === 'key' ? (
                 <span className={styles.keyTag}>Encrypted</span>
-              ) : paste.encryptionType === 'password' ? (
+              ) : paste.encryptionMethod === 'password' ? (
                 <span className={styles.passwordTag}>PBKDF2</span>
               ) : (
                 <span className={styles.noneTag}>None</span>

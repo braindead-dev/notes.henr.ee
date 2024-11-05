@@ -31,7 +31,6 @@ export default function Paste() {
   const [content, setContent] = useState('```\nLoading...\n```');
   const [loading, setLoading] = useState(true);
   const [isCopied, setIsCopied] = useState(false);
-  const [isEncrypted, setIsEncrypted] = useState(false);
   const [encryptionMethod, setEncryptionMethod] = useState<'key' | 'password' | null>(null);
   const [needsDecryption, setNeedsDecryption] = useState(false);
   const [encryptionKey, setEncryptionKey] = useState('');
@@ -52,9 +51,8 @@ export default function Paste() {
 
           if (response.ok) {
             setTitle(data.title);
-            setIsEncrypted(data.isEncrypted);
             setEncryptionMethod(data.encryptionMethod);
-            if (data.isEncrypted) {
+            if (data.encryptionMethod) {
               setNeedsDecryption(true);
               setShowDecryptionModal(true);
               setContent(data.content);
@@ -113,8 +111,8 @@ export default function Paste() {
         isPastePage={true}
         handleCopy={handleCopy}
         isCopied={isCopied}
-        isEncrypted={isEncrypted}  // REMOVE LATER: ASAP
-        toggleEncryption={toggleEncryption}  // REMOVE LATER: ASAP, FIX FIX FIX
+        toggleEncryption={toggleEncryption}
+        encryptionMethod={encryptionMethod}
       />
       <ScrollContainer>
         <div className={styles.contentWrapper}>

@@ -55,28 +55,15 @@ export async function GET(request: Request) {
       const encryptionConditions = [];
       
       if (encryptionTypes.includes('none')) {
-        encryptionConditions.push({ 
-          $or: [
-            { isEncrypted: false },
-            { isEncrypted: { $exists: false } }
-          ] 
-        });
+        encryptionConditions.push({ encryptionMethod: null });
       }
       
       if (encryptionTypes.includes('key')) {
-        encryptionConditions.push({ 
-          $or: [
-            { isEncrypted: true, encryptionMethod: 'key' },
-            { isEncrypted: true, encryptionMethod: { $exists: false } }
-          ]
-        });
+        encryptionConditions.push({ encryptionMethod: 'key' });
       }
       
       if (encryptionTypes.includes('password')) {
-        encryptionConditions.push({ 
-          isEncrypted: true,
-          encryptionMethod: 'password'
-        });
+        encryptionConditions.push({ encryptionMethod: 'password' });
       }
 
       if (encryptionConditions.length > 0) {

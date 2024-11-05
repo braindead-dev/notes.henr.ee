@@ -22,7 +22,7 @@ export default function Home() {
   const [content, setContent] = useState("");
   const [viewMode, setViewMode] = useState(false);
   const [error, setError] = useState<{ message: string; id: number } | null>(null);
-  const [isEncrypted, setIsEncrypted] = useState(false);
+  const [encryptionMethod, setEncryptionMethod] = useState<'key' | 'password' | null>(null);
   const [encryptionKey, setEncryptionKey] = useState<string | null>(null);
   const [showEncryptionModal, setShowEncryptionModal] = useState(false);
   const titleEditableRef = useRef<HTMLDivElement>(null);
@@ -30,13 +30,12 @@ export default function Home() {
 
   // Toggle encryption
   const toggleEncryption = () => {
-    const newIsEncrypted = !isEncrypted;
-    setIsEncrypted(newIsEncrypted);
-
-    if (newIsEncrypted) {
+    if (encryptionMethod === null) {
       const key = generateEncryptionKey();
       setEncryptionKey(key);
+      setEncryptionMethod('key');
     } else {
+      setEncryptionMethod(null);
       setEncryptionKey(null);
     }
   };
@@ -57,7 +56,7 @@ export default function Home() {
       return;
     }
 
-    if (isEncrypted) {
+    if (encryptionMethod) {
       // Show modal to choose encryption method
       setShowEncryptionModal(true);
     } else {
@@ -84,7 +83,7 @@ export default function Home() {
     let contentToSend = content;
 
     try {
-      if (isEncrypted) {
+      if (encryptionMethod) {
         if (method === 'password' && key) {
           // Encrypt with password-derived key
           contentToSend = await encryptContentWithPassword(content, key);
@@ -101,8 +100,7 @@ export default function Home() {
         body: JSON.stringify({
           title: title,
           content: contentToSend,
-          isEncrypted,
-          encryptionMethod: isEncrypted ? method : null, // Use method parameter directly
+          encryptionMethod: method || null,
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -141,7 +139,7 @@ export default function Home() {
         viewMode={viewMode}
         setViewMode={setViewMode}
         isPastePage={false}
-        isEncrypted={isEncrypted}
+        encryptionMethod={encryptionMethod}
         toggleEncryption={toggleEncryption}
       />
 
