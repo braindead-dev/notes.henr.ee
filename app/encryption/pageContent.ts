@@ -16,11 +16,11 @@ For key-based encryption, we employ **AES-256-GCM** with a **256-bit key**, a st
 
 For password-based encryption, we use **PBKDF2 key derivation** using **1.5 million iterations** and **SHA-256**. This setup ensures that even a powerful computer would require millions of years to break a strong password.
 
-Your paste’s content is securely encrypted on your device before it reaches our servers, so only you or those you share the password or encryption key with can access it. Not even we have access to your paste’s content.
-
 1. **Encryption in the browser**: Encryption and key derivation happen entirely in your browser, using a 256-bit key (for direct key encryption) or PBKDF2 with 1.5 million iterations (for password encryption). The plaintext contents of your paste and the encryption key never leave your device.
 2. **Decryption in the browser**: Decryption also occurs locally in your browser. When you access an encrypted paste, you'll need to enter the encryption key or password to decrypt the content.
 3. **Zero knowledge**: Since paste content is encrypted on your device before being sent to us, we have no way of knowing its contents. Your encryption key or password is never transmitted online.
+
+Our project is open source and encryption can be reviewed in [cryptoUtils.ts](https://github.com/braindead-dev/notes.henr.ee/blob/main/utils/cryptoUtils.ts). All cryptography is performed using the [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API).
 
 ## Accessing an Encrypted Paste
 
@@ -34,7 +34,7 @@ We prioritize security and privacy while storing minimal information upon creati
 
 1. **The Title**: The paste title is **not encrypted** and viewable by anyone with access to the paste link.
 2. **Timestamp**: We record the time when the paste was created.
-3. **Hosting Information**: This website is hosted via **Vercel**, which may collect data for their own purposes. For details on what data Vercel may collect, please refer to their [Privacy Policy](https://vercel.com/legal/privacy-policy).
+3. **Hosting Information**: This website is hosted via **Vercel**, which may collect their own analytics data. For details on what data Vercel may collect, refer to their [Privacy Policy](https://vercel.com/legal/privacy-policy).
 4. **Encrypted Paste Content**: We store the encrypted content of your paste, which we cannot decrypt due to the lack of access to your encryption key.
 
 ## Why We Don't Embed Keys in Links
@@ -55,5 +55,5 @@ Our pastebin prioritizes user privacy by ensuring that all encryption occurs cli
 
 If you have any further questions, feel free to reach out.
 
-**Email** – contact@henrywa[.]ng
+**Email** – contact@henrywa[.]ng / [braindead-dev/notes.henr.ee](https://github.com/braindead-dev/notes.henr.ee/)
 `;
