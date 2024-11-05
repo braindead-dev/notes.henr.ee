@@ -32,7 +32,7 @@ A free, secure pastebin designed for markdown notes with client-side encryption.
 - **Backend**: Next.js API Routes, MongoDB
 - **Editor**: CodeMirror 6
 - **Markdown**: React-Markdown with remark/rehype plugins
-- **Authentication**: NextAuth.js (admin only)
+- **Authentication**: NextAuth.js (for admin dashboard)
 - **Styling**: CSS Modules
 
 ## Installation
