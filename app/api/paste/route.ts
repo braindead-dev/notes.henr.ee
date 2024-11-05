@@ -3,6 +3,7 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '../../../utils/mongodb';
 import { generateUniqueId } from '../../../utils/slugUtils';
+import { sendDiscordNotification } from '../../../utils/discord';
 
 export async function POST(request: Request) {
   try {
@@ -48,6 +49,9 @@ export async function POST(request: Request) {
       encryptionMethod: encryptionMethod || null, // Store encryption method ('key' or 'password') or null
       createdAt: new Date(),
     });
+
+    // Send Discord notification after successful paste creation
+    await sendDiscordNotification(title, id, encryptionMethod);
 
     return NextResponse.json({ id });
   } catch (error) {
