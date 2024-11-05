@@ -1,6 +1,6 @@
 // lib/authOptions.ts
 
-import { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 
 // Extend the Session interface to include the id property
@@ -23,15 +23,19 @@ const allowedUsers = process.env.ALLOWED_USERS?.split(",") || [];
 export const authOptions: NextAuthOptions = {
   providers: [
     GithubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
-      authorization: { params: { scope: "read:user" } },
+      clientId: process.env.GITHUB_ID as string,
+      clientSecret: process.env.GITHUB_SECRET as string,
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/auth/signin", // Custom sign-in page
     error: "/auth/signin",  // Redirect to sign-in page on error
+  },
+  session: {
+    // Session will expire in 8 hours
+    maxAge: 8 * 60 * 60, // 8 hours in seconds
+    updateAge: 60 * 60, // Update session every 1 hour
   },
   callbacks: {
     async signIn({ profile }) {

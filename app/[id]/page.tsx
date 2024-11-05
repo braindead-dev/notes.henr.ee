@@ -25,6 +25,23 @@ const sanitizeTitleForTab = (title: string) => {
   return sanitizedTitle.trim() || "Henry's Notes";
 };
 
+// Add this helper function at the top of your file
+const sanitizeErrorMessage = (status: number, message?: string): string => {
+  const defaultMessages: { [key: number]: string } = {
+    400: "Bad Request",
+    401: "Unauthorized",
+    403: "Forbidden",
+    404: "Paste not found",
+    500: "Internal server error",
+  };
+
+  // Use default message if available, otherwise use sanitized custom message
+  const errorMessage = defaultMessages[status] || 
+    (message ? message.replace(/[^a-zA-Z0-9\s.,!?-]/g, '') : "An error occurred");
+
+  return `\`\`\`\nError ${status}: ${errorMessage}\n\`\`\``;
+};
+
 export default function Paste() {
   const { id } = useParams();
   const [title, setTitle] = useState('');
@@ -60,14 +77,14 @@ export default function Paste() {
               setContent(data.content);
             }
           } else {
-            // Handle error based on the response status and message
+            // Use the sanitized error message handler
             setTitle("Error");
-            setContent(`\`\`\`\n${response.status}: ${data.error || "```\n500: We were unable to fetch this paste.\n```"}\n\`\`\``);
+            setContent(sanitizeErrorMessage(response.status, data.error));
           }
         } catch (error) {
-          // Catch any network or unexpected errors
+          // Handle network or unexpected errors
           setTitle("Error");
-          setContent("```\n500: We were unable to fetch this paste.\n```");
+          setContent(sanitizeErrorMessage(500));
         } finally {
           setLoading(false);
         }
