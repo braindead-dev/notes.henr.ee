@@ -2,8 +2,8 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from '../styles/page.module.css';
-import icon from '../app/assets/icon.png'; // Adjust the path if necessary
+import styles from '@/styles/page.module.css';
+import icon from '@/app/assets/icon.png';
 
 interface Header {
   children: React.ReactNode;

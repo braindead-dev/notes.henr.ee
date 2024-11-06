@@ -1,7 +1,7 @@
 // app/api/paste/route.ts
 
 import { NextResponse } from 'next/server';
-import clientPromise from '../../../utils/mongodb';
+import clientPromise from '../../../lib/mongodb';
 import { generateUniqueId } from '../../../utils/slugUtils';
 import { sendDiscordNotification } from '../../../utils/discord';
 

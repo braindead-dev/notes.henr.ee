@@ -1,11 +1,11 @@
 "use client";
 
 import { useRef } from 'react';
-import TitleInput from '../components/TitleInput';
-import ContentArea from '../components/ContentArea';
-import PageHeader from '../components/PageHeader';
-import ScrollContainer from '../components/ScrollContainer';
-import styles from '../styles/page.module.css';
+import TitleInput from '@/components/TitleInput';
+import ContentArea from '@/components/ContentArea';
+import PageHeader from '@/components/PageHeader';
+import ScrollContainer from '@/components/ScrollContainer';
+import styles from '@/styles/page.module.css';
 import { pageTitle, pageContent } from '@/content/home';
 
 

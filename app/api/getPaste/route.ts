@@ -1,7 +1,7 @@
 // app/api/getPaste/route.ts
 
 import { NextResponse } from 'next/server';
-import clientPromise from '../../../utils/mongodb'; // Updated import
+import clientPromise from '../../../lib/mongodb'; // Updated import
 
 export async function GET(request: Request) {
   try {

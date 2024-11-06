@@ -1,10 +1,10 @@
 // components/PasteHeader.tsx
 import React from 'react';
-import Header from './Header';
-import CopyButton from './buttons/CopyButton';
-import PublishButton from './buttons/PublishButton';
-import ToggleButton from './buttons/ToggleButton';
-import EncryptButton from './buttons/EncryptButton';
+import Header from '@/components/Header';
+import CopyButton from '@/components/buttons/CopyButton';
+import PublishButton from '@/components/buttons/PublishButton';
+import ToggleButton from '@/components/buttons/ToggleButton';
+import EncryptButton from '@/components/buttons/EncryptButton';
 
 // components/PasteHeader.tsx
 interface PasteHeaderProps {

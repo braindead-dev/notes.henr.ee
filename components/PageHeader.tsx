@@ -1,7 +1,7 @@
 // components/PageHeader.tsx
 import React from 'react';
-import Header from './Header';
-import PasteButton from './buttons/PasteButton';
+import Header from '@/components/Header';
+import PasteButton from '@/components/buttons/PasteButton';
 
 const PageHeader: React.FC = () => {
   return (

@@ -3,19 +3,19 @@
 "use client";
 
 import { useState, useRef } from 'react';
-import styles from '../../styles/page.module.css';
-import PasteHeader from '../../components/PasteHeader';
-import TitleInput from '../../components/TitleInput';
-import ContentArea from '../../components/ContentArea';
-import ScrollContainer from '../../components/ScrollContainer';
+import styles from '@/styles/page.module.css';
+import PasteHeader from '@/components/PasteHeader';
+import TitleInput from '@/components/TitleInput';
+import ContentArea from '@/components/ContentArea';
+import ScrollContainer from '@/components/ScrollContainer';
 import { useRouter } from 'next/navigation';
 import {
   generateEncryptionKey,
   encryptContentWithKey,
   encryptContentWithPassword,
-} from '../../utils/cryptoUtils';
-import ErrorMessage from '../../components/ErrorMessage';
-import EncryptionKeyModal from '../../components/modals/EncryptionKeyModal';
+} from '@/utils/cryptoUtils';
+import ErrorMessage from '@/components/ErrorMessage';
+import EncryptionKeyModal from '@/components/modals/EncryptionKeyModal';
 
 export default function Home() {
   const [title, setTitle] = useState("Untitled");

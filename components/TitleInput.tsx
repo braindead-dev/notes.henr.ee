@@ -1,7 +1,7 @@
 // components/TitleInput.tsx
 
 import React, { useEffect, useRef } from 'react';
-import styles from '../styles/page.module.css';
+import styles from '@/styles/page.module.css';
 
 interface TitleInputProps {
   initialTitle: string;
