@@ -6,7 +6,7 @@ import ContentArea from '../components/ContentArea';
 import PageHeader from '../components/PageHeader';
 import ScrollContainer from '../components/ScrollContainer';
 import styles from '../styles/page.module.css';
-import { pageTitle, pageContent } from './pageContent'; 
+import { pageTitle, pageContent } from '@/content/home';
 
 
 export default function Paste() {

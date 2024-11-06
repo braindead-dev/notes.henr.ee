@@ -7,7 +7,7 @@ import ContentArea from '../../components/ContentArea';
 import ScrollContainer from '../../components/ScrollContainer';
 import styles from '../../styles/page.module.css';
 import encryptStyles from '../../styles/EncryptButton.module.css';
-import { pageTitle, pageContent } from './pageContent'; 
+import { pageTitle, pageContent } from '@/content/encryption'; 
 
 export default function Paste() {
   const titleEditableRef = useRef<HTMLDivElement>(null);

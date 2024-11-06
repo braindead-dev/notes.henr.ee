@@ -1,4 +1,3 @@
-// pasteData.ts
 export const pageTitle = "notes.Henr.ee";
 export const pageContent = `
 **notes.henr.ee** is a free, secure pastebin designed to store and share markdown notes. We emphasize user security, usability, and affordability. This project is open source and available on [GitHub](https://github.com/braindead-dev/notes.henr.ee/).

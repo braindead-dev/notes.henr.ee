@@ -1,4 +1,3 @@
-// pasteData.ts
 export const pageTitle = "Encryption";
 export const pageContent = `
 Here's a breakdown of how the encryption system works to ensure that only you and those you trust can view the contents of your paste.

@@ -1,18 +1,13 @@
 // app/admin/layout.tsx
 
-import Providers from "../../components/Providers";
+import Providers from "@/components/Providers";
+import { Metadata } from 'next';
 
-export const metadata = {
-    title: "Admin Dashboard",
-    description: "A basic admin dashboard for notes.henr.ee",
-  };
-  
-  export default function RootLayout({ children }: { children: React.ReactNode }) {
-    return (
-      <html lang="en">
-        <body>
-          <Providers>{children}</Providers>
-        </body>
-      </html>
-    );
-  }
+export const metadata: Metadata = {
+  title: 'Admin Dashboard',
+  description: 'A basic admin dashboard for notes.henr.ee',
+};
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  return <Providers>{children}</Providers>;
+}
