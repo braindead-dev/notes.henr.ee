@@ -4,7 +4,7 @@ export const pageContent = `
 
 ## Key Features
 - **Secure Encryption:** Publish [encrypted pastes](/encryption), protecting contents with AES-256-GCM.
-- **Markdown Support:** Pastes are formatted using Markdown and LaTeX, maximizing readability and support for complex content. 
+- **Markdown Support:** Pastes are formatted using Markdown and LaTeX, maximizing readability. 
 - **Simple UI:** Our clean interface makes our platform easy to use and pleasing on the eyes.
 - **Free and Indefinite:** All pastes are hosted for free and forever, without a need to create an account.
 
