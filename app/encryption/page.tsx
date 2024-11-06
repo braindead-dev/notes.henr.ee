@@ -1,12 +1,12 @@
 "use client";
 
 import { useRef } from 'react';
-import PageHeader from '../../components/PageHeader';
-import TitleInput from '../../components/TitleInput';
-import ContentArea from '../../components/ContentArea';
-import ScrollContainer from '../../components/ScrollContainer';
-import styles from '../../styles/page.module.css';
-import encryptStyles from '../../styles/EncryptButton.module.css';
+import PageHeader from '@/components/PageHeader';
+import TitleInput from '@/components/TitleInput';
+import ContentArea from '@/components/ContentArea';
+import ScrollContainer from '@/components/ScrollContainer';
+import styles from '@/styles/page.module.css';
+import encryptStyles from '@/styles/EncryptButton.module.css';
 import { pageTitle, pageContent } from '@/content/encryption'; 
 
 export default function Paste() {

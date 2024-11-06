@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/page.module.css';
+import styles from '@/styles/page.module.css';
 
 interface PublishButtonProps {
   handleSubmit?: (e: React.FormEvent) => void;

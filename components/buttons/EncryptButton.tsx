@@ -1,6 +1,6 @@
 // components/buttons/EncryptButton.tsx
 import React from 'react';
-import styles from '../../styles/EncryptButton.module.css';
+import styles from '@/styles/EncryptButton.module.css';
 
 interface EncryptButtonProps {
   encryptionMethod: 'key' | 'password' | null;

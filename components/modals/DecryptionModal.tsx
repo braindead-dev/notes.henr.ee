@@ -1,8 +1,8 @@
 // components/modals/DecryptionModal.tsx
 
 import React from 'react';
-import styles from '../../styles/page.module.css';
-import ErrorMessage from '../ErrorMessage';
+import styles from '@/styles/page.module.css';
+import ErrorMessage from '@/components/ErrorMessage';
 
 interface DecryptionModalProps {
   encryptionKey: string;

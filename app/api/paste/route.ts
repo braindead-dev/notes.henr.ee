@@ -1,9 +1,9 @@
 // app/api/paste/route.ts
 
 import { NextResponse } from 'next/server';
-import clientPromise from '../../../lib/mongodb';
-import { generateUniqueId } from '../../../utils/slugUtils';
-import { sendDiscordNotification } from '../../../utils/discord';
+import clientPromise from '@/lib/mongodb';
+import { generateUniqueId } from '@/utils/slugUtils';
+import { sendDiscordNotification } from '@/utils/discord';
 
 const validEncryptionMethods = ['key', 'password', null] as const;
 type EncryptionMethod = typeof validEncryptionMethods[number];

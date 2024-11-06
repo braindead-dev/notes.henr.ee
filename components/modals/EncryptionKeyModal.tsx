@@ -1,10 +1,10 @@
 // components/modals/EncryptionKeyModal.tsx
 
 import React, { useState } from 'react';
-import styles from '../../styles/page.module.css';
-import CopyButton from '../buttons/CopyButton';
-import RefreshButton from '../buttons/RefreshButton';
-import ErrorMessage from '../ErrorMessage';
+import styles from '@/styles/page.module.css';
+import CopyButton from '@/components/buttons/CopyButton';
+import RefreshButton from '@/components/buttons/RefreshButton';
+import ErrorMessage from '@/components/ErrorMessage';
 
 interface EncryptionKeyModalProps {
   encryptionKey: string;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/RefreshButton.module.css';
+import styles from '@/styles/RefreshButton.module.css';
 
 interface RefreshButtonProps {
   onClick: () => void;

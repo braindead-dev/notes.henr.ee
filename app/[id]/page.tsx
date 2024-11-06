@@ -4,13 +4,13 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
-import { decryptContent } from '../../utils/cryptoUtils';
-import DecryptionModal from '../../components/modals/DecryptionModal';
-import PasteHeader from '../../components/PasteHeader';
-import TitleInput from '../../components/TitleInput';
-import ContentArea from '../../components/ContentArea';
-import ScrollContainer from '../../components/ScrollContainer';
-import styles from '../../styles/page.module.css';
+import { decryptContent } from '@/utils/cryptoUtils';
+import DecryptionModal from '@/components/modals/DecryptionModal';
+import PasteHeader from '@/components/PasteHeader';
+import TitleInput from '@/components/TitleInput';
+import ContentArea from '@/components/ContentArea';
+import ScrollContainer from '@/components/ScrollContainer';
+import styles from '@/styles/page.module.css';
 
 // Helper function to sanitize the title for the browser tab
 const sanitizeTitleForTab = (title: string) => {
