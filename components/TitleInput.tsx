@@ -21,7 +21,11 @@ const TitleInput: React.FC<TitleInputProps> = ({
     if (!isEditable) return;
     e.preventDefault();
     const text = e.clipboardData.getData('text/plain');
-    document.execCommand('insertText', false, text); // Insert text at cursor
+    const selection = window.getSelection();
+    if (selection?.rangeCount) {
+      selection.deleteFromDocument();
+      selection.getRangeAt(0).insertNode(document.createTextNode(text));
+    }
   };
 
   // Prevent entering newlines in the title
