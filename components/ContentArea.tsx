@@ -10,6 +10,7 @@ import styles from '@/styles/page.module.css';
 import { EditorView } from '@codemirror/view';
 import 'github-markdown-css/github-markdown-light.css';
 import '@/styles/markdownStyles.css';
+import TurndownService from 'turndown';
 
 interface ContentAreaProps {
   content: string;
@@ -18,6 +19,8 @@ interface ContentAreaProps {
   isEditable?: boolean;
   isInfoPage?: boolean;
 }
+
+const turndownService = new TurndownService();
 
 const ContentArea: React.FC<ContentAreaProps> = ({
   content,
@@ -28,6 +31,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
 }) => {
   const [editorValue, setEditorValue] = useState(content || '');
   const [isFocused, setIsFocused] = useState(false);
+  const [editorView, setEditorView] = useState<EditorView | null>(null);
 
   useEffect(() => {
     setEditorValue(content);
@@ -47,6 +51,25 @@ const ContentArea: React.FC<ContentAreaProps> = ({
   const handleBlur = () => {
     setIsFocused(false);
   };
+
+  const handlePaste = (event: ClipboardEvent) => {
+    event.preventDefault();
+    const clipboardData = event.clipboardData || (window as any).clipboardData;
+    const htmlData = clipboardData.getData('text/html');
+    const textData = clipboardData.getData('text/plain');
+
+    let markdown = htmlData ? turndownService.turndown(htmlData) : textData;
+
+    if (editorView) {
+      const { state } = editorView;
+      const transaction = state.replaceSelection(markdown);
+      editorView.dispatch(transaction);
+    }
+  };
+
+  const pasteHandler = EditorView.domEventHandlers({
+    paste: handlePaste,
+  });
 
   const myTheme = EditorView.theme({
     '&': {
@@ -119,7 +142,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
       )}
       <CodeMirror
         value={editorValue}
-        extensions={[markdown(), EditorView.lineWrapping, myTheme]}
+        extensions={[markdown(), EditorView.lineWrapping, myTheme, pasteHandler]}
         onChange={onChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
@@ -130,6 +153,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
           foldGutter: false,
         }}
         className={`${styles.codeMirror} markdown-body`}
+        onCreateEditor={(view) => setEditorView(view)}
       />
     </div>
   ) : (
