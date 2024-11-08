@@ -9,7 +9,7 @@ export const pageContent = `
 - **Free and Indefinite:** All pastes are hosted for free and forever, without a need to create an account.
 
 ## Technology Stack
-- **Frontend:** Next.js, React, TypeScript
+- **Frontend:** Next.js, TypeScript
 - **Backend:** Next.js API Routes, MongoDB
 - **Editor:** CodeMirror 6
 - **Markdown:** React-Markdown with remark/rehype plugins
