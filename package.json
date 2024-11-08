@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start"
   },
   "dependencies": {
@@ -15,8 +16,9 @@
     "github-markdown-css": "^5.7.0",
     "katex": "^0.16.11",
     "mongodb": "^6.9.0",
-    "next": "14.2.14",
+    "next": "^15.0.3",
     "next-auth": "^4.24.8",
+    "next-sitemap": "^4.2.3",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.3.0",
