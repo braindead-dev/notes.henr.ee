@@ -1,17 +1,29 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl: 'https://notes.henr.ee',
-  generateRobotsTxt: false, // Since we're creating it manually
-  exclude: ['/admin/*', '/api/*', '/[id]'], // Exclude dynamic paste pages and admin/API routes
+  generateRobotsTxt: false,
+  exclude: [
+    '/admin/*',
+    '/api/*',
+    '/[id]',
+    '/auth/*',
+    '/assets/*'
+  ],
   generateIndexSitemap: false,
-  changefreq: {
-    '/': 'daily',
-    '/paste': 'daily',
-    '/encryption': 'daily'
+  changefreq: 'daily',
+  priority: 0.7,
+  transform: async (config, path) => {
+    // Custom priority for specific pages
+    let priority = 0.7;
+    if (path === '/') priority = 1.0;
+    if (path === '/paste') priority = 0.8;
+    if (path === '/encryption') priority = 0.7;
+
+    return {
+      loc: path,
+      changefreq: config.changefreq,
+      priority,
+      lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
+    };
   },
-  priority: {
-    '/': 1.0,
-    '/paste': 0.8,
-    '/encryption': 0.7
-  }
-}
+};
