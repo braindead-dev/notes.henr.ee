@@ -4,7 +4,7 @@ Here's a breakdown of how the encryption system works to ensure that only you an
 
 ---
 ### TL;DR
-- **Enabling Encryption:** Click the grey lock button on your paste to encrypt it. When the lock turns green, encryption is enabled.
+- **Enabling Encryption:** Click the grey lock next to the Publish button to encrypt your paste.
 - **Encryption**: We use military-grade AES-256-GCM encryption, performed entirely in your browser.
 - **Decryption**: Also done locally in your browser with the key or password you’re given.
 - **Security**: We don't know your encryption key or password, and we will never transmit it online.
