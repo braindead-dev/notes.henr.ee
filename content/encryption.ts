@@ -54,5 +54,5 @@ Our pastebin prioritizes user privacy by ensuring that all encryption occurs cli
 
 If you have any further questions, feel free to reach out.
 
-**Email** – contact@henrywa[.]ng / [braindead-dev/notes.henr.ee](https://github.com/braindead-dev/notes.henr.ee/)
+**Email** – contact@henrywa[.]ng / **Repository** – [braindead-dev/notes.henr.ee](https://github.com/braindead-dev/notes.henr.ee/)
 `;

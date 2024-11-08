@@ -19,10 +19,10 @@ export const pageContent = `
     - **Encryption:** If you encrypted your paste, you'll be prompted with the option to copy your encryption key or set a password.
 2. **Sharing With Others:** Share your paste link with others! (and supply them with the key / password if applicable)
 
-
 ----
+
 Enjoy sharing with **notes.henr.ee**! 
 If you have further questions, feel free to reach out.
 
-**Email** – contact@henrywa[.]ng / [braindead-dev/notes.henr.ee](https://github.com/braindead-dev/notes.henr.ee/)
+**Email** – contact@henrywa[.]ng / **Repository** – [braindead-dev/notes.henr.ee](https://github.com/braindead-dev/notes.henr.ee/)
 `;

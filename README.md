@@ -29,7 +29,7 @@ A free, secure pastebin designed for markdown notes with client-side encryption.
 
 ## Technology Stack
 
-- **Frontend**: Next.js, React, TypeScript
+- **Frontend**: Next.js, TypeScript
 - **Backend**: Next.js API Routes, MongoDB
 - **Editor**: CodeMirror 6
 - **Markdown**: React-Markdown with remark/rehype plugins
