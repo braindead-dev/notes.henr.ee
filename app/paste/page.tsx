@@ -3,21 +3,29 @@
 "use client";
 
 import { useState, useRef } from 'react';
-import styles from '@/styles/page.module.css';
-import PasteHeader from '@/components/PasteHeader';
+import dynamic from 'next/dynamic';
 import TitleInput from '@/components/TitleInput';
 import ContentArea from '@/components/ContentArea';
 import ScrollContainer from '@/components/ScrollContainer';
+import styles from '@/styles/page.module.css';
+import PasteHeader from '@/components/PasteHeader';
 import { useRouter } from 'next/navigation';
 import {
   generateEncryptionKey,
   encryptContentWithKey,
   encryptContentWithPassword,
 } from '@/utils/cryptoUtils';
-import ErrorMessage from '@/components/ErrorMessage';
-import EncryptionKeyModal from '@/components/modals/EncryptionKeyModal';
 
-export default function Home() {
+const EncryptionKeyModal = dynamic(() => import('@/components/modals/EncryptionKeyModal'), {
+  ssr: false,
+  loading: () => <p>Loading encryption options...</p>
+});
+
+const ErrorMessage = dynamic(() => import('@/components/ErrorMessage'), {
+  ssr: true
+});
+
+export default function PastePage() {
   const [title, setTitle] = useState("Untitled");
   const [content, setContent] = useState("");
   const [viewMode, setViewMode] = useState(false);
