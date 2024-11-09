@@ -214,11 +214,15 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
         </div>
       </div>
 
-      <h3>Recent Pastes</h3>
-      <table style={{ marginTop: '12px', marginBottom: '12px' }}>
+      <table className={styles.pasteTable}>
+        <thead>
+          <tr>
+            <th>Recent Pastes</th>
+          </tr>
+        </thead>
         <tbody>
           {recentPastes.map((paste) => (
-            <tr key={paste.id} className={styles.tableRow}>
+            <tr key={paste.id}>
               <td className={styles.tableCell}>
                 <a
                   className={styles.unstyledLink}

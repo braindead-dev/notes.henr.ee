@@ -135,7 +135,7 @@
   .pasteTable tbody tr:first-child td::before {
     content: "";
     display: block;
-    height: 5px; /* Creates space above the first row */
+    height: 5px; 
   }
 
   .pasteTable td {
@@ -618,6 +618,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  margin-top: 10px;
 }
 
 .graphCard {
@@ -651,4 +652,11 @@
   margin: 0;
   font-size: 20px !important;
   font-weight: bold;
+}
+
+.pasteTable .tableCell {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  align-items: center;
 }
