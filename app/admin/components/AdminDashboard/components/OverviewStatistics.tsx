@@ -187,6 +187,16 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
     };
   };
 
+  // Add this helper function right after the tooltipStyles object
+  const formatBytes = (bytes: number, decimals = 2) => {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.statsGrid}>
@@ -200,7 +210,7 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
         </div>
         <div className={styles.statCard}>
           <h3>Average Size</h3>
-          <p className={styles.statValue}>{averagePasteSize} KB</p>
+          <p className={styles.statValue}>{formatBytes(averagePasteSize * 1024)}</p>
         </div>
       </div>
 
