@@ -111,13 +111,25 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
     return <p>Loading...</p>;
   }
 
+  // Calculate 'firstDate' as the Sunday on or before 'startDate'
+  const [startYear, startMonth, startDayNum] = data[0].date.split('-').map(Number);
+  const startDateObj = new Date(Date.UTC(startYear, startMonth - 1, startDayNum));
+  const dayOfWeek = startDateObj.getUTCDay();
+  const firstDate = new Date(startDateObj);
+  firstDate.setUTCDate(firstDate.getUTCDate() - dayOfWeek); // Adjust to Sunday
+
+  // Calculate total weeks to set the width of the SVG
+  const [endYear, endMonth, endDayNum] = data[data.length - 1].date.split('-').map(Number);
+  const endDateObj = new Date(Date.UTC(endYear, endMonth - 1, endDayNum));
+
+  const totalDays = Math.ceil((endDateObj.getTime() - firstDate.getTime()) / (24 * 60 * 60 * 1000));
+  const weeks = Math.ceil(totalDays / 7);
+
   // Dimensions
   const squareSize = 15;
   const gap = 5;
-  const weeks = Math.ceil(data.length / 7); // Calculate number of weeks
-  const days = 7;
   const width = (squareSize + gap) * weeks + 2;
-  const height = (squareSize + gap) * days + 2;
+  const height = (squareSize + gap) * 7 + 2;
 
   // Color scale
   const counts = data.map((d) => d.count);
@@ -131,7 +143,7 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
       month: 'long',
       day: 'numeric',
       year: 'numeric',
-      timeZone: 'UTC', // Specify UTC time zone here
+      timeZone: 'UTC', // Ensure UTC time zone
     });
   };
 
@@ -141,11 +153,19 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
       <div className={styles.heatmapContainer}>
         <svg width={width} height={height}>
           <Group>
-            {data.map((day, i) => {
-              const weekIndex = Math.floor(i / 7);
-              const dayIndex = i % 7;
-              const x = weekIndex * (squareSize + gap) + 2;
-              const y = dayIndex * (squareSize + gap) + 2;
+            {data.map((day) => {
+              // Parse the date
+              const [year, month, dayNum] = day.date.split('-').map(Number);
+              const dateObj = new Date(Date.UTC(year, month - 1, dayNum));
+
+              // Get day of week (0 = Sunday, 6 = Saturday)
+              const dayOfWeek = dateObj.getUTCDay();
+
+              // Calculate week index
+              const weekDiff = Math.floor((dateObj.getTime() - firstDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
+
+              const x = weekDiff * (squareSize + gap) + 2;
+              const y = dayOfWeek * (squareSize + gap) + 2;
 
               return (
                 <rect
@@ -195,8 +215,7 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
           }}
         >
           <div>
-            {tooltipData.count} paste{tooltipData.count !== 1 ? 's' : ''} on{' '}
-            {tooltipData.date}.
+            {tooltipData.count} paste{tooltipData.count !== 1 ? 's' : ''} on {tooltipData.date}.
           </div>
         </Tooltip>
       )}
