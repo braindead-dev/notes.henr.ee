@@ -59,26 +59,6 @@
     margin: 0 auto;
     padding: 0 20px;
   }
-
-  .pieChartsContainer {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  
-  .pieCard {
-    flex: 1;
-    text-align: center;
-    margin: -10px;
-  }
-
-  .pieChart {
-    flex: 1;
-    text-align: center;
-    margin: -10px;
-    margin-top: -45px;
-  }
   
   .key {
     margin-top: -30px;
@@ -620,4 +600,25 @@
   justify-content: flex-end;
   gap: 8px;
   margin-top: 20px;
+}
+
+.barChart {
+  width: 100%;
+  overflow: hidden;
+}
+
+.chartsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.graphCard {
+  width: 100%;
+  text-align: left;
+  margin: 0;
+}
+
+.graphCard h5 {
+  margin: 0px;  /* Add this line to reduce space below the title */
 }
