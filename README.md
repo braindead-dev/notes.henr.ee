@@ -12,11 +12,12 @@ A free, secure pastebin designed for markdown notes with client-side encryption.
 
 ### Security
 - **Client-Side Encryption**: 
-  - AES-256-GCM encryption performed entirely in the browser
+  - AES-256-GCM encryption performed entirely in the browser using the [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API)
   - Two encryption methods:
     - Key-based: Uses a generated 256-bit key
     - Password-based: PBKDF2 with 1.5M iterations and SHA-256
   - Zero-knowledge: Server never sees unencrypted content or encryption keys
+  - See [cryptoUtils.ts](utils/cryptoUtils.ts)
 
 - **XSS Protection**:
   - Input validation and content sanitization on both client and server
@@ -69,12 +70,6 @@ DISCORD_WEBHOOK_URL=your_discord_webhook_url (optional)
 ```bash
 npm run dev
 ``` 
-
-## Security Considerations
-
-### Encryption Implementation
-The project uses the Web Crypto API for all cryptographic operations. Note that paste titles remain **unencrypted**.
-(See [cryptoUtils.ts](utils/cryptoUtils.ts))
 
 ## Contributing
 
