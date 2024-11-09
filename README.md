@@ -1,6 +1,6 @@
 # <img src="public/icon-192.png" alt="Icon" height="32"/> notes.henr.ee - Secure Markdown Pastebin
 
-A free, secure pastebin designed for markdown notes with client-side encryption. Built with Next.js, MongoDB, and TypeScript. I began this side project to share markdown notes with my classmates, focusing on an elegant UI.
+A free, secure pastebin designed for markdown notes with client-side encryption. Built with Next.js, MongoDB, and TypeScript. I began this side project to share markdown notes with my classmates, focusing on an elegant UI and later making it secure.
 
 ## Features
 
