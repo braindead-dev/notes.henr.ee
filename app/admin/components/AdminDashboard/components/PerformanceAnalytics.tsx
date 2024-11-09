@@ -17,6 +17,46 @@ interface TooltipData {
   count: number;
 }
 
+const getColorForCount = (count: number, sortedCounts: number[]): string => {
+  if (count === 0) return '#ebedf0';
+  
+  const nonZeroCounts = sortedCounts.filter(c => c > 0);
+  if (nonZeroCounts.length === 0) return '#9be9a8';
+  
+  const q1Index = Math.floor(nonZeroCounts.length / 4);
+  const q2Index = Math.floor(nonZeroCounts.length / 2);
+  const q3Index = Math.floor(3 * nonZeroCounts.length / 4);
+  
+  const q1 = nonZeroCounts[q1Index];
+  const q2 = nonZeroCounts[q2Index];
+  const q3 = nonZeroCounts[q3Index];
+  
+  if (count <= q1) return '#9be9a8';      // Level 1: Light green (0-25th percentile)
+  if (count <= q2) return '#41c464';      // Level 2: Medium green (25th-50th percentile)
+  if (count <= q3) return '#31a14e';      // Level 3: Deep green (50th-75th percentile)
+  return '#206e39';                       // Level 4: Darkest green (75th-100th percentile)
+};
+
+const getBorderColorForCount = (count: number, sortedCounts: number[]): string => {
+  if (count === 0) return '#dfe1e4';
+  
+  const nonZeroCounts = sortedCounts.filter(c => c > 0);
+  if (nonZeroCounts.length === 0) return '#94dda1';
+  
+  const q1Index = Math.floor(nonZeroCounts.length / 4);
+  const q2Index = Math.floor(nonZeroCounts.length / 2);
+  const q3Index = Math.floor(3 * nonZeroCounts.length / 4);
+  
+  const q1 = nonZeroCounts[q1Index];
+  const q2 = nonZeroCounts[q2Index];
+  const q3 = nonZeroCounts[q3Index];
+  
+  if (count <= q1) return '#94dda1';      // Level 1: Light green border
+  if (count <= q2) return '#40bb60';      // Level 2: Medium green border
+  if (count <= q3) return '#309a4b';      // Level 3: Deep green border
+  return '#226937';                       // Level 4: Darkest green border
+};
+
 const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   tooltipOpen,
   tooltipLeft,
@@ -73,19 +113,15 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
 
   // Dimensions
   const squareSize = 15;
-  const gap = 2;
+  const gap = 5;
   const weeks = Math.ceil(data.length / 7); // Calculate number of weeks
   const days = 7;
-  const width = (squareSize + gap) * weeks;
-  const height = (squareSize + gap) * days;
+  const width = (squareSize + gap) * weeks + 2;
+  const height = (squareSize + gap) * days + 2;
 
   // Color scale
   const counts = data.map((d) => d.count);
-  const maxCount = Math.max(...counts);
-  const colorScale = scaleLinear<string>({
-    domain: [0, maxCount || 1],
-    range: ['#ebedf0', '#216e39'],
-  });
+  const sortedCounts = [...counts].sort((a, b) => a - b);
 
   // Format date for tooltip
   const formatDate = (dateStr: string) => {
@@ -108,8 +144,8 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
             {data.map((day, i) => {
               const weekIndex = Math.floor(i / 7);
               const dayIndex = i % 7;
-              const x = weekIndex * (squareSize + gap);
-              const y = dayIndex * (squareSize + gap);
+              const x = weekIndex * (squareSize + gap) + 2;
+              const y = dayIndex * (squareSize + gap) + 2;
 
               return (
                 <rect
@@ -118,8 +154,10 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
                   y={y}
                   width={squareSize}
                   height={squareSize}
-                  fill={colorScale(day.count)}
-                  rx={2}
+                  fill={getColorForCount(day.count, sortedCounts)}
+                  stroke={getBorderColorForCount(day.count, sortedCounts)}
+                  strokeWidth={1.5}
+                  rx={3}
                   onMouseEnter={(event) => {
                     const bounds = event.currentTarget.getBoundingClientRect();
                     showTooltip({
@@ -148,7 +186,7 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
             backgroundColor: 'rgba(0,0,0,0.85)',
             color: 'white',
             padding: '8px 10px',
-            borderRadius: '4px',
+            borderRadius: '6px',
             fontSize: '12px',
             transform: 'translate(-55%, -120%)',
             zIndex: 9999,
