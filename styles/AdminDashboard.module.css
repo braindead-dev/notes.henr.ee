@@ -660,3 +660,7 @@
   display: flex;
   align-items: center;
 }
+
+.heatmapContainer {
+  margin-top: 10px;
+}

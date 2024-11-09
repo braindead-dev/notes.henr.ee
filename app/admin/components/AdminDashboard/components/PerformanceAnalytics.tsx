@@ -71,7 +71,7 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   }
 
   // Dimensions
-  const squareSize = 10;
+  const squareSize = 15;
   const gap = 2;
   const weeks = 26; // Half year
   const days = 7;
@@ -89,51 +89,61 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   // Format date for tooltip
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    const day = date.getDate();
+    
+    // Handle ordinal suffixes
+    const getOrdinalSuffix = (d: number) => {
+      if (d > 3 && d < 21) return 'th';
+      switch (d % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+      }
+    };
+
+    return `${date.toLocaleDateString('en-US', { month: 'long' })} ${day}${getOrdinalSuffix(day)}`;
   };
 
   return (
     <div className={styles.container}>
-      <h3>Activity</h3>
-      <svg width={width} height={height}>
-        <Group>
-          {data.map((day: DailyData, i: number) => {
-            const weekIndex = Math.floor(i / 7);
-            const dayIndex = i % 7;
-            const x = weekIndex * (squareSize + gap);
-            const y = dayIndex * (squareSize + gap);
+      <h2 className={styles.sectionTitle}>Performance Analytics</h2>
+      <div className={styles.heatmapContainer}>
+        <svg width={width} height={height}>
+          <Group>
+            {data.map((day: DailyData, i: number) => {
+              const weekIndex = Math.floor(i / 7);
+              const dayIndex = i % 7;
+              const x = weekIndex * (squareSize + gap);
+              const y = dayIndex * (squareSize + gap);
 
-            return (
-              <rect
-                key={day.date}
-                x={x}
-                y={y}
-                width={squareSize}
-                height={squareSize}
-                fill={colorScale(day.count)}
-                rx={2}
-                onMouseEnter={(event) => {
-                  const bounds = event.currentTarget.getBoundingClientRect();
-                  showTooltip({
-                    tooltipData: { 
-                      date: formatDate(day.date),
-                      count: day.count 
-                    },
-                    tooltipTop: bounds.top - 40,
-                    tooltipLeft: bounds.left + bounds.width / 2,
-                  });
-                }}
-                onMouseLeave={() => hideTooltip()}
-              />
-            );
-          })}
-        </Group>
-      </svg>
+              return (
+                <rect
+                  key={day.date}
+                  x={x}
+                  y={y}
+                  width={squareSize}
+                  height={squareSize}
+                  fill={colorScale(day.count)}
+                  rx={2}
+                  onMouseEnter={(event) => {
+                    const bounds = event.currentTarget.getBoundingClientRect();
+                    showTooltip({
+                      tooltipData: { 
+                        date: formatDate(day.date),
+                        count: day.count 
+                      },
+                      tooltipTop: bounds.top - 40,
+                      tooltipLeft: bounds.left + bounds.width / 2,
+                    });
+                  }}
+                  onMouseLeave={() => hideTooltip()}
+                />
+              );
+            })}
+          </Group>
+        </svg>
+      </div>
 
       {tooltipOpen && tooltipData && (
         <Tooltip
@@ -147,10 +157,13 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
             borderRadius: '4px',
             fontSize: '12px',
             transform: 'translate(-50%, -100%)',
+            zIndex: 9999,
+            position: 'fixed',
           }}
         >
-          <div>{tooltipData.date}</div>
-          <div>{tooltipData.count} paste{tooltipData.count !== 1 ? 's' : ''}</div>
+          <div>
+            {tooltipData.count} paste{tooltipData.count !== 1 ? 's' : ''} on {tooltipData.date}.
+          </div>
         </Tooltip>
       )}
     </div>
