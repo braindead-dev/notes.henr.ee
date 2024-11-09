@@ -52,7 +52,7 @@ export default function Paste() {
   const [encryptionMethod, setEncryptionMethod] = useState<'key' | 'password' | null>(null);
   const [needsDecryption, setNeedsDecryption] = useState(false);
   const [encryptionKey, setEncryptionKey] = useState('');
-  const [decryptionError, setDecryptionError] = useState('');
+  const [decryptionError, setDecryptionError] = useState<{ message: string; id: number } | null>(null);
   const [showDecryptionModal, setShowDecryptionModal] = useState(false);
   const titleEditableRef = useRef<HTMLDivElement>(null);
 
@@ -117,9 +117,9 @@ export default function Paste() {
       setContent(sanitizedContent);
       setNeedsDecryption(false);
       setShowDecryptionModal(false);
-      setDecryptionError('');
+      setDecryptionError(null);
     } catch (error) {
-      setDecryptionError('Invalid encryption key/password or corrupted data.');
+      setDecryptionError({ message: 'Invalid encryption key/password or corrupted data.', id: Date.now() });
     }
   };
 

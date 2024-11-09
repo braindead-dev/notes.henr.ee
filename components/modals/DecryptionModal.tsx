@@ -9,7 +9,7 @@ interface DecryptionModalProps {
   setEncryptionKey: (key: string) => void;
   onClose: () => void;
   handleDecryption: () => void;
-  decryptionError: string;
+  decryptionError: { message: string; id: number } | null;
   encryptionMethod: 'key' | 'password' | null;
 }
 
@@ -43,7 +43,7 @@ const DecryptionModal: React.FC<DecryptionModalProps> = ({
           style={{ border: 0 }}
           placeholder={isPasswordBased ? 'Enter password...' : 'Enter encryption key...'}
         />
-        {decryptionError && <ErrorMessage message={decryptionError} />}
+        {decryptionError && <ErrorMessage key={decryptionError.id} message={decryptionError.message} />}
         <div className={styles.modalActionsRight}>
           <button className={styles.toggleButton} onClick={onClose}>
             Close
