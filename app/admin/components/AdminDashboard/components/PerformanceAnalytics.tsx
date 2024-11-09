@@ -68,9 +68,9 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchPerformanceData = async () => {
+    const fetchAnalyticsData = async () => {
       try {
-        const response = await fetch('/api/admin/performance');
+        const response = await fetch('/api/admin/analytics');
         const dailyData = (await response.json()) as DailyData[];
 
         // Generate complete date range for 188 days
@@ -101,11 +101,11 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
         setData(allDates);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching performance data:', error);
+        console.error('Error fetching analytics data:', error);
       }
     };
 
-    fetchPerformanceData();
+    fetchAnalyticsData();
   }, []);
 
   if (loading) {
@@ -283,6 +283,7 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
           </div>
         </Tooltip>
       )}
+      
     </div>
   );
 };

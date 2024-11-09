@@ -1,4 +1,4 @@
-// app/api/admin/performance/route.ts
+// app/api/admin/analytics/route.ts
 
 import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
@@ -54,7 +54,7 @@ export async function GET() {
 
     return NextResponse.json(dailyData);
   } catch (error) {
-    console.error('Error fetching performance data:', error);
-    return NextResponse.json({ error: 'Unable to fetch performance data' }, { status: 500 });
+    console.error('Error fetching analytics data:', error);
+    return NextResponse.json({ error: 'Unable to fetch analytics data' }, { status: 500 });
   }
 }
