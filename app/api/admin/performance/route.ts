@@ -16,16 +16,16 @@ export async function GET() {
     const client = await clientPromise;
     const db = client.db('notes');
 
-    // Calculate date range (last 6 months)
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-    sixMonthsAgo.setHours(0, 0, 0, 0);
+    // Calculate date range (188 days)
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 188);
+    startDate.setHours(0, 0, 0, 0);
 
     // Aggregate paste counts by day
     const dailyData = await db.collection('pastes').aggregate([
       {
         $match: {
-          createdAt: { $gte: sixMonthsAgo }
+          createdAt: { $gte: startDate }
         }
       },
       {
