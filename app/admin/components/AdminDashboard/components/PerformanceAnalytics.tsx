@@ -1,3 +1,5 @@
+// app/admin/components/AdminDashboard/components/PerformanceAnalytics.tsx
+
 import React from 'react';
 import styles from '@/styles/AdminDashboard.module.css';
 
