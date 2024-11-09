@@ -361,7 +361,7 @@ const PasteManagement: React.FC = () => {
         console.log('Deleted count:', data.deletedCount);
       } else {
         // Delete selected pastes
-        const response = await fetch('/api/admin/delete-pastes', {
+        const response = await fetch('/api/admin/delete', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
