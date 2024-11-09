@@ -133,8 +133,8 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
                         date: formatDate(day.date),
                         count: day.count 
                       },
-                      tooltipTop: bounds.top - 40,
-                      tooltipLeft: bounds.left + bounds.width / 2,
+                      tooltipTop: bounds.top - 8,
+                      tooltipLeft: bounds.left + (squareSize / 2),
                     });
                   }}
                   onMouseLeave={() => hideTooltip()}
@@ -153,12 +153,13 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
             ...defaultStyles,
             backgroundColor: 'rgba(0,0,0,0.85)',
             color: 'white',
-            padding: '8px 12px',
+            padding: '8px 10px',
             borderRadius: '4px',
             fontSize: '12px',
-            transform: 'translate(-50%, -100%)',
+            transform: 'translate(-55%, -120%)',
             zIndex: 9999,
             position: 'fixed',
+            pointerEvents: 'none',
           }}
         >
           <div>
