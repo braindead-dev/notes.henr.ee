@@ -202,11 +202,11 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
             {dayLabels.map((label, idx) => (
               <text
                 key={idx}
-                x={dayLabelWidth - 5}
-                y={label.y + squareSize / 2 + 3} // Adjust for vertical centering
+                x={10}
+                y={label.y + squareSize / 2 + 3}
                 fontSize={10}
                 fill="#000"
-                textAnchor="end"
+                textAnchor="middle"
               >
                 {label.day}
               </text>
