@@ -104,7 +104,7 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
 
   // Dimensions
   const width = 300;
-  const height = 20;
+  const height = 16;
 
   const margin = { top: 0, left: 0, right: 0, bottom: 0 };
   const xMax = width - margin.left - margin.right;
