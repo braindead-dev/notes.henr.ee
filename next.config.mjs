@@ -31,7 +31,24 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; manifest-src 'self'"
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: https:",
+              "connect-src 'self'",
+              "manifest-src 'self'",
+              "report-uri /api/csp-report",
+              "report-to default"
+            ].join('; ')
+          },
+          {
+            key: 'Report-To',
+            value: JSON.stringify({
+              group: 'default',
+              max_age: 86400,
+              endpoints: [{ url: '/api/csp-report' }]
+            })
           }
         ]
       }
