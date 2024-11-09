@@ -97,7 +97,7 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   });
 
   // Dimensions
-  const width = 250;
+  const width = 280;
   const height = 16;
 
   const margin = { top: 0, left: 0, right: 0, bottom: 0 };
@@ -227,7 +227,7 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
         <div className={styles.graphCard}>
           <b>Encryption Stats</b>
           <div className={styles.barChart}>
-            <svg width="100%" height={height}>
+            <svg width={width} height={height}>
               <Group>
                 <BarStackHorizontal
                   data={encryptionData}
