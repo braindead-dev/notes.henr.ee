@@ -67,11 +67,21 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   const [data, setData] = useState<DailyData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  // Add new state variables for the statistics
+  const [totalPastes, setTotalPastes] = useState<number>(0);
+  const [pastesLast7Days, setPastesLast7Days] = useState<number>(0);
+  const [averagePasteSize, setAveragePasteSize] = useState<number>(0);
+
   useEffect(() => {
     const fetchAnalyticsData = async () => {
       try {
         const response = await fetch('/api/admin/analytics');
-        const dailyData = (await response.json()) as DailyData[];
+        const result = await response.json();
+
+        const dailyData = result.dailyData as DailyData[];
+        setTotalPastes(result.totalPastes);
+        setPastesLast7Days(result.pastesLast7Days);
+        setAveragePasteSize(result.averageSize); // averageSize is in KB
 
         // Generate complete date range for 188 days
         const endDate = new Date();
@@ -178,9 +188,20 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
     });
   };
 
+  // Helper function to format bytes
+  const formatBytes = (bytes: number, decimals = 2) => {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  };
+
   return (
     <div className={styles.container}>
       <h2 className={styles.sectionTitle}>Performance Analytics</h2>
+
       <div className={styles.heatmapContainer}>
         <svg width={width} height={height}>
           {/* Month labels */}
@@ -283,6 +304,22 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
           </div>
         </Tooltip>
       )}
+
+      <h2> Statistics </h2>
+      <div className={styles.statsGrid}>
+        <div className={styles.statCard}>
+          <h3>Total Pastes</h3>
+          <p className={styles.statValue}>{totalPastes}</p>
+        </div>
+        <div className={styles.statCard}>
+          <h3>Last 7 Days</h3>
+          <p className={styles.statValue}>{pastesLast7Days}</p>
+        </div>
+        <div className={styles.statCard}>
+          <h3>Average Size</h3>
+          <p className={styles.statValue}>{formatBytes(averagePasteSize * 1024)}</p>
+        </div>
+      </div>
       
     </div>
   );

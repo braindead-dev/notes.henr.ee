@@ -36,7 +36,6 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   hideTooltip,
   showTooltip,
 }) => {
-  const [totalPastes, setTotalPastes] = useState<number>(0);
   const [recentPastes, setRecentPastes] = useState<Paste[]>([]);
   const [encryptionStats, setEncryptionStats] = useState<EncryptionStats>({
     keyEncrypted: 0,
@@ -45,8 +44,6 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   });
   const [storageUsage, setStorageUsage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
-  const [pastesLast7Days, setPastesLast7Days] = useState<number>(0);
-  const [averagePasteSize, setAveragePasteSize] = useState<number>(0);
 
   useEffect(() => {
     const fetchStatistics = async () => {
@@ -54,12 +51,9 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
         const response = await fetch('/api/admin/overview');
         const data = await response.json();
 
-        setTotalPastes(data.totalPastes);
         setRecentPastes(data.recentPastes);
         setEncryptionStats(data.encryptionStats);
         setStorageUsage(data.storageUsage);
-        setPastesLast7Days(data.pastesLast7Days);
-        setAveragePasteSize(data.averageSize);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching overview statistics:', error);
@@ -103,7 +97,7 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   });
 
   // Dimensions
-  const width = 300;
+  const width = 250;
   const height = 16;
 
   const margin = { top: 0, left: 0, right: 0, bottom: 0 };
@@ -187,32 +181,10 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
     };
   };
 
-  // Add this helper function right after the tooltipStyles object
-  const formatBytes = (bytes: number, decimals = 2) => {
-    if (bytes === 0) return '0 B';
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-  };
-
   return (
     <div className={styles.container}>
-      <div className={styles.statsGrid}>
-        <div className={styles.statCard}>
-          <h3>Total Pastes</h3>
-          <p className={styles.statValue}>{totalPastes}</p>
-        </div>
-        <div className={styles.statCard}>
-          <h3>Last 7 Days</h3>
-          <p className={styles.statValue}>{pastesLast7Days}</p>
-        </div>
-        <div className={styles.statCard}>
-          <h3>Average Size</h3>
-          <p className={styles.statValue}>{formatBytes(averagePasteSize * 1024)}</p>
-        </div>
-      </div>
+      
+      <h2 className={styles.sectionTitle}>Overview Statistics</h2>
 
       <table className={styles.pasteTable}>
         <thead>
@@ -255,7 +227,7 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
         <div className={styles.graphCard}>
           <b>Encryption Stats</b>
           <div className={styles.barChart}>
-            <svg width={width} height={height}>
+            <svg width="100%" height={height}>
               <Group>
                 <BarStackHorizontal
                   data={encryptionData}

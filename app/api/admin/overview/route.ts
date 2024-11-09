@@ -19,15 +19,6 @@ export async function GET() {
     // Calculate timestamp for 7 days ago
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-    // Fetch general statistics
-    const totalPastes = await db.collection('pastes').countDocuments();
-    
-    // Count pastes from last 7 days
-    const pastesLast7Days = await db.collection('pastes').countDocuments({
-      createdAt: { $gte: sevenDaysAgo }
-    });
-
     // Modified encryption stats queries
     const keyEncryptedCount = await db.collection('pastes').countDocuments({ 
       encryptionMethod: 'key'
@@ -53,32 +44,12 @@ export async function GET() {
       })
       .toArray();
 
-    // Calculate average paste size
-    const pipeline = [
-      {
-        $project: {
-          size: { $bsonSize: '$$ROOT' }
-        }
-      },
-      {
-        $group: {
-          _id: null,
-          averageSize: { $avg: '$size' }
-        }
-      }
-    ];
-
-    const averageSizeResult = await db.collection('pastes').aggregate(pipeline).toArray();
-    const averageSize = averageSizeResult.length > 0 ? averageSizeResult[0].averageSize : 0;
-
     // Use the dbStats command to get storage statistics
     const stats = await db.command({ dbStats: 1 });
     const storageUsage = stats.storageSize;
 
     // Respond with the statistics
     return NextResponse.json({
-      totalPastes,
-      pastesLast7Days,
       recentPastes,
       encryptionStats: {
         keyEncrypted: keyEncryptedCount,
@@ -86,7 +57,6 @@ export async function GET() {
         nonEncrypted: nonEncryptedCount
       },
       storageUsage: storageUsage / (1024 * 1024), // Convert bytes to MB
-      averageSize: averageSize / 1024, // Convert bytes to KB
     });
   } catch (error) {
     console.error('Error fetching overview data:', error);
