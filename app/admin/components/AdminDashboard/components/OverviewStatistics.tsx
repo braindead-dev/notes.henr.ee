@@ -54,17 +54,25 @@ const OverviewStatistics: React.FC = () => {
 
   const availableStorage = 512 - storageUsage;
 
-  const keyEncryptedPercentage = ((encryptionStats.keyEncrypted / totalPastes) * 100).toFixed(2);
-  const passwordEncryptedPercentage = ((encryptionStats.passwordEncrypted / totalPastes) * 100).toFixed(2);
-  const nonEncryptedPercentage = ((encryptionStats.nonEncrypted / totalPastes) * 100).toFixed(2);
+  // Calculate percentages for Encryption Stats
+  const totalEncryption =
+    encryptionStats.keyEncrypted +
+    encryptionStats.passwordEncrypted +
+    encryptionStats.nonEncrypted;
 
-  // Data for Encryption Stats
+  const keyEncryptedPercentage =
+    totalEncryption > 0 ? encryptionStats.keyEncrypted / totalEncryption : 0;
+  const passwordEncryptedPercentage =
+    totalEncryption > 0 ? encryptionStats.passwordEncrypted / totalEncryption : 0;
+  const nonEncryptedPercentage =
+    totalEncryption > 0 ? encryptionStats.nonEncrypted / totalEncryption : 0;
+
   const encryptionData = [
     {
       label: 'Encryption',
-      keyEncrypted: encryptionStats.keyEncrypted,
-      passwordEncrypted: encryptionStats.passwordEncrypted,
-      nonEncrypted: encryptionStats.nonEncrypted,
+      keyEncrypted: keyEncryptedPercentage,
+      passwordEncrypted: passwordEncryptedPercentage,
+      nonEncrypted: nonEncryptedPercentage,
     },
   ];
   const encryptionKeys = ['keyEncrypted', 'passwordEncrypted', 'nonEncrypted'];
@@ -73,22 +81,35 @@ const OverviewStatistics: React.FC = () => {
     range: ['#4caf50', '#90caf9', '#ebebeb'],
   });
 
+  // Dimensions
+  const width = 300;
+  const height = 20;
+
+  const margin = { top: 0, left: 0, right: 0, bottom: 0 };
+  const xMax = width - margin.left - margin.right;
+  const yMax = height - margin.top - margin.bottom;
+
   // Scales for Encryption Stats
   const xScaleEncryption = scaleLinear<number>({
-    domain: [0, totalPastes],
-    nice: true,
+    domain: [0, 1], // Percentages from 0% to 100%
+    range: [0, xMax],
   });
   const yScaleEncryption = scaleBand<string>({
     domain: encryptionData.map((d) => d.label),
-    padding: 0.2,
+    range: [0, yMax],
+    padding: 0,
   });
 
-  // Data for Storage Usage
+  // Calculate percentages for Storage Usage
+  const totalStorage = 512; // Assuming 512 is the total storage capacity
+  const usedPercentage = totalStorage > 0 ? storageUsage / totalStorage : 0;
+  const unusedPercentage = totalStorage > 0 ? availableStorage / totalStorage : 0;
+
   const storageData = [
     {
       label: 'Storage',
-      used: storageUsage,
-      unused: availableStorage,
+      used: usedPercentage,
+      unused: unusedPercentage,
     },
   ];
   const storageKeys = ['used', 'unused'];
@@ -99,27 +120,14 @@ const OverviewStatistics: React.FC = () => {
 
   // Scales for Storage Usage
   const xScaleStorage = scaleLinear<number>({
-    domain: [0, 512],
-    nice: true,
+    domain: [0, 1], // Percentages from 0% to 100%
+    range: [0, xMax],
   });
   const yScaleStorage = scaleBand<string>({
     domain: storageData.map((d) => d.label),
-    padding: 0.2,
+    range: [0, yMax],
+    padding: 0,
   });
-
-  // Dimensions
-  const width = 300;
-  const height = 40;
-  const margin = { top: 0, left: 0, right: 0, bottom: 0 };
-  const xMax = width - margin.left - margin.right;
-  const yMax = height - margin.top - margin.bottom;
-
-  // Set ranges for scales
-  xScaleEncryption.rangeRound([0, xMax]);
-  yScaleEncryption.rangeRound([0, yMax]);
-
-  xScaleStorage.rangeRound([0, xMax]);
-  yScaleStorage.rangeRound([0, yMax]);
 
   return (
     <div className={styles.container}>
@@ -127,7 +135,7 @@ const OverviewStatistics: React.FC = () => {
       <p>{totalPastes}</p>
 
       <h3>Recent Pastes</h3>
-      <table style={{ marginTop: '12px',marginBottom: '12px' }}>
+      <table style={{ marginTop: '12px', marginBottom: '12px' }}>
         <tbody>
           {recentPastes.map((paste) => (
             <tr key={paste.id} className={styles.tableRow}>
@@ -161,10 +169,10 @@ const OverviewStatistics: React.FC = () => {
       <div className={styles.chartsContainer}>
         {/* Encryption Stats */}
         <div className={styles.graphCard}>
-          <h5>Encryption Stats</h5>
+          <b>Encryption Stats</b>
           <div className={styles.barChart}>
             <svg width={width} height={height}>
-              <Group top={margin.top} left={margin.left}>
+              <Group>
                 <BarStackHorizontal
                   data={encryptionData}
                   keys={encryptionKeys}
@@ -195,10 +203,10 @@ const OverviewStatistics: React.FC = () => {
 
         {/* Storage Usage */}
         <div className={styles.graphCard}>
-          <h5>Storage Usage</h5>
+          <b>Storage Usage</b>
           <div className={styles.barChart}>
             <svg width={width} height={height}>
-              <Group top={margin.top} left={margin.left}>
+              <Group>
                 <BarStackHorizontal
                   data={storageData}
                   keys={storageKeys}
@@ -224,11 +232,6 @@ const OverviewStatistics: React.FC = () => {
                 </BarStackHorizontal>
               </Group>
             </svg>
-          </div>
-          <div className={styles.key}>
-            <div className={styles.keyItem}>
-              <span>{storageUsage.toFixed(2)} / 512 MB</span>
-            </div>
           </div>
         </div>
       </div>

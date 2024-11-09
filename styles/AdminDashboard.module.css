@@ -4,6 +4,7 @@
     gap: 20px;
     padding: 0px;
     padding-bottom: 10rem;
+
   }
   
   .gridRow {
@@ -34,9 +35,13 @@
     margin-bottom: -5px;
   }
   
-  .container p, .container ul {
-    font-size: 1rem;
-    color: #555;
+  .container p, .container ul, .container {
+    font-size: 14px;
+    color: #222;
+  }
+
+  .container b {
+    font-weight: 600;
   }
   
   .container ul {
@@ -604,6 +609,8 @@
 
 .barChart {
   width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
   overflow: hidden;
 }
 
