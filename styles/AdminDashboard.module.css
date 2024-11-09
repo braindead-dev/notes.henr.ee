@@ -629,3 +629,26 @@
 .graphCard h5 {
   margin: 0px;  /* Add this line to reduce space below the title */
 }
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 1rem;
+}
+
+.statCard {
+  text-align: center;
+  padding-top: 5px;
+}
+
+.statCard h3 {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.statValue {
+  margin: 0;
+  font-size: 20px !important;
+  font-weight: bold;
+}

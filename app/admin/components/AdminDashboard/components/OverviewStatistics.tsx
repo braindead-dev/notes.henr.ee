@@ -45,6 +45,8 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   });
   const [storageUsage, setStorageUsage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
+  const [pastesLast7Days, setPastesLast7Days] = useState<number>(0);
+  const [averagePasteSize, setAveragePasteSize] = useState<number>(0);
 
   useEffect(() => {
     const fetchStatistics = async () => {
@@ -56,6 +58,8 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
         setRecentPastes(data.recentPastes);
         setEncryptionStats(data.encryptionStats);
         setStorageUsage(data.storageUsage);
+        setPastesLast7Days(data.pastesLast7Days);
+        setAveragePasteSize(data.averageSize);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching overview statistics:', error);
@@ -185,8 +189,20 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
 
   return (
     <div className={styles.container}>
-      <h3>Total Pastes</h3>
-      <p>{totalPastes}</p>
+      <div className={styles.statsGrid}>
+        <div className={styles.statCard}>
+          <h3>Total Pastes</h3>
+          <p className={styles.statValue}>{totalPastes}</p>
+        </div>
+        <div className={styles.statCard}>
+          <h3>Last 7 Days</h3>
+          <p className={styles.statValue}>{pastesLast7Days}</p>
+        </div>
+        <div className={styles.statCard}>
+          <h3>Average Size</h3>
+          <p className={styles.statValue}>{averagePasteSize} KB</p>
+        </div>
+      </div>
 
       <h3>Recent Pastes</h3>
       <table style={{ marginTop: '12px', marginBottom: '12px' }}>
