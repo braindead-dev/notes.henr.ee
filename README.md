@@ -1,4 +1,4 @@
-# notes.henr.ee - Secure Markdown Pastebin
+# <img src="public/icon-192.png" alt="Icon" height="32"/> notes.henr.ee - Secure Markdown Pastebin
 
 A free, secure pastebin designed for markdown notes with client-side encryption. Built with Next.js, MongoDB, and TypeScript. I began this side project to share markdown notes with my classmates, focusing on an elegant UI and security.
 
@@ -18,7 +18,11 @@ A free, secure pastebin designed for markdown notes with client-side encryption.
     - Password-based: PBKDF2 with 1.5M iterations and SHA-256
   - Zero-knowledge: Server never sees unencrypted content or encryption keys
 
-### Administrative Features
+### Admin Features
+<div align="center">
+<img src="public/admin-dash.png" alt="Admin Dashboard" width="400"/>
+</div>
+
 - **Admin Dashboard**:
   - Real-time statistics and analytics
   - Paste management with search, sort, and filter capabilities
@@ -60,30 +64,13 @@ DISCORD_WEBHOOK_URL=your_discord_webhook_url (optional)
 4. Run the development server:
 ```bash
 npm run dev
-```
-
-## API Routes
-
-### Public Routes
-- `POST /api/paste`: Create new paste
-- `GET /api/getPaste`: Retrieve paste by ID
-
-### Admin Routes
-- `GET /api/admin/overview`: Dashboard statistics
-- `GET /api/admin/manage`: Paste management
-- `DELETE /api/admin/delete-all`: Bulk delete with filters
-- `DELETE /api/admin/delete-pastes`: Delete selected pastes
+``` 
 
 ## Security Considerations
 
 ### Encryption Implementation
-The project uses the Web Crypto API for all cryptographic operations.
+The project uses the Web Crypto API for all cryptographic operations. Note that paste titles remain **unencrypted**.
 (See [cryptoUtils.ts](utils/cryptoUtils.ts))
-
-### Data Storage
-- Only encrypted content is stored on the server
-- Paste titles remain unencrypted for searchability
-- No encryption keys or passwords are ever transmitted
 
 ## Contributing
 
