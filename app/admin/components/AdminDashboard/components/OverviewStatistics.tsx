@@ -5,6 +5,8 @@ import { BarStackHorizontal } from '@visx/shape';
 import { Group } from '@visx/group';
 import { scaleLinear, scaleBand, scaleOrdinal } from '@visx/scale';
 import styles from '@/styles/AdminDashboard.module.css';
+import { withTooltip, Tooltip, defaultStyles } from '@visx/tooltip';
+import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 
 interface Paste {
   id: string;
@@ -18,7 +20,22 @@ interface EncryptionStats {
   nonEncrypted: number;
 }
 
-const OverviewStatistics: React.FC = () => {
+// Add tooltip type definitions
+type TooltipData = {
+  key: string;
+  value: number;
+  percentage: number;
+  color: string;
+};
+
+const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
+  tooltipOpen,
+  tooltipLeft,
+  tooltipTop,
+  tooltipData,
+  hideTooltip,
+  showTooltip,
+}) => {
   const [totalPastes, setTotalPastes] = useState<number>(0);
   const [recentPastes, setRecentPastes] = useState<Paste[]>([]);
   const [encryptionStats, setEncryptionStats] = useState<EncryptionStats>({
@@ -129,6 +146,43 @@ const OverviewStatistics: React.FC = () => {
     padding: 0,
   });
 
+  // Add tooltip styles
+  const tooltipStyles = {
+    ...defaultStyles,
+    minWidth: 60,
+    backgroundColor: 'rgba(0,0,0,0.9)',
+    color: 'white',
+    padding: '8px 12px',
+    borderRadius: '4px',
+  };
+
+  // Add this helper function
+  const getTooltipData = (
+    key: string,
+    value: number,
+    total: number,
+    color: string
+  ) => {
+    const percentage = (value / total) * 100;
+    const label = 
+      key === 'keyEncrypted' 
+        ? 'Key Encrypted'
+        : key === 'passwordEncrypted'
+        ? 'Password Encrypted'
+        : key === 'used'
+        ? 'Used Storage'
+        : key === 'unused'
+        ? 'Available Storage'
+        : 'Not Encrypted';
+
+    return {
+      key: label,
+      value,
+      percentage,
+      color,
+    };
+  };
+
   return (
     <div className={styles.container}>
       <h3>Total Pastes</h3>
@@ -191,6 +245,27 @@ const OverviewStatistics: React.FC = () => {
                           width={bar.width}
                           height={bar.height}
                           fill={bar.color}
+                          onMouseLeave={() => hideTooltip()}
+                          onMouseEnter={(event) => {
+                            const value = 
+                              bar.key === 'keyEncrypted' 
+                                ? encryptionStats.keyEncrypted
+                                : bar.key === 'passwordEncrypted'
+                                ? encryptionStats.passwordEncrypted
+                                : encryptionStats.nonEncrypted;
+
+                            const bounds = event.currentTarget.getBoundingClientRect();
+                            showTooltip({
+                              tooltipData: getTooltipData(
+                                bar.key,
+                                value,
+                                totalEncryption,
+                                bar.color
+                              ),
+                              tooltipTop: bounds.top,
+                              tooltipLeft: bounds.right + 10,
+                            });
+                          }}
                         />
                       ))
                     )
@@ -225,6 +300,21 @@ const OverviewStatistics: React.FC = () => {
                           width={bar.width}
                           height={bar.height}
                           fill={bar.color}
+                          onMouseLeave={() => hideTooltip()}
+                          onMouseEnter={(event) => {
+                            const value = bar.key === 'used' ? storageUsage : availableStorage;
+                            const bounds = event.currentTarget.getBoundingClientRect();
+                            showTooltip({
+                              tooltipData: getTooltipData(
+                                bar.key,
+                                value,
+                                totalStorage,
+                                bar.color
+                              ),
+                              tooltipTop: bounds.top,
+                              tooltipLeft: bounds.right + 10,
+                            });
+                          }}
                         />
                       ))
                     )
@@ -235,8 +325,41 @@ const OverviewStatistics: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Update the tooltip render */}
+      {tooltipOpen && tooltipData && (
+        <Tooltip 
+          top={tooltipTop} 
+          left={tooltipLeft} 
+          style={{
+            ...defaultStyles,
+            backgroundColor: 'rgba(0,0,0,0.75)',
+            color: 'white',
+            padding: '8px 12px',
+            borderRadius: '4px',
+            position: 'fixed',
+            pointerEvents: 'none',
+          }}
+        >
+          <div style={{ 
+            color: tooltipData.color,
+            lineHeight: 1.2,
+            marginBottom: '4px'
+          }}>
+            <strong>{tooltipData.key}</strong>
+          </div>
+          <div style={{ lineHeight: 1.3 }}>{tooltipData.percentage.toFixed(2)}%</div>
+          <div style={{ lineHeight: 1.3 }}>
+            {tooltipData.key.includes('Storage') 
+              ? `${tooltipData.value.toFixed(2)} MB`
+              : `${Math.round(tooltipData.value)} Pastes`
+            }
+          </div>
+        </Tooltip>
+      )}
     </div>
   );
 };
 
-export default OverviewStatistics;
+// Export with tooltip HOC
+export default withTooltip<any, TooltipData>(OverviewStatistics);
