@@ -11,6 +11,7 @@ import { EditorView } from '@codemirror/view';
 import 'github-markdown-css/github-markdown-light.css';
 import '@/styles/markdownStyles.css';
 import TurndownService from 'turndown';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 
 interface ContentAreaProps {
   content: string;
@@ -160,7 +161,24 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     <div className={`${isInfoPage ? styles.markdownViewInfo : styles.markdownView} markdown-body markdown-content`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[rehypeKatex]}
+        rehypePlugins={[
+          rehypeKatex,
+          [rehypeSanitize, {
+            ...defaultSchema,
+            attributes: {
+              ...defaultSchema.attributes,
+              code: [...(defaultSchema.attributes?.code || []), 'className'],
+              span: [...(defaultSchema.attributes?.span || []), 'className'],
+              'math-display': [...(defaultSchema.attributes?.['math-display'] || []), 'className'],
+              'math-inline': [...(defaultSchema.attributes?.['math-inline'] || []), 'className']
+            },
+            tagNames: [
+              ...(defaultSchema.tagNames || []),
+              'math-display',
+              'math-inline'
+            ]
+          }]
+        ]}
       >
         {editorValue || ''}
       </ReactMarkdown>

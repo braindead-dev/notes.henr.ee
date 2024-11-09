@@ -11,6 +11,7 @@ import TitleInput from '@/components/TitleInput';
 import ContentArea from '@/components/ContentArea';
 import ScrollContainer from '@/components/ScrollContainer';
 import styles from '@/styles/page.module.css';
+import DOMPurify from 'dompurify';
 
 // Helper function to sanitize the title for the browser tab
 const sanitizeTitleForTab = (title: string) => {
@@ -109,11 +110,11 @@ export default function Paste() {
   };
 
   const handleDecryption = async () => {
-    setDecryptionError('');
-
     try {
       const decryptedContent = await decryptContent(content, encryptionKey);
-      setContent(decryptedContent);
+      // Sanitize the decrypted content
+      const sanitizedContent = DOMPurify.sanitize(decryptedContent);
+      setContent(sanitizedContent);
       setNeedsDecryption(false);
       setShowDecryptionModal(false);
       setDecryptionError('');
