@@ -71,13 +71,9 @@ DISCORD_WEBHOOK_URL=your_discord_webhook_url (optional)
 npm run dev
 ``` 
 
-## Contributing
-
-Contributions are welcome! Please read our contributing guidelines before submitting pull requests.
-
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
 
 ## Acknowledgments
 
@@ -87,7 +83,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Contact
 
-For questions or support, please reach out to contact@henrywa[.]ng
+For questions or support, please reach out to contact@henrywa[.]ng. Contributions are welcome!
 
 ---
 
