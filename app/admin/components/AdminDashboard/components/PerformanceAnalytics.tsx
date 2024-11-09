@@ -8,7 +8,7 @@ import { Tooltip, withTooltip, defaultStyles } from '@visx/tooltip';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 
 interface DailyData {
-  date: string;
+  date: string; // 'YYYY-MM-DD' in UTC
   count: number;
 }
 
@@ -33,27 +33,28 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
       try {
         const response = await fetch('/api/admin/performance');
         const dailyData = (await response.json()) as DailyData[];
-        
+
         // Generate complete date range for last 6 months
         const endDate = new Date();
-        const startDate = new Date();
-        startDate.setMonth(startDate.getMonth() - 6);
-        
+        endDate.setUTCHours(0, 0, 0, 0);
+        const startDate = new Date(Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth() - 6, endDate.getUTCDate()));
+
         const dateMap = new Map<string, number>(
           dailyData.map((d: DailyData) => [d.date, d.count])
         );
 
         const allDates: DailyData[] = [];
-        const currentDate = new Date(startDate);
+        let currentDate = new Date(startDate);
 
         while (currentDate <= endDate) {
-          const dateStr = currentDate.toISOString().split('T')[0];
-          const count = dateMap.get(dateStr) ?? 0; // Ensure count is a number
+          const dateStr = getUTCDateString(currentDate);
+          const count = dateMap.get(dateStr) ?? 0;
           allDates.push({
             date: dateStr,
             count: count,
           });
-          currentDate.setDate(currentDate.getDate() + 1);
+          // Move to next day in UTC
+          currentDate.setUTCDate(currentDate.getUTCDate() + 1);
         }
 
         setData(allDates);
@@ -73,36 +74,29 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   // Dimensions
   const squareSize = 15;
   const gap = 2;
-  const weeks = 26; // Half year
+  const weeks = Math.ceil(data.length / 7); // Calculate number of weeks
   const days = 7;
   const width = (squareSize + gap) * weeks;
   const height = (squareSize + gap) * days;
 
   // Color scale
-  const counts = data.map((d: DailyData) => d.count);
+  const counts = data.map((d) => d.count);
   const maxCount = Math.max(...counts);
   const colorScale = scaleLinear<string>({
-    domain: [0, maxCount || 1], // Use 1 as max if all counts are 0
-    range: ['#ebedf0', '#216e39'], // GitHub-style colors
+    domain: [0, maxCount || 1],
+    range: ['#ebedf0', '#216e39'],
   });
 
   // Format date for tooltip
   const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    const day = date.getDate();
-    
-    // Handle ordinal suffixes
-    const getOrdinalSuffix = (d: number) => {
-      if (d > 3 && d < 21) return 'th';
-      switch (d % 10) {
-        case 1: return 'st';
-        case 2: return 'nd';
-        case 3: return 'rd';
-        default: return 'th';
-      }
-    };
-
-    return `${date.toLocaleDateString('en-US', { month: 'long' })} ${day}${getOrdinalSuffix(day)}`;
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    return date.toLocaleDateString(undefined, {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      timeZone: 'UTC', // Specify UTC time zone here
+    });
   };
 
   return (
@@ -111,7 +105,7 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
       <div className={styles.heatmapContainer}>
         <svg width={width} height={height}>
           <Group>
-            {data.map((day: DailyData, i: number) => {
+            {data.map((day, i) => {
               const weekIndex = Math.floor(i / 7);
               const dayIndex = i % 7;
               const x = weekIndex * (squareSize + gap);
@@ -129,12 +123,12 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
                   onMouseEnter={(event) => {
                     const bounds = event.currentTarget.getBoundingClientRect();
                     showTooltip({
-                      tooltipData: { 
+                      tooltipData: {
                         date: formatDate(day.date),
-                        count: day.count 
+                        count: day.count,
                       },
                       tooltipTop: bounds.top - 8,
-                      tooltipLeft: bounds.left + (squareSize / 2),
+                      tooltipLeft: bounds.left + squareSize / 2,
                     });
                   }}
                   onMouseLeave={() => hideTooltip()}
@@ -163,12 +157,24 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
           }}
         >
           <div>
-            {tooltipData.count} paste{tooltipData.count !== 1 ? 's' : ''} on {tooltipData.date}.
+            {tooltipData.count} paste{tooltipData.count !== 1 ? 's' : ''} on{' '}
+            {tooltipData.date}.
           </div>
         </Tooltip>
       )}
     </div>
   );
 };
+
+// Helper function to get date string in 'YYYY-MM-DD' format in UTC
+function getUTCDateString(date: Date): string {
+  return (
+    date.getUTCFullYear() +
+    '-' +
+    String(date.getUTCMonth() + 1).padStart(2, '0') +
+    '-' +
+    String(date.getUTCDate()).padStart(2, '0')
+  );
+}
 
 export default withTooltip<{}, TooltipData>(PerformanceAnalytics);
