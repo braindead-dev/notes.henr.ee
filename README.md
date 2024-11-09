@@ -18,6 +18,10 @@ A free, secure pastebin designed for markdown notes with client-side encryption.
     - Password-based: PBKDF2 with 1.5M iterations and SHA-256
   - Zero-knowledge: Server never sees unencrypted content or encryption keys
 
+- **XSS Protection**:
+  - Input validation and content sanitization on both client and server
+  - Strict CSP and HTTP headers
+
 ### Admin Features
 <div align="center">
 <img src="public/admin-dash.png" alt="Admin Dashboard" width="400"/>
