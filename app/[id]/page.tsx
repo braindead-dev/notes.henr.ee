@@ -13,19 +13,6 @@ import ScrollContainer from '@/components/ScrollContainer';
 import styles from '@/styles/page.module.css';
 import DOMPurify from 'dompurify';
 
-// Helper function to sanitize the title for the browser tab
-const sanitizeTitleForTab = (title: string) => {
-  if (!title || typeof title !== 'string') {
-    return "Henry's Notes"; // Fallback if title is invalid
-  }
-
-  // Replace characters not allowed in the browser tab title, if any
-  const sanitizedTitle = title.replace(/[^a-zA-Z0-9\s\-_\(\)]+/g, '');
-
-  // Fallback if the sanitized title is empty
-  return sanitizedTitle.trim() || "Henry's Notes";
-};
-
 // Add this helper function at the top of your file
 const sanitizeErrorMessage = (status: number, message?: string): string => {
   const defaultMessages: { [key: number]: string } = {
@@ -95,9 +82,13 @@ export default function Paste() {
   }, [id]);
 
   useEffect(() => {
-    // Update the document title whenever the title state changes
-    const sanitizedTitle = sanitizeTitleForTab(title);
-    document.title = sanitizedTitle;
+    try {
+      // Attempt to set the document title directly
+      document.title = title || "Henry's Notes";
+    } catch (error) {
+      // Fallback to default title in case of any error
+      document.title = "Henry's Notes";
+    }
   }, [title]);
 
   const handleCopy = () => {

@@ -12,6 +12,7 @@ import 'github-markdown-css/github-markdown-light.css';
 import '@/styles/markdownStyles.css';
 import TurndownService from 'turndown';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+import rehypeRaw from 'rehype-raw';
 
 interface ContentAreaProps {
   content: string;
@@ -22,6 +23,15 @@ interface ContentAreaProps {
 }
 
 const turndownService = new TurndownService();
+
+const escapeHtml = (unsafe: string) => {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+};
 
 const ContentArea: React.FC<ContentAreaProps> = ({
   content,
@@ -136,6 +146,8 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     },
   });
 
+  const safeContent = escapeHtml(content);
+
   return isEditable && !viewMode ? (
     <div className={`${styles.contentEditable} markdown-body`}>
       {!isFocused && !editorValue && (
@@ -163,6 +175,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[
           rehypeKatex,
+          rehypeRaw,
           [rehypeSanitize, {
             ...defaultSchema,
             attributes: {
@@ -180,7 +193,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
           }]
         ]}
       >
-        {editorValue || ''}
+        {safeContent || ''}
       </ReactMarkdown>
     </div>
   );
