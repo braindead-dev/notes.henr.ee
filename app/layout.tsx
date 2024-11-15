@@ -48,18 +48,9 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon-192.png" />
         <meta name="theme-color" content="#222222" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        <link rel="preload" href="/styles/page.module.css" as="style" />
-        <link rel="preload" href="/styles/markdownStyles.css" as="style" />
                 
         <link rel="prefetch" href="/paste" />
         <link rel="prefetch" href="/encryption" />
-        
-        <link rel="modulepreload" href="/@codemirror/lang-markdown" />
-        <link rel="modulepreload" href="/react-markdown" />
-        <link rel="modulepreload" href="/remark-gfm" />
-        
-        <link rel="preload" href="/katex/katex.min.css" as="style" />
       </head>
       <body>{children}</body>
     </html>

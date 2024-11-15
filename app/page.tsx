@@ -1,3 +1,5 @@
+// app/page.tsx
+
 "use client";
 
 import { useRef } from 'react';
@@ -17,11 +19,6 @@ const websiteSchema = {
   "operatingSystem": "Any",
   "description": "A free, simple, and secure markdown pastebin.",
   "url": "https://notes.henr.ee",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
   "featureList": [
     "Markdown Support",
     "Client-side Encryption",
