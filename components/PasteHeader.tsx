@@ -14,8 +14,8 @@ interface PasteHeaderProps {
   handleSubmit?: (e: React.FormEvent) => void;
   viewMode?: boolean;
   setViewMode?: React.Dispatch<React.SetStateAction<boolean>>;
-  encryptionMethod:  'key' | 'password' | null; // Remove the "?" to make this required
-  toggleEncryption: () => void; // Remove the "?" to make this required
+  encryptionMethod:  'key' | 'password' | null; 
+  toggleEncryption: () => void; 
 }
 
 

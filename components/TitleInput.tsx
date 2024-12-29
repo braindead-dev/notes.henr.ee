@@ -55,7 +55,7 @@ const TitleInput: React.FC<TitleInputProps> = ({
         onKeyDown={handleKeyDown}
         onPaste={handlePaste}
         suppressContentEditableWarning={true}
-        spellCheck={false} // Optional: Disable spellcheck for better UX
+        spellCheck={false}
       ></div>
     );
   }

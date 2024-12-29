@@ -19,7 +19,7 @@ const ScrollContainer: React.FC<ScrollContainerProps> = ({
       onDragOver={preventDefault}
       onDrop={preventDefault}
     >
-      {children} {/* Render children inside the scrollable container */}
+      {children}
     </div>
   );
 };

@@ -49,7 +49,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => {
         display: 'flex',
         alignItems: 'center',
         opacity: fadeIn ? 1 : 0, // Control fade-in and fade-out with the state
-        transition: 'opacity 0.4s ease, top 0.4s ease', // Smooth transition for both opacity and position
+        transition: 'opacity 0.4s ease, top 0.4s ease',
       }}
       role="alert"
     >

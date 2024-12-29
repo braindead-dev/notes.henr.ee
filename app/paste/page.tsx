@@ -93,20 +93,20 @@ export default function PastePage() {
     try {
       if (encryptionMethod) {
         if (method === 'password' && key) {
-          // Encrypt with password-derived key
           contentToSend = await encryptContentWithPassword(content, key);
         } else if (method === 'key' && key) {
-          // Encrypt with generated key
           contentToSend = await encryptContentWithKey(content, key);
         } else {
           throw new Error('Encryption key or method is missing.');
         }
       }
 
+      const currentTitle = titleEditableRef.current?.innerText || title;
+
       const response = await fetch('/api/paste', {
         method: 'POST',
         body: JSON.stringify({
-          title: title,
+          title: currentTitle,
           content: contentToSend,
           encryptionMethod: method || null,
         }),
@@ -121,10 +121,11 @@ export default function PastePage() {
         throw new Error(data.error || 'Something went wrong');
       }
 
-      // Redirect to the new paste page using the generated ID
+      // Only redirect if everything succeeded
       router.push(`/${data.id}`);
     } catch (err: any) {
       setError({ message: err.message, id: Date.now() });
+      // Don't reset the title on error
     }
   };
 
