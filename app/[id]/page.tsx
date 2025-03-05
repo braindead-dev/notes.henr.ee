@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { decryptContent } from '@/utils/cryptoUtils';
 import DecryptionModal from '@/components/modals/DecryptionModal';
+import ImageWarningModal from '@/components/modals/ImageWarningModal';
 import PasteHeader from '@/components/PasteHeader';
 import TitleInput from '@/components/TitleInput';
 import ContentArea from '@/components/ContentArea';
@@ -30,6 +31,13 @@ const sanitizeErrorMessage = (status: number, message?: string): string => {
   return `\`\`\`\nError ${status}: ${errorMessage}\n\`\`\``;
 };
 
+// Helper function to check if content contains images
+const containsImages = (content: string): boolean => {
+  // Match both inline images ![...](url) and reference style images [...]:[url]
+  const imageRegex = /!\[.*?\]\(.*?\)|!\[.*?\]\[.*?\]|\[.*?\]:\s*http[s]?:\/\/.*?(?:\.(jpg|jpeg|png|gif|webp))/i;
+  return imageRegex.test(content);
+};
+
 export default function Paste() {
   const { id } = useParams();
   const [title, setTitle] = useState('');
@@ -41,6 +49,9 @@ export default function Paste() {
   const [encryptionKey, setEncryptionKey] = useState('');
   const [decryptionError, setDecryptionError] = useState<{ message: string; id: number } | null>(null);
   const [showDecryptionModal, setShowDecryptionModal] = useState(false);
+  const [showImageWarning, setShowImageWarning] = useState(false);
+  const [hasAcceptedImageWarning, setHasAcceptedImageWarning] = useState(false);
+  const [pendingContent, setPendingContent] = useState<string | null>(null);
   const titleEditableRef = useRef<HTMLDivElement>(null);
 
   const toggleEncryption = () => {
@@ -62,7 +73,13 @@ export default function Paste() {
               setShowDecryptionModal(true);
               setContent(data.content);
             } else {
-              setContent(data.content);
+              // Check for images in unencrypted content
+              if (containsImages(data.content)) {
+                setPendingContent(data.content);
+                setShowImageWarning(true);
+              } else {
+                setContent(data.content);
+              }
             }
           } else {
             // Use the sanitized error message handler
@@ -105,13 +122,30 @@ export default function Paste() {
       const decryptedContent = await decryptContent(content, encryptionKey);
       // Sanitize the decrypted content
       const sanitizedContent = DOMPurify.sanitize(decryptedContent);
-      setContent(sanitizedContent);
+      
+      // Check for images in decrypted content
+      if (containsImages(sanitizedContent)) {
+        setPendingContent(sanitizedContent);
+        setShowImageWarning(true);
+      } else {
+        setContent(sanitizedContent);
+      }
+      
       setNeedsDecryption(false);
       setShowDecryptionModal(false);
       setDecryptionError(null);
     } catch (error) {
       setDecryptionError({ message: 'Invalid encryption key/password or corrupted data.', id: Date.now() });
     }
+  };
+
+  const handleAcceptImageWarning = () => {
+    if (pendingContent) {
+      setContent(pendingContent);
+      setPendingContent(null);
+    }
+    setShowImageWarning(false);
+    setHasAcceptedImageWarning(true);
   };
 
   return (
@@ -136,7 +170,9 @@ export default function Paste() {
               !needsDecryption
                 ? loading
                   ? ''
-                  : content
+                  : showImageWarning
+                    ? '```\nThis paste contains external images. Please accept the warning to view the content.\n```'
+                    : content
                 : encryptionMethod === 'password'
                 ? `\`\`\`\nThis paste is AES-256 encrypted with PBKDF2. \n\nTo re-prompt password input, refresh this page.\n\nEncrypted Content:\n${content}\n\`\`\``
                 : `\`\`\`\nThis paste is AES-256 encrypted. \n\nTo re-prompt decryption key input, refresh this page.\n\nEncrypted Content:\n${content}\n\`\`\``
@@ -155,6 +191,19 @@ export default function Paste() {
           handleDecryption={handleDecryption}
           decryptionError={decryptionError}
           encryptionMethod={encryptionMethod}
+        />
+      )}
+
+      {showImageWarning && (
+        <ImageWarningModal
+          onClose={() => {
+            setShowImageWarning(false);
+            // If they haven't accepted and close the modal, show a placeholder
+            if (!hasAcceptedImageWarning) {
+              setContent('```\nThis paste contains external images. Refresh the page to view the warning again.\n```');
+            }
+          }}
+          onAccept={handleAcceptImageWarning}
         />
       )}
     </div>
