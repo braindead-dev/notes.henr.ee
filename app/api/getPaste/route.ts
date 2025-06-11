@@ -22,7 +22,14 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "This paste couldn't be found." }, { status: 404 });
     }
 
-    return NextResponse.json(paste);
+    const publicPasteData = {
+      title: paste.title,
+      content: paste.content,
+      createdAt: paste.createdAt,
+      encryptionMethod: paste.encryptionMethod
+    };
+
+    return NextResponse.json(publicPasteData);
   } catch (error) {
     console.error('Error fetching paste:', error);
     return NextResponse.json({ error: 'We were unable to fetch this paste.' }, { status: 500 });

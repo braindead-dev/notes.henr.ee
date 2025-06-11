@@ -50,7 +50,6 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 
         <link rel="prefetch" href="/paste" />
-        <link rel="prefetch" href="/encryption" />
       </head>
       <body>{children}</body>
     </html>
