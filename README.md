@@ -83,12 +83,6 @@ npm run dev
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
 
-## Acknowledgments
-
-- Built with [Next.js](https://nextjs.org)
-- Hosted on [Vercel](https://vercel.com)
-- Database hosting by [MongoDB Atlas](https://www.mongodb.com/atlas)
-
 ## Contact
 
 For questions or support, please reach out to contact@henrywa[.]ng. Contributions are welcome!
