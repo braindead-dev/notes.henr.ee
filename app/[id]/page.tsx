@@ -71,7 +71,7 @@ export default function Paste() {
     async function fetchContent() {
       if (id) {
         try {
-          const response = await fetch(`/api/getPaste?id=${id}`);
+          const response = await fetch(`/api/fetch/${id}`);
           const data = await response.json();
 
           if (response.ok) {

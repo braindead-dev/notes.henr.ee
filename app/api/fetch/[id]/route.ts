@@ -1,12 +1,12 @@
-// app/api/getPaste/route.ts
-
 import { NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb"; // Updated import
+import clientPromise from "@/lib/mongodb";
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } },
+) {
   try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
+    const id = params.id;
 
     if (!id) {
       return NextResponse.json(
