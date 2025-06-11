@@ -1,17 +1,17 @@
 // app/admin/components/AdminDashboard/components/OverviewStatistics.tsx
 
-import React, { useEffect, useState } from 'react';
-import { BarStackHorizontal } from '@visx/shape';
-import { Group } from '@visx/group';
-import { scaleLinear, scaleBand, scaleOrdinal } from '@visx/scale';
-import styles from '@/styles/AdminDashboard.module.css';
-import { withTooltip, Tooltip, defaultStyles } from '@visx/tooltip';
-import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
+import React, { useEffect, useState } from "react";
+import { BarStackHorizontal } from "@visx/shape";
+import { Group } from "@visx/group";
+import { scaleLinear, scaleBand, scaleOrdinal } from "@visx/scale";
+import styles from "@/styles/AdminDashboard.module.css";
+import { withTooltip, Tooltip, defaultStyles } from "@visx/tooltip";
+import { WithTooltipProvidedProps } from "@visx/tooltip/lib/enhancers/withTooltip";
 
 interface Paste {
   id: string;
   title: string;
-  encryptionMethod: 'key' | 'password' | null;
+  encryptionMethod: "key" | "password" | null;
 }
 
 interface EncryptionStats {
@@ -48,7 +48,7 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        const response = await fetch('/api/admin/overview');
+        const response = await fetch("/api/admin/overview");
         const data = await response.json();
 
         setRecentPastes(data.recentPastes);
@@ -56,7 +56,7 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
         setStorageUsage(data.storageUsage);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching overview statistics:', error);
+        console.error("Error fetching overview statistics:", error);
       }
     };
 
@@ -78,22 +78,24 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   const keyEncryptedPercentage =
     totalEncryption > 0 ? encryptionStats.keyEncrypted / totalEncryption : 0;
   const passwordEncryptedPercentage =
-    totalEncryption > 0 ? encryptionStats.passwordEncrypted / totalEncryption : 0;
+    totalEncryption > 0
+      ? encryptionStats.passwordEncrypted / totalEncryption
+      : 0;
   const nonEncryptedPercentage =
     totalEncryption > 0 ? encryptionStats.nonEncrypted / totalEncryption : 0;
 
   const encryptionData = [
     {
-      label: 'Encryption',
+      label: "Encryption",
       keyEncrypted: keyEncryptedPercentage,
       passwordEncrypted: passwordEncryptedPercentage,
       nonEncrypted: nonEncryptedPercentage,
     },
   ];
-  const encryptionKeys = ['keyEncrypted', 'passwordEncrypted', 'nonEncrypted'];
+  const encryptionKeys = ["keyEncrypted", "passwordEncrypted", "nonEncrypted"];
   const encryptionColorScale = scaleOrdinal<string, string>({
     domain: encryptionKeys,
-    range: ['#4caf50', '#90caf9', '#ebebeb'],
+    range: ["#4caf50", "#90caf9", "#ebebeb"],
   });
 
   // Dimensions
@@ -118,19 +120,20 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   // Calculate percentages for Storage Usage
   const totalStorage = 512; // Assuming 512 is the total storage capacity
   const usedPercentage = totalStorage > 0 ? storageUsage / totalStorage : 0;
-  const unusedPercentage = totalStorage > 0 ? availableStorage / totalStorage : 0;
+  const unusedPercentage =
+    totalStorage > 0 ? availableStorage / totalStorage : 0;
 
   const storageData = [
     {
-      label: 'Storage',
+      label: "Storage",
       used: usedPercentage,
       unused: unusedPercentage,
     },
   ];
-  const storageKeys = ['used', 'unused'];
+  const storageKeys = ["used", "unused"];
   const storageColorScale = scaleOrdinal<string, string>({
     domain: storageKeys,
-    range: ['#90caf9', '#ebebeb'],
+    range: ["#90caf9", "#ebebeb"],
   });
 
   // Scales for Storage Usage
@@ -148,10 +151,10 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   const tooltipStyles = {
     ...defaultStyles,
     minWidth: 60,
-    backgroundColor: 'rgba(0,0,0,0.9)',
-    color: 'white',
-    padding: '8px 12px',
-    borderRadius: '4px',
+    backgroundColor: "rgba(0,0,0,0.9)",
+    color: "white",
+    padding: "8px 12px",
+    borderRadius: "4px",
   };
 
   // Add this helper function
@@ -159,19 +162,19 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
     key: string,
     value: number,
     total: number,
-    color: string
+    color: string,
   ) => {
     const percentage = (value / total) * 100;
-    const label = 
-      key === 'keyEncrypted' 
-        ? 'Key Encrypted'
-        : key === 'passwordEncrypted'
-        ? 'Password Encrypted'
-        : key === 'used'
-        ? 'Used Storage'
-        : key === 'unused'
-        ? 'Available Storage'
-        : 'Not Encrypted';
+    const label =
+      key === "keyEncrypted"
+        ? "Key Encrypted"
+        : key === "passwordEncrypted"
+          ? "Password Encrypted"
+          : key === "used"
+            ? "Used Storage"
+            : key === "unused"
+              ? "Available Storage"
+              : "Not Encrypted";
 
     return {
       key: label,
@@ -183,7 +186,6 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
 
   return (
     <div className={styles.container}>
-      
       <h2 className={styles.sectionTitle}>Overview Statistics</h2>
 
       <table className={styles.pasteTable}>
@@ -201,19 +203,21 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
                   href={`https://notes.henr.ee/${paste.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ marginRight: '8px' }}
+                  style={{ marginRight: "8px" }}
                 >
                   {paste.title}
                 </a>
                 {paste.encryptionMethod && (
                   <span
                     className={
-                      paste.encryptionMethod === 'password'
+                      paste.encryptionMethod === "password"
                         ? styles.passwordTag
                         : styles.keyTag
                     }
                   >
-                    {paste.encryptionMethod === 'password' ? 'PBKDF2' : 'Encrypted'}
+                    {paste.encryptionMethod === "password"
+                      ? "PBKDF2"
+                      : "Encrypted"}
                   </span>
                 )}
               </td>
@@ -249,27 +253,28 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
                           fill={bar.color}
                           onMouseLeave={() => hideTooltip()}
                           onMouseEnter={(event) => {
-                            const value = 
-                              bar.key === 'keyEncrypted' 
+                            const value =
+                              bar.key === "keyEncrypted"
                                 ? encryptionStats.keyEncrypted
-                                : bar.key === 'passwordEncrypted'
-                                ? encryptionStats.passwordEncrypted
-                                : encryptionStats.nonEncrypted;
+                                : bar.key === "passwordEncrypted"
+                                  ? encryptionStats.passwordEncrypted
+                                  : encryptionStats.nonEncrypted;
 
-                            const bounds = event.currentTarget.getBoundingClientRect();
+                            const bounds =
+                              event.currentTarget.getBoundingClientRect();
                             showTooltip({
                               tooltipData: getTooltipData(
                                 bar.key,
                                 value,
                                 totalEncryption,
-                                bar.color
+                                bar.color,
                               ),
                               tooltipTop: bounds.top,
                               tooltipLeft: bounds.right + 10,
                             });
                           }}
                         />
-                      ))
+                      )),
                     )
                   }
                 </BarStackHorizontal>
@@ -304,21 +309,25 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
                           fill={bar.color}
                           onMouseLeave={() => hideTooltip()}
                           onMouseEnter={(event) => {
-                            const value = bar.key === 'used' ? storageUsage : availableStorage;
-                            const bounds = event.currentTarget.getBoundingClientRect();
+                            const value =
+                              bar.key === "used"
+                                ? storageUsage
+                                : availableStorage;
+                            const bounds =
+                              event.currentTarget.getBoundingClientRect();
                             showTooltip({
                               tooltipData: getTooltipData(
                                 bar.key,
                                 value,
                                 totalStorage,
-                                bar.color
+                                bar.color,
                               ),
                               tooltipTop: bounds.top,
                               tooltipLeft: bounds.right + 10,
                             });
                           }}
                         />
-                      ))
+                      )),
                     )
                   }
                 </BarStackHorizontal>
@@ -330,32 +339,35 @@ const OverviewStatistics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
 
       {/* Update the tooltip render */}
       {tooltipOpen && tooltipData && (
-        <Tooltip 
-          top={tooltipTop} 
-          left={tooltipLeft} 
+        <Tooltip
+          top={tooltipTop}
+          left={tooltipLeft}
           style={{
             ...defaultStyles,
-            backgroundColor: 'rgba(0,0,0,0.75)',
-            color: 'white',
-            padding: '8px 12px',
-            borderRadius: '4px',
-            position: 'fixed',
-            pointerEvents: 'none',
+            backgroundColor: "rgba(0,0,0,0.75)",
+            color: "white",
+            padding: "8px 12px",
+            borderRadius: "4px",
+            position: "fixed",
+            pointerEvents: "none",
           }}
         >
-          <div style={{ 
-            color: tooltipData.color,
-            lineHeight: 1.2,
-            marginBottom: '4px'
-          }}>
+          <div
+            style={{
+              color: tooltipData.color,
+              lineHeight: 1.2,
+              marginBottom: "4px",
+            }}
+          >
             <strong>{tooltipData.key}</strong>
           </div>
-          <div style={{ lineHeight: 1.3 }}>{tooltipData.percentage.toFixed(2)}%</div>
           <div style={{ lineHeight: 1.3 }}>
-            {tooltipData.key.includes('Storage') 
+            {tooltipData.percentage.toFixed(2)}%
+          </div>
+          <div style={{ lineHeight: 1.3 }}>
+            {tooltipData.key.includes("Storage")
               ? `${tooltipData.value.toFixed(2)} MB`
-              : `${Math.round(tooltipData.value)} Pastes`
-            }
+              : `${Math.round(tooltipData.value)} Pastes`}
           </div>
         </Tooltip>
       )}

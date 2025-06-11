@@ -15,7 +15,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.04);  /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.04); /* Semi-transparent background */
   font-family: inherit;
 }
 
@@ -130,7 +130,7 @@
   overflow-wrap: break-word;
 }
 
-.contentEditable{
+.contentEditable {
   flex: 1;
   transform: translateY(-4px);
   min-height: calc(100vh - 150px);
@@ -156,9 +156,9 @@
 /* Placeholder text style */
 .placeholder {
   position: absolute;
-  color: #ABABAB;
-  pointer-events: none; 
-  font-size: 1em; 
+  color: #ababab;
+  pointer-events: none;
+  font-size: 1em;
   line-height: 1.5;
   font-family: inherit;
 }
@@ -170,7 +170,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);  /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -184,7 +184,7 @@
   max-width: 500px;
   width: 100%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width:90%;
+  width: 90%;
   z-index: 1001;
 }
 
@@ -194,9 +194,9 @@
   margin: 20px 0px 15px 0px;
   font-family: monospace;
   word-break: break-all;
-  display: flex;  /* Use flexbox to align children */
-  align-items: center;  /* Vertically center content */
-  justify-content: space-between;  /* Ensure space between key and button */
+  display: flex; /* Use flexbox to align children */
+  align-items: center; /* Vertically center content */
+  justify-content: space-between; /* Ensure space between key and button */
 }
 
 .modalInput {
@@ -212,7 +212,7 @@
 }
 
 .modalInput:focus {
-  outline: none; 
+  outline: none;
 }
 
 .modalActions {
@@ -257,7 +257,9 @@
   width: fit-content; /* Adjust width based on content */
   margin: 0 auto; /* Center button horizontally */
   gap: 16px; /* Add space between the icon and text */
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 /* GitHub logo styling inside the button */
@@ -283,7 +285,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.1);  /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.1); /* Semi-transparent background */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -295,6 +297,6 @@
   border-radius: 8px;
   max-width: 500px;
   width: 100%;
-  width:90%;
+  width: 90%;
   z-index: 1001;
 }

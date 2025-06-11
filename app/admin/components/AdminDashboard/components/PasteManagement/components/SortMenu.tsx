@@ -1,7 +1,7 @@
 // app/admin/components/AdminDashboard/components/PasteManagement/components/SortMenu.tsx
 
-import React from 'react';
-import styles from '@/styles/AdminDashboard.module.css';
+import React from "react";
+import styles from "@/styles/AdminDashboard.module.css";
 
 interface SortMenuProps {
   sortMenuRef: React.RefObject<HTMLDivElement>;
@@ -35,10 +35,10 @@ const SortMenu: React.FC<SortMenuProps> = ({
         <label>
           <input
             type="radio"
-            checked={tempSortBy === 'date' && tempSortOrder === 'asc'}
+            checked={tempSortBy === "date" && tempSortOrder === "asc"}
             onChange={() => {
-              setTempSortBy('date');
-              setTempSortOrder('asc');
+              setTempSortBy("date");
+              setTempSortOrder("asc");
             }}
           />
           Oldest
@@ -46,10 +46,10 @@ const SortMenu: React.FC<SortMenuProps> = ({
         <label>
           <input
             type="radio"
-            checked={tempSortBy === 'date' && tempSortOrder === 'desc'}
+            checked={tempSortBy === "date" && tempSortOrder === "desc"}
             onChange={() => {
-              setTempSortBy('date');
-              setTempSortOrder('desc');
+              setTempSortBy("date");
+              setTempSortOrder("desc");
             }}
           />
           Newest
@@ -61,10 +61,10 @@ const SortMenu: React.FC<SortMenuProps> = ({
         <label>
           <input
             type="radio"
-            checked={tempSortBy === 'name' && tempSortOrder === 'asc'}
+            checked={tempSortBy === "name" && tempSortOrder === "asc"}
             onChange={() => {
-              setTempSortBy('name');
-              setTempSortOrder('asc');
+              setTempSortBy("name");
+              setTempSortOrder("asc");
             }}
           />
           A-Z
@@ -72,10 +72,10 @@ const SortMenu: React.FC<SortMenuProps> = ({
         <label>
           <input
             type="radio"
-            checked={tempSortBy === 'name' && tempSortOrder === 'desc'}
+            checked={tempSortBy === "name" && tempSortOrder === "desc"}
             onChange={() => {
-              setTempSortBy('name');
-              setTempSortOrder('desc');
+              setTempSortBy("name");
+              setTempSortOrder("desc");
             }}
           />
           Z-A
@@ -87,10 +87,10 @@ const SortMenu: React.FC<SortMenuProps> = ({
         <label>
           <input
             type="radio"
-            checked={tempSortBy === 'size' && tempSortOrder === 'asc'}
+            checked={tempSortBy === "size" && tempSortOrder === "asc"}
             onChange={() => {
-              setTempSortBy('size');
-              setTempSortOrder('asc');
+              setTempSortBy("size");
+              setTempSortOrder("asc");
             }}
           />
           Ascending
@@ -98,10 +98,10 @@ const SortMenu: React.FC<SortMenuProps> = ({
         <label>
           <input
             type="radio"
-            checked={tempSortBy === 'size' && tempSortOrder === 'desc'}
+            checked={tempSortBy === "size" && tempSortOrder === "desc"}
             onChange={() => {
-              setTempSortBy('size');
-              setTempSortOrder('desc');
+              setTempSortBy("size");
+              setTempSortOrder("desc");
             }}
           />
           Descending

@@ -1,11 +1,11 @@
 // app/admin/components/AdminDashboard/AdminDashboard.tsx
 
-import React from 'react';
-import PerformanceAnalytics from './components/PerformanceAnalytics';
-import OverviewStatistics from './components/OverviewStatistics';
-import PasteManagement from './components/PasteManagement/PasteManagement';
-import ExportBackup from './components/ExportBackup';
-import styles from '@/styles/AdminDashboard.module.css';
+import React from "react";
+import PerformanceAnalytics from "./components/PerformanceAnalytics";
+import OverviewStatistics from "./components/OverviewStatistics";
+import PasteManagement from "./components/PasteManagement/PasteManagement";
+import ExportBackup from "./components/ExportBackup";
+import styles from "@/styles/AdminDashboard.module.css";
 
 const AdminDashboard: React.FC<{ userName: string }> = ({ userName }) => {
   return (
@@ -30,7 +30,6 @@ const AdminDashboard: React.FC<{ userName: string }> = ({ userName }) => {
         <div className={styles.row}>
           <ExportBackup />
         </div>
-
       </div>
     </div>
   );

@@ -1,257 +1,260 @@
 .dashboardContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 0px;
-    padding-bottom: 10rem;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0px;
+  padding-bottom: 10rem;
+}
 
-  }
-  
-  .gridRow {
-    display: grid;
-    grid-template-columns: 2fr 1fr; /* Performance takes 2/3, Overview takes 1/3 */
-    gap: 20px;
-  }
-  
-  .row {
-    display: grid;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-  .sectionTitle {
-    margin-bottom: 20px;
-  }
-  
-  .container {
-    background-color: #ffffff;
-    border-radius: 8px;
-    padding: 25px 20px;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-    height: 100%; /* This ensures the container takes full height of grid cell */
-  }
-  
-  .container h3 {
-    margin-top: -10px;
-    margin-bottom: -5px;
-  }
-  
-  .container p, .container ul, .container {
-    font-size: 14px;
-    color: #222;
-  }
+.gridRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Performance takes 2/3, Overview takes 1/3 */
+  gap: 20px;
+}
 
-  .container b {
-    font-weight: 600;
-  }
-  
-  .container ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
-  
-  .label {
-    padding: 20px;
-    background-color: #ddd;
-    border-radius: 6px;
-    font-size: 1rem;
-    color: #555;
-    text-align: center;
-  }
-  
-  .contentWrapper {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-  
-  .key {
-    margin-top: -30px;
-    margin-bottom: 10px;
-  }
-  
-  .keyItem {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 3px 0px;
-    font-size: 12px;
-  }
-  
-  .colorBox {
-    width: 10px;
-    height: 10px;
-    margin-right: 5px;
-  }
+.row {
+  display: grid;
+  flex-wrap: wrap;
+  gap: 20px;
+}
 
-  .unstyledLink {
-    color: inherit;  /* Keep the same color as the surrounding text */
-    text-decoration: none;  /* Only show underline */
-  }
-  
-  .unstyledLink:hover, .unstyledLink:focus, .unstyledLink:active {
-    color: inherit;  /* Prevent color change on hover, focus, or active state */
-    text-decoration: underline;  /* Keep underline on hover */
-  }
-  
-  .pasteItem {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* Spacing between title and tag */
-  }
-  
-  .exportButton {
-    background-color: #222222;
-    color: #fff;
-    border-radius: 6px;
-    border: 2px solid #545454;
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
-    margin-top: -10px;
-    margin-bottom: 5px;
-  }
-  
-  .exportButton:hover {
-    background-color: #242424;
-  }
-  
-  .sectionTitle {
-    margin-top: 0px;
-  }
-  
-  .pasteTable {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .pasteTable th,
-  .pasteTable td {
-    padding: 3px 4px;
-    text-align: left;
-  }
+.sectionTitle {
+  margin-bottom: 20px;
+}
 
-  /* Alternatively, use a pseudo-element for more control */
-  .pasteTable tbody tr:first-child td::before {
-    content: "";
-    display: block;
-    height: 5px; 
-  }
+.container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 25px 20px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  height: 100%; /* This ensures the container takes full height of grid cell */
+}
 
-  .pasteTable td {
-    color: #313131;
-    font-size: 14px;
-    border-bottom: 1px solid #f3f3f3;
-  }
-  
-  .pasteTable th {
-    color: #313131;
-    font-weight: 400;
-    font-size: 13.5px;
-    background-color: #f4f4f4;
-    padding-top: 6px;
-    padding-bottom: 6px;
-  }
+.container h3 {
+  margin-top: -10px;
+  margin-bottom: -5px;
+}
 
-  /* Apply border-radius to the entire row */
-  .pasteTable thead tr {
-    background-color: #f4f4f4;
-    border-radius: 5px;
-  }
+.container p,
+.container ul,
+.container {
+  font-size: 14px;
+  color: #222;
+}
 
-  /* Specific styling for the first and last header to round corners */
-  .pasteTable thead tr th:first-child {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-  }
+.container b {
+  font-weight: 600;
+}
 
-  .pasteTable thead tr th:last-child {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-  }
+.container ul {
+  list-style-type: none;
+  padding-left: 0;
+}
 
-  .pasteID {
-    color: #c6c6c6;
-    font-family: monospace;
-    margin-left: 5px;
-  }
+.label {
+  padding: 20px;
+  background-color: #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #555;
+  text-align: center;
+}
 
-  .keyTag {
-    background-color: #bbe8a395;
-    color: #0b440e;
-    padding: 2.5px 6px; /* Padding inside the tag */
-    border-radius: 8px; /* Rounded corners */
-    font-size: 12px; /* Small font size */
-  }
+.contentWrapper {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
 
-  .passwordTag {
-    background-color: #a3dee895;
-    color: #0b2344;
-    padding: 2.5px 6px; /* Padding inside the tag */
-    border-radius: 8px; /* Rounded corners */
-    font-size: 12px; /* Small font size */
-  }
-  
-  .noneTag {
-    background-color: #ebebebb5;
-    color: #313131;
-    padding: 2.5px 6px; /* Padding inside the tag */
-    border-radius: 8px; /* Rounded corners */
-    font-size: 12px; /* Small font size */
-  }
+.key {
+  margin-top: -30px;
+  margin-bottom: 10px;
+}
 
-  .paginationWrapper {
-    display: flex;
-    justify-content: center; /* Ensure pagination is centered */
-    align-items: center; /* Vertically center both elements */
-    margin-top: 10px;
-    position: relative;
-  }
-  
-  .paginationContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center; /* Vertically center the pagination controls */
-    width: 100%;
-  }
-  
-  .paginationCenter {
-    display: flex;
-    justify-content: center; /* Center the pagination controls */
-    align-items: center; /* Vertically align controls */
-    font-size: 12px;
-  }
-  
-  .entriesInfo {
-    position: absolute;
-    right: 0; /* Aligns the entries info to the far right */
-    font-size: 12px;
-    text-align: right;
-    top: 50%;
-    transform: translateY(-50%); /* Vertically centers the entries info */
-    margin-right: 15px;
-  }  
-  
-  .paginationButton {
-    background-color: transparent;
-    border: none;
-    padding: 5px 25px;
-    margin: 0 5px;
-    cursor: pointer;
-    font-size: 1.1em;
-  }
-  
-  .paginationButton:disabled {
-    opacity: 0.5;
-    cursor: default
-  }
-  
-  .paginationInfo {
-    font-size: 1em;
-  }
-  
-  /* Add the styles for the search bar and filter button */
+.keyItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3px 0px;
+  font-size: 12px;
+}
+
+.colorBox {
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+}
+
+.unstyledLink {
+  color: inherit; /* Keep the same color as the surrounding text */
+  text-decoration: none; /* Only show underline */
+}
+
+.unstyledLink:hover,
+.unstyledLink:focus,
+.unstyledLink:active {
+  color: inherit; /* Prevent color change on hover, focus, or active state */
+  text-decoration: underline; /* Keep underline on hover */
+}
+
+.pasteItem {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Spacing between title and tag */
+}
+
+.exportButton {
+  background-color: #222222;
+  color: #fff;
+  border-radius: 6px;
+  border: 2px solid #545454;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: -10px;
+  margin-bottom: 5px;
+}
+
+.exportButton:hover {
+  background-color: #242424;
+}
+
+.sectionTitle {
+  margin-top: 0px;
+}
+
+.pasteTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pasteTable th,
+.pasteTable td {
+  padding: 3px 4px;
+  text-align: left;
+}
+
+/* Alternatively, use a pseudo-element for more control */
+.pasteTable tbody tr:first-child td::before {
+  content: "";
+  display: block;
+  height: 5px;
+}
+
+.pasteTable td {
+  color: #313131;
+  font-size: 14px;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+.pasteTable th {
+  color: #313131;
+  font-weight: 400;
+  font-size: 13.5px;
+  background-color: #f4f4f4;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* Apply border-radius to the entire row */
+.pasteTable thead tr {
+  background-color: #f4f4f4;
+  border-radius: 5px;
+}
+
+/* Specific styling for the first and last header to round corners */
+.pasteTable thead tr th:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.pasteTable thead tr th:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.pasteID {
+  color: #c6c6c6;
+  font-family: monospace;
+  margin-left: 5px;
+}
+
+.keyTag {
+  background-color: #bbe8a395;
+  color: #0b440e;
+  padding: 2.5px 6px; /* Padding inside the tag */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 12px; /* Small font size */
+}
+
+.passwordTag {
+  background-color: #a3dee895;
+  color: #0b2344;
+  padding: 2.5px 6px; /* Padding inside the tag */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 12px; /* Small font size */
+}
+
+.noneTag {
+  background-color: #ebebebb5;
+  color: #313131;
+  padding: 2.5px 6px; /* Padding inside the tag */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 12px; /* Small font size */
+}
+
+.paginationWrapper {
+  display: flex;
+  justify-content: center; /* Ensure pagination is centered */
+  align-items: center; /* Vertically center both elements */
+  margin-top: 10px;
+  position: relative;
+}
+
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Vertically center the pagination controls */
+  width: 100%;
+}
+
+.paginationCenter {
+  display: flex;
+  justify-content: center; /* Center the pagination controls */
+  align-items: center; /* Vertically align controls */
+  font-size: 12px;
+}
+
+.entriesInfo {
+  position: absolute;
+  right: 0; /* Aligns the entries info to the far right */
+  font-size: 12px;
+  text-align: right;
+  top: 50%;
+  transform: translateY(-50%); /* Vertically centers the entries info */
+  margin-right: 15px;
+}
+
+.paginationButton {
+  background-color: transparent;
+  border: none;
+  padding: 5px 25px;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+}
+
+.paginationButton:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.paginationInfo {
+  font-size: 1em;
+}
+
+/* Add the styles for the search bar and filter button */
 .controlsContainer {
   display: flex;
   justify-content: space-between;
@@ -385,7 +388,7 @@
 }
 
 .customCheckbox:checked::after {
-  content: '';
+  content: "";
 }
 
 .sortMenu {
@@ -420,7 +423,8 @@
   text-align: left;
 }
 
-.sortMenu, .sortMenu * {
+.sortMenu,
+.sortMenu * {
   color: #222222 !important; /* Force the color to be #222222 */
 }
 
@@ -429,7 +433,8 @@
   color: #fff !important; /* Keep the apply button text white */
 }
 
-.filterMenu, .filterMenu * {
+.filterMenu,
+.filterMenu * {
   color: #222222 !important; /* Force the color to be #222222 */
 }
 
@@ -448,8 +453,8 @@
 
 /* Ensure each radio button appears on its own row */
 .sortGroup label {
-  display: block;  /* Forces each label (and thus radio button) to be on its own line */
-  margin-bottom: 8px;  /* Adds some spacing between each option */
+  display: block; /* Forces each label (and thus radio button) to be on its own line */
+  margin-bottom: 8px; /* Adds some spacing between each option */
 }
 
 .sortActions {
@@ -465,7 +470,6 @@
   padding: 5px 10px;
   font-size: 14px;
   cursor: pointer;
-  
 }
 
 .applyButton:hover {
@@ -496,7 +500,7 @@
 
 /* If you need to adjust the checkbox styling specifically for the filter menu */
 .filterGroup .customCheckbox {
-  margin: 0;  /* Reset any default margins */
+  margin: 0; /* Reset any default margins */
 }
 
 .iconButton {
@@ -515,7 +519,7 @@
 }
 
 .iconButton .modifierIcon {
-  width: 18px;  /* Slightly larger than the icons in the other buttons */
+  width: 18px; /* Slightly larger than the icons in the other buttons */
   height: 18px;
   stroke: #313131;
 }
@@ -629,7 +633,7 @@
 }
 
 .graphCard h5 {
-  margin: 0px;  /* Add this line to reduce space below the title */
+  margin: 0px; /* Add this line to reduce space below the title */
 }
 
 .statsGrid {

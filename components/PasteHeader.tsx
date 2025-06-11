@@ -1,10 +1,10 @@
 // components/PasteHeader.tsx
-import React from 'react';
-import Header from '@/components/Header';
-import CopyButton from '@/components/buttons/CopyButton';
-import PublishButton from '@/components/buttons/PublishButton';
-import ToggleButton from '@/components/buttons/ToggleButton';
-import EncryptButton from '@/components/buttons/EncryptButton';
+import React from "react";
+import Header from "@/components/Header";
+import CopyButton from "@/components/buttons/CopyButton";
+import PublishButton from "@/components/buttons/PublishButton";
+import ToggleButton from "@/components/buttons/ToggleButton";
+import EncryptButton from "@/components/buttons/EncryptButton";
 
 // components/PasteHeader.tsx
 interface PasteHeaderProps {
@@ -14,10 +14,9 @@ interface PasteHeaderProps {
   handleSubmit?: (e: React.FormEvent) => void;
   viewMode?: boolean;
   setViewMode?: React.Dispatch<React.SetStateAction<boolean>>;
-  encryptionMethod:  'key' | 'password' | null; 
-  toggleEncryption: () => void; 
+  encryptionMethod: "key" | "password" | null;
+  toggleEncryption: () => void;
 }
-
 
 const PasteHeader: React.FC<PasteHeaderProps> = ({
   isPastePage,
@@ -37,7 +36,10 @@ const PasteHeader: React.FC<PasteHeaderProps> = ({
         <>
           <PublishButton handleSubmit={handleSubmit} />
           <ToggleButton viewMode={viewMode} setViewMode={setViewMode} />
-          <EncryptButton encryptionMethod={encryptionMethod} toggleEncryption={toggleEncryption} />
+          <EncryptButton
+            encryptionMethod={encryptionMethod}
+            toggleEncryption={toggleEncryption}
+          />
         </>
       )}
     </Header>

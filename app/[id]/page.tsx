@@ -2,17 +2,17 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'next/navigation';
-import { decryptContent } from '@/utils/cryptoUtils';
-import DecryptionModal from '@/components/modals/DecryptionModal';
-import ImageWarningModal from '@/components/modals/ImageWarningModal';
-import PasteHeader from '@/components/PasteHeader';
-import TitleInput from '@/components/TitleInput';
-import ContentArea from '@/components/ContentArea';
-import ScrollContainer from '@/components/ScrollContainer';
-import styles from '@/styles/page.module.css';
-import DOMPurify from 'dompurify';
+import { useState, useEffect, useRef } from "react";
+import { useParams } from "next/navigation";
+import { decryptContent } from "@/utils/cryptoUtils";
+import DecryptionModal from "@/components/modals/DecryptionModal";
+import ImageWarningModal from "@/components/modals/ImageWarningModal";
+import PasteHeader from "@/components/PasteHeader";
+import TitleInput from "@/components/TitleInput";
+import ContentArea from "@/components/ContentArea";
+import ScrollContainer from "@/components/ScrollContainer";
+import styles from "@/styles/page.module.css";
+import DOMPurify from "dompurify";
 
 // Add this helper function at the top of your file
 const sanitizeErrorMessage = (status: number, message?: string): string => {
@@ -25,8 +25,11 @@ const sanitizeErrorMessage = (status: number, message?: string): string => {
   };
 
   // Use default message if available, otherwise use sanitized custom message
-  const errorMessage = defaultMessages[status] || 
-    (message ? message.replace(/[^a-zA-Z0-9\s.,!?-]/g, '') : "An error occurred");
+  const errorMessage =
+    defaultMessages[status] ||
+    (message
+      ? message.replace(/[^a-zA-Z0-9\s.,!?-]/g, "")
+      : "An error occurred");
 
   return `\`\`\`\nError ${status}: ${errorMessage}\n\`\`\``;
 };
@@ -34,20 +37,26 @@ const sanitizeErrorMessage = (status: number, message?: string): string => {
 // Helper function to check if content contains images
 const containsImages = (content: string): boolean => {
   // Match both inline images ![...](url) and reference style images [...]:[url]
-  const imageRegex = /!\[.*?\]\(.*?\)|!\[.*?\]\[.*?\]|\[.*?\]:\s*http[s]?:\/\/.*?(?:\.(jpg|jpeg|png|gif|webp))/i;
+  const imageRegex =
+    /!\[.*?\]\(.*?\)|!\[.*?\]\[.*?\]|\[.*?\]:\s*http[s]?:\/\/.*?(?:\.(jpg|jpeg|png|gif|webp))/i;
   return imageRegex.test(content);
 };
 
 export default function Paste() {
   const { id } = useParams();
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('```\nLoading...\n```');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("```\nLoading...\n```");
   const [loading, setLoading] = useState(true);
   const [isCopied, setIsCopied] = useState(false);
-  const [encryptionMethod, setEncryptionMethod] = useState<'key' | 'password' | null>(null);
+  const [encryptionMethod, setEncryptionMethod] = useState<
+    "key" | "password" | null
+  >(null);
   const [needsDecryption, setNeedsDecryption] = useState(false);
-  const [encryptionKey, setEncryptionKey] = useState('');
-  const [decryptionError, setDecryptionError] = useState<{ message: string; id: number } | null>(null);
+  const [encryptionKey, setEncryptionKey] = useState("");
+  const [decryptionError, setDecryptionError] = useState<{
+    message: string;
+    id: number;
+  } | null>(null);
   const [showDecryptionModal, setShowDecryptionModal] = useState(false);
   const [showImageWarning, setShowImageWarning] = useState(false);
   const [hasAcceptedImageWarning, setHasAcceptedImageWarning] = useState(false);
@@ -122,7 +131,7 @@ export default function Paste() {
       const decryptedContent = await decryptContent(content, encryptionKey);
       // Sanitize the decrypted content
       const sanitizedContent = DOMPurify.sanitize(decryptedContent);
-      
+
       // Check for images in decrypted content
       if (containsImages(sanitizedContent)) {
         setPendingContent(sanitizedContent);
@@ -130,12 +139,15 @@ export default function Paste() {
       } else {
         setContent(sanitizedContent);
       }
-      
+
       setNeedsDecryption(false);
       setShowDecryptionModal(false);
       setDecryptionError(null);
     } catch (error) {
-      setDecryptionError({ message: 'Invalid encryption key/password or corrupted data.', id: Date.now() });
+      setDecryptionError({
+        message: "Invalid encryption key/password or corrupted data.",
+        id: Date.now(),
+      });
     }
   };
 
@@ -169,17 +181,16 @@ export default function Paste() {
             content={
               !needsDecryption
                 ? loading
-                  ? ''
+                  ? ""
                   : showImageWarning
-                    ? '```\nThis paste contains external images. Please accept the warning to view the content.\n```'
+                    ? "```\nThis paste contains external images. Please accept the warning to view the content.\n```"
                     : content
-                : encryptionMethod === 'password'
-                ? `\`\`\`\nThis paste is AES-256 encrypted with PBKDF2. \n\nTo re-prompt password input, refresh this page.\n\nEncrypted Content:\n${content}\n\`\`\``
-                : `\`\`\`\nThis paste is AES-256 encrypted. \n\nTo re-prompt decryption key input, refresh this page.\n\nEncrypted Content:\n${content}\n\`\`\``
+                : encryptionMethod === "password"
+                  ? `\`\`\`\nThis paste is AES-256 encrypted with PBKDF2. \n\nTo re-prompt password input, refresh this page.\n\nEncrypted Content:\n${content}\n\`\`\``
+                  : `\`\`\`\nThis paste is AES-256 encrypted. \n\nTo re-prompt decryption key input, refresh this page.\n\nEncrypted Content:\n${content}\n\`\`\``
             }
             isEditable={false}
           />
-
         </div>
       </ScrollContainer>
 
@@ -200,7 +211,9 @@ export default function Paste() {
             setShowImageWarning(false);
             // If they haven't accepted and close the modal, show a placeholder
             if (!hasAcceptedImageWarning) {
-              setContent('```\nThis paste contains external images. Refresh the page to view the warning again.\n```');
+              setContent(
+                "```\nThis paste contains external images. Refresh the page to view the warning again.\n```",
+              );
             }
           }}
           onAccept={handleAcceptImageWarning}

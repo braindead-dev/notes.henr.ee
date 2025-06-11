@@ -9,12 +9,12 @@ declare module "next-auth" {
     user: {
       id?: number;
       name?: string | null;
-    }
+    };
   }
 }
 
 interface GitHubProfile extends Record<string, any> {
-  id?: number; 
+  id?: number;
 }
 
 // Load allowed users from environment variables
@@ -27,15 +27,15 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GITHUB_SECRET as string,
       authorization: {
         params: {
-          scope: 'read:user'
-        }
-      }
+          scope: "read:user",
+        },
+      },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/auth/signin", // Custom sign-in page
-    error: "/auth/signin",  // Redirect to sign-in page on error
+    error: "/auth/signin", // Redirect to sign-in page on error
   },
   session: {
     // Session will expire in 8 hours
@@ -46,7 +46,10 @@ export const authOptions: NextAuthOptions = {
     async signIn({ profile }) {
       const githubProfile = profile as GitHubProfile;
       // Check if the GitHub user ID is in the allowed list
-      if (githubProfile?.id && allowedUsers.includes(githubProfile.id.toString())) {
+      if (
+        githubProfile?.id &&
+        allowedUsers.includes(githubProfile.id.toString())
+      ) {
         return true;
       }
       return false;
@@ -54,7 +57,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, profile }) {
       const githubProfile = profile as GitHubProfile;
       if (githubProfile) {
-        token.id = githubProfile.id;  // Store the GitHub user ID in the token
+        token.id = githubProfile.id; // Store the GitHub user ID in the token
         token.name = githubProfile.login;
       }
       return token;
@@ -62,7 +65,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user && token) {
         // Cast `token.id` to a number (if it's there), or undefined if not
-        session.user.id = token.id as number | undefined;  // Include the GitHub user ID in the session
+        session.user.id = token.id as number | undefined; // Include the GitHub user ID in the session
         session.user.name = token.name;
       }
       return session;

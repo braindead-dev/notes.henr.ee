@@ -14,11 +14,11 @@ const NotAuthenticatedPage: React.FC = () => {
         <p>You need to sign in to access the admin dashboard.</p>
         <div className={styles.modalActionsRight}>
           <button
-            className={styles.oauthButton}  // Use the new button styling class
+            className={styles.oauthButton} // Use the new button styling class
             onClick={() => signIn("github", { callbackUrl: "/admin" })}
           >
             Sign in with GitHub
-            <FaGithub className={styles.githubIcon} /> 
+            <FaGithub className={styles.githubIcon} />
           </button>
         </div>
       </div>

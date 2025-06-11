@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styles from '@/styles/RefreshButton.module.css';
+import React, { useState } from "react";
+import styles from "@/styles/RefreshButton.module.css";
 
 interface RefreshButtonProps {
   onClick: () => void;
@@ -16,12 +16,16 @@ const RefreshButton: React.FC<RefreshButtonProps> = ({ onClick }) => {
   };
 
   return (
-    <button className={styles.iconButton} onClick={handleClick} title="Regenerate Key">
+    <button
+      className={styles.iconButton}
+      onClick={handleClick}
+      title="Regenerate Key"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="currentColor"
-        className={`${styles.icon} ${isSpinning ? styles.spin : ''}`}
+        className={`${styles.icon} ${isSpinning ? styles.spin : ""}`}
         width="24px"
         height="24px"
       >

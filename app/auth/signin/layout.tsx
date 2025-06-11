@@ -1,11 +1,11 @@
 // app/auth/signin/layout.tsx
 
-import ContentLayout from '@/app/layouts/ContentLayout';
-import { Metadata } from 'next';
+import ContentLayout from "@/app/layouts/ContentLayout";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Sign In',
-  description: 'Sign in to access the admin dashboard',
+  title: "Sign In",
+  description: "Sign in to access the admin dashboard",
 };
 
 export default function SignInLayout({

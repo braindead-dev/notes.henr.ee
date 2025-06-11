@@ -32,14 +32,16 @@ function SignInContent() {
 
 export default function SignInPage() {
   return (
-    <Suspense fallback={
-      <div className={styles.pageContainer}>
-        <DashHeader isAuthenticated={false} />
-        <ScrollContainer>
-          <LoadingPage />
-        </ScrollContainer>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className={styles.pageContainer}>
+          <DashHeader isAuthenticated={false} />
+          <ScrollContainer>
+            <LoadingPage />
+          </ScrollContainer>
+        </div>
+      }
+    >
       <DashHeader isAuthenticated={false} />
       <SignInContent />
     </Suspense>

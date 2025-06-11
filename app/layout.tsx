@@ -1,43 +1,51 @@
-import './globals.css';
-import { Metadata } from 'next';
+import "./globals.css";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://notes.henr.ee'),
+  metadataBase: new URL("https://notes.henr.ee"),
   title: {
-    template: '%s | Henry\'s Notes',
-    default: 'Henry\'s Notes - Secure Markdown Pastebin'
+    template: "%s | Henry's Notes",
+    default: "Henry's Notes - Secure Markdown Pastebin",
   },
-  description: 'A free, simple, and secure markdown pastebin for sharing notes and documentation.',
-  keywords: ['markdown', 'pastebin', 'encryption', 'notes', 'secure', 'sharing'],
-  authors: [{ name: 'Henry', url: 'https://henrywa.ng' }],
+  description:
+    "A free, simple, and secure markdown pastebin for sharing notes and documentation.",
+  keywords: [
+    "markdown",
+    "pastebin",
+    "encryption",
+    "notes",
+    "secure",
+    "sharing",
+  ],
+  authors: [{ name: "Henry", url: "https://henrywa.ng" }],
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://notes.henr.ee',
-    siteName: 'Henry\'s Notes',
-    title: 'Henry\'s Notes - Secure Markdown Pastebin',
-    description: 'A free, simple, and secure markdown pastebin.',
+    type: "website",
+    locale: "en_US",
+    url: "https://notes.henr.ee",
+    siteName: "Henry's Notes",
+    title: "Henry's Notes - Secure Markdown Pastebin",
+    description: "A free, simple, and secure markdown pastebin.",
     images: [
       {
-        url: '/og-image.png',
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: 'Henry\'s Notes - A secure markdown pastebin with encryption'
-      }
-    ]
+        alt: "Henry's Notes - A secure markdown pastebin with encryption",
+      },
+    ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Henry\'s Notes - Secure Markdown Pastebin',
-    description: 'A free, simple, and secure markdown pastebin.',
-    images: ['/og-image.png']
-  }
+    card: "summary_large_image",
+    title: "Henry's Notes - Secure Markdown Pastebin",
+    description: "A free, simple, and secure markdown pastebin.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -48,7 +56,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon-192.png" />
         <meta name="theme-color" content="#222222" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                
+
         <link rel="prefetch" href="/paste" />
       </head>
       <body>{children}</body>

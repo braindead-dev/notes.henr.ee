@@ -5,13 +5,16 @@ A free, secure pastebin designed for markdown notes with client-side encryption.
 ## Features
 
 ### Core Functionality
+
 - **Markdown Support**: Full markdown rendering with support for GFM, KaTeX math, and syntax highlighting
 - **Clean UI**: Minimalist interface focused on content creation and readability
 - **Free & Permanent**: All pastes are hosted indefinitely at no cost
 - **No Account Required**: Create and share pastes without registration
 
 ### Security
-- **Client-Side Encryption**: 
+
+- **Client-Side Encryption**:
+
   - AES-256-GCM encryption performed entirely in the browser using the [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API)
   - Two encryption methods:
     - Key-based: Uses a generated 256-bit key
@@ -24,6 +27,7 @@ A free, secure pastebin designed for markdown notes with client-side encryption.
   - Strict CSP and HTTP headers
 
 ### Admin Features
+
 <div align="center">
 <img src="public/admin-dash.png" alt="Admin Dashboard" width="400"/>
 </div>
@@ -47,17 +51,20 @@ A free, secure pastebin designed for markdown notes with client-side encryption.
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/notes.henr.ee.git
 cd notes.henr.ee
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Set up environment variables:
+
 ```env
 MONGODB_URI=your_mongodb_connection_string
 NEXTAUTH_SECRET=your_nextauth_secret
@@ -67,9 +74,10 @@ DISCORD_WEBHOOK_URL=your_discord_webhook_url (optional)
 ```
 
 4. Run the development server:
+
 ```bash
 npm run dev
-``` 
+```
 
 ## License
 
@@ -87,4 +95,4 @@ For questions or support, please reach out to contact@henrywa[.]ng. Contribution
 
 ---
 
-*Note: This is an open-source project. While the code is available for learning and reference, please ensure you implement your own security measures and testing before deploying in production.*
+_Note: This is an open-source project. While the code is available for learning and reference, please ensure you implement your own security measures and testing before deploying in production._

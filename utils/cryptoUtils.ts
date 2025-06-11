@@ -8,19 +8,29 @@ export function generateEncryptionKey(): string {
 }
 
 // Function to encrypt content with a generated key
-export async function encryptContentWithKey(content: string, keyBase64: string): Promise<string> {
+export async function encryptContentWithKey(
+  content: string,
+  keyBase64: string,
+): Promise<string> {
   const key = await importKeyFromBase64(keyBase64);
   return encryptContent(content, key);
 }
 
 // Function to encrypt content with a password
-export async function encryptContentWithPassword(content: string, password: string): Promise<string> {
+export async function encryptContentWithPassword(
+  content: string,
+  password: string,
+): Promise<string> {
   const { key, salt } = await deriveKeyFromPassword(password);
   return encryptContent(content, key, salt);
 }
 
 // Shared function to encrypt content
-async function encryptContent(content: string, key: CryptoKey, salt?: Uint8Array): Promise<string> {
+async function encryptContent(
+  content: string,
+  key: CryptoKey,
+  salt?: Uint8Array,
+): Promise<string> {
   const iv = window.crypto.getRandomValues(new Uint8Array(12)); // 96-bit IV for AES-GCM
 
   const encoder = new TextEncoder();
@@ -28,20 +38,25 @@ async function encryptContent(content: string, key: CryptoKey, salt?: Uint8Array
 
   const encryptedData = await window.crypto.subtle.encrypt(
     {
-      name: 'AES-GCM',
+      name: "AES-GCM",
       iv,
     },
     key,
-    data
+    data,
   );
 
   // Combine salt (if present), IV, and encrypted data
   let combined: Uint8Array;
   if (salt) {
-    combined = new Uint8Array(salt.byteLength + iv.byteLength + encryptedData.byteLength);
+    combined = new Uint8Array(
+      salt.byteLength + iv.byteLength + encryptedData.byteLength,
+    );
     combined.set(salt, 0); // Salt at the beginning
     combined.set(iv, salt.byteLength); // IV after salt
-    combined.set(new Uint8Array(encryptedData), salt.byteLength + iv.byteLength); // Encrypted data after IV
+    combined.set(
+      new Uint8Array(encryptedData),
+      salt.byteLength + iv.byteLength,
+    ); // Encrypted data after IV
   } else {
     combined = new Uint8Array(iv.byteLength + encryptedData.byteLength);
     combined.set(iv, 0); // IV at the beginning
@@ -52,36 +67,41 @@ async function encryptContent(content: string, key: CryptoKey, salt?: Uint8Array
 }
 
 // Function to derive a key from password using PBKDF2
-async function deriveKeyFromPassword(password: string): Promise<{ key: CryptoKey; salt: Uint8Array }> {
+async function deriveKeyFromPassword(
+  password: string,
+): Promise<{ key: CryptoKey; salt: Uint8Array }> {
   const encoder = new TextEncoder();
   const salt = window.crypto.getRandomValues(new Uint8Array(32)); // 128-bit salt
 
   const keyMaterial = await window.crypto.subtle.importKey(
-    'raw',
+    "raw",
     encoder.encode(password),
-    'PBKDF2',
+    "PBKDF2",
     false,
-    ['deriveKey']
+    ["deriveKey"],
   );
 
   const key = await window.crypto.subtle.deriveKey(
     {
-      name: 'PBKDF2',
+      name: "PBKDF2",
       salt: salt,
       iterations: 1500000,
-      hash: 'SHA-256',
+      hash: "SHA-256",
     },
     keyMaterial,
-    { name: 'AES-GCM', length: 256 },
+    { name: "AES-GCM", length: 256 },
     false,
-    ['encrypt', 'decrypt']
+    ["encrypt", "decrypt"],
   );
 
   return { key, salt };
 }
 
 // Function to decrypt content
-export async function decryptContent(encryptedBase64: string, keyInput: string): Promise<string> {
+export async function decryptContent(
+  encryptedBase64: string,
+  keyInput: string,
+): Promise<string> {
   const encryptedData = base64ToBuffer(encryptedBase64);
 
   let key: CryptoKey;
@@ -91,7 +111,7 @@ export async function decryptContent(encryptedBase64: string, keyInput: string):
   if (keyInput.length >= 44) {
     // Assume it's a Base64 encoded key (generated key)
     key = await importKeyFromBase64(keyInput);
-    
+
     // Extract IV (first 12 bytes)
     iv = encryptedData.slice(0, 12);
     ciphertext = encryptedData.slice(12);
@@ -99,19 +119,19 @@ export async function decryptContent(encryptedBase64: string, keyInput: string):
     // Assume it's a password; derive key
     // Fixed indices to match encryption function's data structure
     const salt = encryptedData.slice(0, 32);
-    iv = encryptedData.slice(32, 44);  // Changed from (16, 28)
-    ciphertext = encryptedData.slice(44);  // Changed from 28
+    iv = encryptedData.slice(32, 44); // Changed from (16, 28)
+    ciphertext = encryptedData.slice(44); // Changed from 28
 
     key = await deriveKeyFromPasswordForDecryption(keyInput, salt);
   }
 
   const decryptedData = await window.crypto.subtle.decrypt(
     {
-      name: 'AES-GCM',
+      name: "AES-GCM",
       iv,
     },
     key,
-    ciphertext
+    ciphertext,
   );
 
   const decoder = new TextDecoder();
@@ -119,28 +139,31 @@ export async function decryptContent(encryptedBase64: string, keyInput: string):
 }
 
 // Function to derive key from password for decryption
-async function deriveKeyFromPasswordForDecryption(password: string, salt: Uint8Array): Promise<CryptoKey> {
+async function deriveKeyFromPasswordForDecryption(
+  password: string,
+  salt: Uint8Array,
+): Promise<CryptoKey> {
   const encoder = new TextEncoder();
 
   const keyMaterial = await window.crypto.subtle.importKey(
-    'raw',
+    "raw",
     encoder.encode(password),
-    'PBKDF2',
+    "PBKDF2",
     false,
-    ['deriveKey']
+    ["deriveKey"],
   );
 
   const key = await window.crypto.subtle.deriveKey(
     {
-      name: 'PBKDF2',
+      name: "PBKDF2",
       salt: salt,
       iterations: 1500000,
-      hash: 'SHA-256',
+      hash: "SHA-256",
     },
     keyMaterial,
-    { name: 'AES-GCM', length: 256 },
+    { name: "AES-GCM", length: 256 },
     false,
-    ['decrypt']
+    ["decrypt"],
   );
 
   return key;
@@ -149,18 +172,15 @@ async function deriveKeyFromPasswordForDecryption(password: string, salt: Uint8A
 // Helper function to import key from Base64 string
 async function importKeyFromBase64(base64Key: string): Promise<CryptoKey> {
   const rawKey = base64ToBuffer(base64Key);
-  return window.crypto.subtle.importKey(
-    'raw',
-    rawKey,
-    'AES-GCM',
-    false,
-    ['encrypt', 'decrypt']
-  );
+  return window.crypto.subtle.importKey("raw", rawKey, "AES-GCM", false, [
+    "encrypt",
+    "decrypt",
+  ]);
 }
 
 // Helper function to convert Uint8Array to Base64 string
 function bufferToBase64(buffer: Uint8Array): string {
-  let binary = '';
+  let binary = "";
   const len = buffer.byteLength;
   for (let i = 0; i < len; i++) {
     binary += String.fromCharCode(buffer[i]);

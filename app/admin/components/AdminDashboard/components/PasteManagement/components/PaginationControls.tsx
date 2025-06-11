@@ -1,7 +1,7 @@
 // app/admin/components/AdminDashboard/components/PasteManagement/components/PaginationControls.tsx
 
-import React from 'react';
-import styles from '@/styles/AdminDashboard.module.css';
+import React from "react";
+import styles from "@/styles/AdminDashboard.module.css";
 
 interface PaginationControlsProps {
   page: number;

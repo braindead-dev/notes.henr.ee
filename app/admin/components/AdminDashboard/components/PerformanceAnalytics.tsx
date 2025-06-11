@@ -1,10 +1,10 @@
 // app/admin/components/AdminDashboard/components/PerformanceAnalytics.tsx
 
-import React, { useEffect, useState } from 'react';
-import styles from '@/styles/AdminDashboard.module.css';
-import { Group } from '@visx/group';
-import { Tooltip, withTooltip, defaultStyles } from '@visx/tooltip';
-import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
+import React, { useEffect, useState } from "react";
+import styles from "@/styles/AdminDashboard.module.css";
+import { Group } from "@visx/group";
+import { Tooltip, withTooltip, defaultStyles } from "@visx/tooltip";
+import { WithTooltipProvidedProps } from "@visx/tooltip/lib/enhancers/withTooltip";
 
 interface DailyData {
   date: string; // 'YYYY-MM-DD' in UTC
@@ -17,10 +17,10 @@ interface TooltipData {
 }
 
 const getColorForCount = (count: number, sortedCounts: number[]): string => {
-  if (count === 0) return '#ebedf0';
+  if (count === 0) return "#ebedf0";
 
   const nonZeroCounts = sortedCounts.filter((c) => c > 0);
-  if (nonZeroCounts.length === 0) return '#9be9a8';
+  if (nonZeroCounts.length === 0) return "#9be9a8";
 
   const q1Index = Math.floor(nonZeroCounts.length / 4);
   const q2Index = Math.floor(nonZeroCounts.length / 2);
@@ -30,17 +30,20 @@ const getColorForCount = (count: number, sortedCounts: number[]): string => {
   const q2 = nonZeroCounts[q2Index];
   const q3 = nonZeroCounts[q3Index];
 
-  if (count <= q1) return '#9be9a8'; // Level 1: Light green (0-25th percentile)
-  if (count <= q2) return '#40c463'; // Level 2: Medium green (25th-50th percentile)
-  if (count <= q3) return '#30a14e'; // Level 3: Deep green (50th-75th percentile)
-  return '#216e39'; // Level 4: Darkest green (75th-100th percentile)
+  if (count <= q1) return "#9be9a8"; // Level 1: Light green (0-25th percentile)
+  if (count <= q2) return "#40c463"; // Level 2: Medium green (25th-50th percentile)
+  if (count <= q3) return "#30a14e"; // Level 3: Deep green (50th-75th percentile)
+  return "#216e39"; // Level 4: Darkest green (75th-100th percentile)
 };
 
-const getBorderColorForCount = (count: number, sortedCounts: number[]): string => {
-  if (count === 0) return '#dfe1e4';
+const getBorderColorForCount = (
+  count: number,
+  sortedCounts: number[],
+): string => {
+  if (count === 0) return "#dfe1e4";
 
   const nonZeroCounts = sortedCounts.filter((c) => c > 0);
-  if (nonZeroCounts.length === 0) return '#94dda1';
+  if (nonZeroCounts.length === 0) return "#94dda1";
 
   const q1Index = Math.floor(nonZeroCounts.length / 4);
   const q2Index = Math.floor(nonZeroCounts.length / 2);
@@ -50,10 +53,10 @@ const getBorderColorForCount = (count: number, sortedCounts: number[]): string =
   const q2 = nonZeroCounts[q2Index];
   const q3 = nonZeroCounts[q3Index];
 
-  if (count <= q1) return '#94dda1'; // Level 1: Light green border
-  if (count <= q2) return '#40bb60'; // Level 2: Medium green border
-  if (count <= q3) return '#309a4b'; // Level 3: Deep green border
-  return '#226937'; // Level 4: Darkest green border
+  if (count <= q1) return "#94dda1"; // Level 1: Light green border
+  if (count <= q2) return "#40bb60"; // Level 2: Medium green border
+  if (count <= q3) return "#309a4b"; // Level 3: Deep green border
+  return "#226937"; // Level 4: Darkest green border
 };
 
 const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
@@ -75,7 +78,7 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
   useEffect(() => {
     const fetchAnalyticsData = async () => {
       try {
-        const response = await fetch('/api/admin/analytics');
+        const response = await fetch("/api/admin/analytics");
         const result = await response.json();
 
         const dailyData = result.dailyData as DailyData[];
@@ -91,7 +94,7 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
         startDate.setUTCHours(0, 0, 0, 0);
 
         const dateMap = new Map<string, number>(
-          dailyData.map((d: DailyData) => [d.date, d.count])
+          dailyData.map((d: DailyData) => [d.date, d.count]),
         );
 
         const allDates: DailyData[] = [];
@@ -111,7 +114,7 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
         setData(allDates);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching analytics data:', error);
+        console.error("Error fetching analytics data:", error);
       }
     };
 
@@ -124,21 +127,23 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
 
   // Calculate 'firstDate' as the Sunday on or before 'startDate'
   const [startYear, startMonth, startDayNum] = data[0].date
-    .split('-')
+    .split("-")
     .map(Number);
-  const startDateObj = new Date(Date.UTC(startYear, startMonth - 1, startDayNum));
+  const startDateObj = new Date(
+    Date.UTC(startYear, startMonth - 1, startDayNum),
+  );
   const dayOfWeek = startDateObj.getUTCDay();
   const firstDate = new Date(startDateObj);
   firstDate.setUTCDate(firstDate.getUTCDate() - dayOfWeek); // Adjust to Sunday
 
   // Calculate total weeks to set the width of the SVG
   const [endYear, endMonth, endDayNum] = data[data.length - 1].date
-    .split('-')
+    .split("-")
     .map(Number);
   const endDateObj = new Date(Date.UTC(endYear, endMonth - 1, endDayNum));
 
   const totalDays = Math.ceil(
-    (endDateObj.getTime() - firstDate.getTime()) / (24 * 60 * 60 * 1000)
+    (endDateObj.getTime() - firstDate.getTime()) / (24 * 60 * 60 * 1000),
   );
   const weeks = Math.ceil(totalDays / 7);
 
@@ -158,7 +163,9 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
     weekStartDate.setUTCDate(weekStartDate.getUTCDate() + i * 7);
     const month = weekStartDate.getUTCMonth();
     if (month !== prevMonth) {
-      const monthName = weekStartDate.toLocaleString('default', { month: 'short' });
+      const monthName = weekStartDate.toLocaleString("default", {
+        month: "short",
+      });
       const x = i * (squareSize + gap) + 2;
       monthLabels.push({ month: monthName, x });
       prevMonth = month;
@@ -167,9 +174,9 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
 
   // Day labels
   const dayLabels = [
-    { day: 'M', y: (squareSize + gap) * 1 + 2 },
-    { day: 'W', y: (squareSize + gap) * 3 + 2 },
-    { day: 'F', y: (squareSize + gap) * 5 + 2 },
+    { day: "M", y: (squareSize + gap) * 1 + 2 },
+    { day: "W", y: (squareSize + gap) * 3 + 2 },
+    { day: "F", y: (squareSize + gap) * 5 + 2 },
   ];
 
   // Color scale
@@ -178,24 +185,24 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
 
   // Format date for tooltip
   const formatDate = (dateStr: string) => {
-    const [year, month, day] = dateStr.split('-').map(Number);
+    const [year, month, day] = dateStr.split("-").map(Number);
     const date = new Date(Date.UTC(year, month - 1, day));
     return date.toLocaleDateString(undefined, {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-      timeZone: 'UTC', // Ensure UTC time zone
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      timeZone: "UTC", // Ensure UTC time zone
     });
   };
 
   // Helper function to format bytes
   const formatBytes = (bytes: number, decimals = 2) => {
-    if (bytes === 0) return '0 B';
+    if (bytes === 0) return "0 B";
     const k = 1024;
     const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+    const sizes = ["B", "KB", "MB", "GB", "TB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
   };
 
   return (
@@ -237,7 +244,7 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
           <Group left={dayLabelWidth} top={monthLabelHeight}>
             {data.map((day) => {
               // Parse the date
-              const [year, month, dayNum] = day.date.split('-').map(Number);
+              const [year, month, dayNum] = day.date.split("-").map(Number);
               const dateObj = new Date(Date.UTC(year, month - 1, dayNum));
 
               // Get day of week (0 = Sunday, 6 = Saturday)
@@ -245,7 +252,8 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
 
               // Calculate week index
               const weekDiff = Math.floor(
-                (dateObj.getTime() - firstDate.getTime()) / (7 * 24 * 60 * 60 * 1000)
+                (dateObj.getTime() - firstDate.getTime()) /
+                  (7 * 24 * 60 * 60 * 1000),
               );
 
               const x = weekDiff * (squareSize + gap) + 2;
@@ -287,19 +295,19 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
           left={tooltipLeft}
           style={{
             ...defaultStyles,
-            backgroundColor: 'rgba(0,0,0,0.85)',
-            color: 'white',
-            padding: '8px 10px',
-            borderRadius: '6px',
-            fontSize: '12px',
-            transform: 'translate(-55%, -120%)',
+            backgroundColor: "rgba(0,0,0,0.85)",
+            color: "white",
+            padding: "8px 10px",
+            borderRadius: "6px",
+            fontSize: "12px",
+            transform: "translate(-55%, -120%)",
             zIndex: 9999,
-            position: 'fixed',
-            pointerEvents: 'none',
+            position: "fixed",
+            pointerEvents: "none",
           }}
         >
           <div>
-            {tooltipData.count} paste{tooltipData.count !== 1 ? 's' : ''} on{' '}
+            {tooltipData.count} paste{tooltipData.count !== 1 ? "s" : ""} on{" "}
             {tooltipData.date}.
           </div>
         </Tooltip>
@@ -317,10 +325,11 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
         </div>
         <div className={styles.statCard}>
           <h3>Average Size</h3>
-          <p className={styles.statValue}>{formatBytes(averagePasteSize * 1024)}</p>
+          <p className={styles.statValue}>
+            {formatBytes(averagePasteSize * 1024)}
+          </p>
         </div>
       </div>
-      
     </div>
   );
 };
@@ -329,10 +338,10 @@ const PerformanceAnalytics: React.FC<WithTooltipProvidedProps<TooltipData>> = ({
 function getUTCDateString(date: Date): string {
   return (
     date.getUTCFullYear() +
-    '-' +
-    String(date.getUTCMonth() + 1).padStart(2, '0') +
-    '-' +
-    String(date.getUTCDate()).padStart(2, '0')
+    "-" +
+    String(date.getUTCMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(date.getUTCDate()).padStart(2, "0")
   );
 }
 

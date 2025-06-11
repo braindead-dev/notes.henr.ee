@@ -9,11 +9,7 @@ interface DashHeaderProps {
 }
 
 const DashHeader: React.FC<DashHeaderProps> = ({ isAuthenticated }) => {
-  return (
-    <Header>
-      {isAuthenticated && <SignOutButton />}
-    </Header>
-  );
+  return <Header>{isAuthenticated && <SignOutButton />}</Header>;
 };
 
 export default DashHeader;

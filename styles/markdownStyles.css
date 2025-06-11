@@ -24,7 +24,7 @@
   --blockquote-border: 2px solid #a67371;
   --code-background: #f5f5f5;
   --link-color: #8f2221;
-  --selection-background: #BBDFFF;
+  --selection-background: #bbdfff;
   --heading-spacing: calc(var(--p-spacing) * 2.5);
 }
 
@@ -43,46 +43,53 @@
 }
 
 /* Headings */
-.markdown-content h1, .cm-header-1 {
+.markdown-content h1,
+.cm-header-1 {
   font-size: var(--header1-size);
   font-weight: var(--h1-weight);
   line-height: var(--h1-line-height);
   letter-spacing: -0.015em;
 }
 
-.markdown-content h2, .cm-header-2 {
+.markdown-content h2,
+.cm-header-2 {
   font-size: var(--header2-size);
   font-weight: var(--h2-weight);
   line-height: var(--h2-line-height);
   letter-spacing: -0.015em;
 }
 
-.markdown-content h3, .cm-header-3 {
+.markdown-content h3,
+.cm-header-3 {
   font-size: var(--header3-size);
   font-weight: var(--h3-weight);
   line-height: var(--h3-line-height);
   letter-spacing: -0.015em;
 }
 
-.markdown-content h4, .cm-header-4 {
+.markdown-content h4,
+.cm-header-4 {
   font-size: var(--header4-size);
   font-weight: var(--h4-weight);
   line-height: var(--h4-line-height);
 }
 
-.markdown-content h5, .cm-header-5 {
+.markdown-content h5,
+.cm-header-5 {
   font-size: var(--header5-size);
   font-weight: var(--h5-weight);
 }
 
-.markdown-content h6, .cm-header-5 {
+.markdown-content h6,
+.cm-header-5 {
   font-size: var(--header6-size);
   font-weight: var(--h6-weight);
   color: var(--color);
 }
 
 /* Bold Text */
-.markdown-content strong, .cm-strong {
+.markdown-content strong,
+.cm-strong {
   font-weight: 600;
 }
 
@@ -92,24 +99,28 @@
 }
 
 /* Links */
-.markdown-content a, .cm-link {
+.markdown-content a,
+.cm-link {
   color: var(--link-color);
   text-decoration: underline;
 }
 
 /* Hover state for links */
-.markdown-content a:hover, .cm-link:hover {
-  color: #a35656; 
+.markdown-content a:hover,
+.cm-link:hover {
+  color: #a35656;
 }
 
 /* Styling only the bullet points */
-.markdown-content ul li::marker, 
+.markdown-content ul li::marker,
 .markdown-content ol li::marker {
-  color: #ABABAB; /* Set the bullet points to gray */
+  color: #ababab; /* Set the bullet points to gray */
 }
 
 /* Ensure sub-bullets are filled in */
-.markdown-content ul ul, .markdown-content ol ol, .markdown-content ol li > ul  {
+.markdown-content ul ul,
+.markdown-content ol ol,
+.markdown-content ol li > ul {
   list-style-type: disc; /* Use filled bullet points for sublists */
 }
 
@@ -118,7 +129,8 @@
 }
 
 /* Selection */
-.cm-selectionBackground, ::selection {
+.cm-selectionBackground,
+::selection {
   background-color: var(--selection-background);
 }
 

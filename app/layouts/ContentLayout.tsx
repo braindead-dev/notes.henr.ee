@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 interface ContentLayoutProps {
   children: ReactNode;
@@ -8,6 +8,9 @@ interface ContentLayoutProps {
   };
 }
 
-export default function ContentLayout({ children, metadata }: ContentLayoutProps) {
+export default function ContentLayout({
+  children,
+  metadata,
+}: ContentLayoutProps) {
   return <>{children}</>;
-} 
+}

@@ -1,12 +1,12 @@
 // app/admin/components/AdminDashboard/components/PasteManagement/components/PasteTable.tsx
 
-import React from 'react';
-import styles from '@/styles/AdminDashboard.module.css';
+import React from "react";
+import styles from "@/styles/AdminDashboard.module.css";
 
 interface Paste {
   id: string;
   title: string;
-  encryptionMethod: 'key' | 'password' | null;
+  encryptionMethod: "key" | "password" | null;
   createdAt: string;
   size: number;
 }
@@ -65,11 +65,11 @@ const PasteTable: React.FC<PasteTableProps> = ({
               </a>
               <span className={styles.pasteID}> ({paste.id})</span>
             </td>
-            <td>{new Date(paste.createdAt).toISOString().split('T')[0]}</td>
+            <td>{new Date(paste.createdAt).toISOString().split("T")[0]}</td>
             <td>
-              {paste.encryptionMethod === 'key' ? (
+              {paste.encryptionMethod === "key" ? (
                 <span className={styles.keyTag}>Encrypted</span>
-              ) : paste.encryptionMethod === 'password' ? (
+              ) : paste.encryptionMethod === "password" ? (
                 <span className={styles.passwordTag}>PBKDF2</span>
               ) : (
                 <span className={styles.noneTag}>None</span>

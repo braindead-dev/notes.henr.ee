@@ -1,7 +1,7 @@
 // components/TitleInput.tsx
 
-import React, { useEffect, useRef } from 'react';
-import styles from '@/styles/page.module.css';
+import React, { useEffect, useRef } from "react";
+import styles from "@/styles/page.module.css";
 
 interface TitleInputProps {
   initialTitle: string;
@@ -20,7 +20,7 @@ const TitleInput: React.FC<TitleInputProps> = ({
   const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
     if (!isEditable) return;
     e.preventDefault();
-    const text = e.clipboardData.getData('text/plain');
+    const text = e.clipboardData.getData("text/plain");
     const selection = window.getSelection();
     if (selection?.rangeCount) {
       selection.deleteFromDocument();
@@ -30,7 +30,7 @@ const TitleInput: React.FC<TitleInputProps> = ({
 
   // Prevent entering newlines in the title
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault(); // Prevent newline insertion
     }
   };

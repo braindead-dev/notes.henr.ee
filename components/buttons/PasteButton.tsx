@@ -1,9 +1,9 @@
-import React from 'react';
-import styles from '@/styles/page.module.css';
+import React from "react";
+import styles from "@/styles/page.module.css";
 
 const PasteButton: React.FC = () => {
   const handleRedirect = () => {
-    window.location.href = '/paste'; 
+    window.location.href = "/paste";
   };
 
   return (
