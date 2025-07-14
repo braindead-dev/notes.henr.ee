@@ -10,6 +10,7 @@ A free, secure pastebin designed for markdown notes with client-side encryption.
 - **Clean UI**: Minimalist interface focused on content creation and readability
 - **Free & Permanent**: All pastes are hosted indefinitely at no cost
 - **No Account Required**: Create and share pastes without registration
+- **Hotkeys:** Use Cmd/Ctrl+E to toggle view mode in the paste editor.
 
 ### Security
 
