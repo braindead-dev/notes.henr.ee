@@ -16,7 +16,7 @@ export async function GET(
     }
 
     const client = await clientPromise;
-    const db = client.db("notes"); // Your MongoDB cluster name
+    const db = client.db("notes"); // MongoDB cluster name
 
     // Fetch the paste from MongoDB
     const paste = await db.collection("pastes").findOne({ id });
