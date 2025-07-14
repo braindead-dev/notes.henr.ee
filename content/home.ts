@@ -7,6 +7,7 @@ export const pageContent = `
 - **Markdown Support:** Pastes are formatted using Markdown and LaTeX, maximizing readability. 
 - **Simple UI:** Our clean interface makes our platform easy to use and pleasing on the eyes.
 - **Free and Indefinite:** All pastes are hosted for free and forever, without a need to create an account.
+- **Hotkeys:** Use Cmd/Ctrl+E to toggle view mode in the [paste editor](/paste).
 
 ## Technology Stack
 - **Frontend:** Next.js, TypeScript

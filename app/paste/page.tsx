@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import TitleInput from "@/components/TitleInput";
 import ContentArea from "@/components/ContentArea";
@@ -42,6 +42,28 @@ export default function PastePage() {
   const [showEncryptionModal, setShowEncryptionModal] = useState(false);
   const titleEditableRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  // Add hotkey for toggling viewMode (Cmd/Ctrl+E)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if focus is in an input, textarea, or contenteditable
+      const active = document.activeElement;
+      if (
+        active &&
+        (active.tagName === "INPUT" ||
+          active.tagName === "TEXTAREA")
+      ) {
+        return;
+      }
+      // Cmd+E (Mac) or Ctrl+E (Win/Linux)
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "e") {
+        e.preventDefault();
+        setViewMode((prev) => !prev);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Toggle encryption
   const toggleEncryption = () => {
