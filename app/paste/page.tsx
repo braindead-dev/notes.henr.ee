@@ -50,8 +50,7 @@ export default function PastePage() {
       const active = document.activeElement;
       if (
         active &&
-        (active.tagName === "INPUT" ||
-          active.tagName === "TEXTAREA")
+        (active.tagName === "INPUT" || active.tagName === "TEXTAREA")
       ) {
         return;
       }

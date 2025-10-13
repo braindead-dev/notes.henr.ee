@@ -2,5 +2,9 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
+Disallow: /auth/
+
+# Allow crawling of public paste pages
+Allow: /[id]
 
 Sitemap: https://notes.henr.ee/sitemap.xml

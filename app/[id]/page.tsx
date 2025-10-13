@@ -11,6 +11,7 @@ import PasteHeader from "@/components/PasteHeader";
 import TitleInput from "@/components/TitleInput";
 import ContentArea from "@/components/ContentArea";
 import ScrollContainer from "@/components/ScrollContainer";
+import JsonLd from "@/components/JsonLd";
 import styles from "@/styles/page.module.css";
 import DOMPurify from "dompurify";
 
@@ -61,6 +62,7 @@ export default function Paste() {
   const [showImageWarning, setShowImageWarning] = useState(false);
   const [hasAcceptedImageWarning, setHasAcceptedImageWarning] = useState(false);
   const [pendingContent, setPendingContent] = useState<string | null>(null);
+  const [createdAt, setCreatedAt] = useState<string | null>(null);
   const titleEditableRef = useRef<HTMLDivElement>(null);
 
   const toggleEncryption = () => {
@@ -76,6 +78,7 @@ export default function Paste() {
 
           if (response.ok) {
             setTitle(data.title);
+            setCreatedAt(data.createdAt);
             setEncryptionMethod(data.encryptionMethod);
             if (data.encryptionMethod) {
               setNeedsDecryption(true);
@@ -160,8 +163,34 @@ export default function Paste() {
     setHasAcceptedImageWarning(true);
   };
 
+  // Generate JSON-LD structured data for SEO (only for public pastes)
+  const jsonLd =
+    !loading && !encryptionMethod && title && content
+      ? {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: title,
+          datePublished: createdAt,
+          author: {
+            "@type": "Person",
+            name: "Anonymous",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Henry's Notes",
+            url: "https://notes.henr.ee",
+          },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://notes.henr.ee/${id}`,
+          },
+          description: content.substring(0, 160).replace(/[#*`]/g, ""),
+        }
+      : null;
+
   return (
     <div className={styles.pageContainer}>
+      {jsonLd && <JsonLd data={jsonLd} />}
       <PasteHeader
         isPastePage={true}
         handleCopy={handleCopy}
